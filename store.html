@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#24272B"><meta name="description" content="FS NextGen Athlete Store: two separate boys and girls performance packages, relaxed or fitted warm-ups, competition uniforms and backpacks.">
+ <title>Team Store | Boys & Girls Packages | Florida Speed Academy</title>
+ <link rel="icon" href="assets/fs-lion-hero.png" type="image/png">
+ <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <style>
+  :root{--graphite:#24272B;--coal:#191B1F;--panel:#30343A;--yellow:#FFE200;--royal:#005BFF;--white:#F7F8FB;--muted:#D2D4D9;--display:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;--body:Inter,Arial,sans-serif}
+  *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--graphite);color:var(--white);font-family:var(--body)} a{color:inherit}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:4px} .frame{width:min(1220px,100%);margin:auto;padding-left:clamp(18px,5vw,64px);padding-right:clamp(18px,5vw,64px)}
+  .stripe{height:5px;background:var(--yellow)} .back{display:inline-block;margin-top:28px;color:var(--yellow);font-size:11px;text-decoration:none;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+  .store-head{padding-top:49px;padding-bottom:54px}.eyebrow{color:var(--yellow);font-size:11px;font-weight:850;letter-spacing:.16em;text-transform:uppercase}
+  h1{margin:13px 0 23px;font:900 clamp(61px,9vw,110px)/.9 var(--display);text-transform:uppercase} h1 span,h2 span,h3 span{color:var(--yellow)}
+  .intro{color:var(--muted);line-height:1.75;font-size:15px;max-width:780px}
+  .quick-nav{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.quick-nav a{border:2px solid var(--yellow);color:var(--yellow);padding:14px 23px;font-weight:900;font-size:12px;letter-spacing:.04em;text-decoration:none;text-transform:uppercase}
+  .quick-nav a:first-child{background:var(--yellow);color:var(--graphite)}
+  .package{padding-top:67px;padding-bottom:87px;border-top:2px solid #ffe20066;scroll-margin-top:12px}
+  .package-lead{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;margin-bottom:33px}.package h2{font:900 clamp(49px,7vw,89px)/.88 var(--display);text-transform:uppercase;margin:12px 0 20px}
+  .fit-badge{flex-shrink:0;border:1px solid var(--yellow);color:var(--yellow);padding:12px 15px;font-size:11px;letter-spacing:.14em;font-weight:900}
+  .bundle{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(24px,4vw,60px);align-items:start}
+  .main-image{display:block;width:100%;aspect-ratio:1.08;object-fit:contain;background:#34383E;border:1px solid #ffe20088}
+  .thumbs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:9px}
+  .thumb{border:2px solid #565a63;background:#30343a;padding:3px;min-width:0;cursor:pointer}.thumb.selected,.thumb:hover{border-color:var(--yellow)}
+  .thumb img{display:block;width:100%;aspect-ratio:1;object-fit:contain}
+  .bundle-info{background:var(--panel);padding:clamp(22px,3vw,34px);border-top:4px solid var(--yellow)}.bundle-info h3{font:900 48px/.92 var(--display);text-transform:uppercase;margin:16px 0}
+  .bundle-info p{color:var(--muted);line-height:1.7;font-size:14px}.contents{padding-left:22px;line-height:1.95;font-size:14px}.contents li::marker{color:var(--yellow)}
+  .price{border-left:4px solid var(--yellow);background:#202328;padding:17px 18px;display:grid;gap:8px;margin:25px 0}.price strong{font-size:14px}.price span{font-size:12px;color:var(--muted);line-height:1.5}
+  .inquire{display:inline-flex;background:var(--yellow);color:var(--coal);padding:16px 24px;text-decoration:none;text-transform:uppercase;letter-spacing:.05em;font-weight:900;font-size:12px}
+  .disclaimer{font-size:11px !important;line-height:1.7 !important}
+  .item-heading{padding-top:48px}.item-heading h3{margin:9px 0 21px;font:900 clamp(40px,5vw,65px)/.9 var(--display);text-transform:uppercase}
+  .piece-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+  .piece{min-width:0;margin:0;background:var(--panel);border:1px solid #ffe2003c}.piece img{display:block;width:100%;height:auto;aspect-ratio:1.28;object-fit:contain;background:#363a40}
+  .piece figcaption{display:grid;gap:6px;padding:16px}.piece strong{font:800 22px/1.1 var(--display);color:var(--yellow);text-transform:uppercase}.piece span{font-size:12px;line-height:1.55;color:var(--muted)}
+  footer{padding-top:28px;padding-bottom:28px;background:var(--coal);border-top:3px solid var(--yellow);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px}footer a{color:var(--yellow);text-decoration:none}
+  @media(max-width:800px){.bundle{grid-template-columns:1fr}.package-lead{display:block}.fit-badge{display:inline-block;margin-top:15px}.store-head{padding-top:35px}}
+  @media(max-width:480px){h1{font-size:58px}.package h2{font-size:56px}.piece-grid{grid-template-columns:1fr}.thumbs{gap:4px}.thumb{padding:1px}.bundle-info h3{font-size:42px}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  /* Separate Stripe payments for boys and girls packages */
+  .stripe-payment {margin-top:18px;display:grid;gap:9px;}
+  .stripe-buy{width:100%;font:900 13px/1.25 var(--body);border:2px solid var(--yellow);border-radius:3px;padding:15px 16px;text-transform:uppercase;letter-spacing:.06em;background:var(--yellow);color:#24272B;cursor:pointer;}
+  .stripe-buy:disabled{background:#3a3d42;border-color:#a49c47;color:#f2e7a2;opacity:1;cursor:not-allowed;}
+  .stripe-buy.is-ready{background:var(--yellow);color:#222;}
+  .stripe-buy.is-ready:hover{filter:brightness(1.07);}
+  .stripe-status{font:500 12px/1.55 var(--body);color:var(--muted);}
+  .stripe-status strong{color:var(--yellow);}
+ 
+
+/* Royal-blue atmosphere on graphite — matching the homepage */
+body {
+  background:
+    radial-gradient(ellipse 72% 590px at 95% 8%, rgba(0,91,255,.22),transparent 77%),
+    radial-gradient(ellipse 70% 800px at 0% 60%,rgba(0,91,255,.10),transparent 80%),
+    var(--graphite);
+}
+.store-head {
+  background:radial-gradient(ellipse 70% 90% at 95% 8%, rgba(0,91,255,.12),transparent 76%);
+}
+.bundle-info, .piece {
+  background:linear-gradient(151deg,rgba(0,91,255,.12),transparent 62%),var(--panel);
+}
+.main-image {
+  background:linear-gradient(160deg,rgba(0,91,255,.12),transparent 67%),#34383E;
+}
+
+
+/* FLORIDA SPEED ACADEMY — official site palette: royal blue, yellow, graphite. */
+:root{ --royal:#005BFF;--yellow:#FFE200;--graphite:#24272B;--coal:#191B1F;--panel:#30343A; }
+body{background:radial-gradient(ellipse 68% 750px at 90% 6%,rgba(0,91,255,.23),transparent 76%),radial-gradient(ellipse 72% 850px at 1% 66%,rgba(0,91,255,.12),transparent 79%),var(--graphite);}
+.stripe{background:linear-gradient(90deg,var(--royal) 0 40%,var(--yellow) 40% 100%);}
+.store-head{background:radial-gradient(ellipse 75% 100% at 85% 0%,rgba(0,91,255,.12),transparent 76%);}
+.quick-nav a{border-color:var(--royal);color:var(--yellow);background:rgba(0,91,255,.12);}
+.quick-nav a:first-child{border-color:var(--yellow);background:var(--yellow);color:var(--graphite);}
+.package{border-top-color:var(--royal);}
+.fit-badge{border-color:var(--royal);color:var(--yellow);background:rgba(0,91,255,.13);}
+.bundle-info,.piece{background:linear-gradient(145deg,rgba(0,91,255,.15),transparent 63%),var(--panel);}
+.bundle-info{border-top-color:var(--yellow);border-bottom:2px solid var(--royal);}
+.main-image{background:linear-gradient(155deg,rgba(0,91,255,.14),transparent 70%),var(--panel);border-color:var(--royal);}
+.thumb{background:var(--panel);border-color:var(--graphite);}
+.thumb.selected,.thumb:hover{border-color:var(--yellow);}
+.price{background:var(--coal);border-left-color:var(--royal);}
+.price strong{color:var(--yellow);}
+.piece{border-color:rgba(0,91,255,.55);}
+.piece figcaption{border-top:2px solid var(--yellow);}
+.inquire{background:var(--yellow);color:var(--graphite);}
+.stripe-buy.is-ready{background:var(--yellow);color:var(--graphite);box-shadow:inset 5px 0 var(--royal);}
+footer{border-top-color:var(--royal);}
+/* No outlines around letters. */
+h1,h2,h3,.piece strong,.eyebrow{-webkit-text-stroke:0 transparent;text-shadow:none;}
+
+</style>
+  <link rel="stylesheet" href="assets/brand-theme.css">
+</head>
+<body class="page-store">
+ <div class="stripe" aria-hidden="true"></div>
+ <div class="frame"><a href="index.html#store" class="back">← Florida Speed Academy homepage</a></div>
+ <header class="frame store-head"><div class="eyebrow">FS NEXTGEN ATHLETICS · OFFICIAL TEAM STORE</div><h1>ONE TEAM.<br><span>TWO SETS.</span></h1>
+ <p class="intro">Choose the boys or girls performance package. Both collections include team warm-ups, two coordinated competition sets, and the same FS NextGen backpack. Warm-ups differ in fit: <strong>relaxed for boys, fitted for girls</strong>.</p>
+ <nav class="quick-nav" aria-label="Choose athlete package"><a href="#boys">Boys set</a><a href="#girls">Girls set</a>  <a href="registration.html">Athlete registration</a>
+ </nav></header>
+ <main>
+  <section id="boys" class="package frame" aria-labelledby="boys-heading">
+    <div class="package-lead"><div><span class="eyebrow">FS NEXTGEN · BOYS ATHLETE COLLECTION</span><h2 id="boys-heading">BOYS <span>PERFORMANCE SET.</span></h2><p class="intro">A relaxed, roomier warm-up cut with our graphite and yellow competition designs. Five team gear pieces presented together as one boys set.</p></div><span class="fit-badge">RELAXED FIT</span></div>
+    <div class="bundle">
+      <div class="preview">
+        <img class="main-image" id="boys-main-image" src="store/boys-full-tracksuit.jpg" alt="Relaxed-fit hooded tracksuit" width="900" height="1200">
+        <div class="thumbs" aria-label="Boys package images">            <button class="thumb selected" type="button" data-image="store/boys-full-tracksuit.jpg" data-alt="Relaxed-fit hooded tracksuit" aria-label="Show Relaxed-fit hooded tracksuit" aria-pressed="true"><img src="store/boys-full-tracksuit.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/boys-short-sleeve-hoodie.jpg" data-alt="Relaxed training hoodie" aria-label="Show Relaxed training hoodie" aria-pressed="false"><img src="store/boys-short-sleeve-hoodie.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/graphite-competition-kit.jpg" data-alt="Graphite competition kit" aria-label="Show Graphite competition kit" aria-pressed="false"><img src="store/graphite-competition-kit.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/yellow-competition-kit.jpg" data-alt="Yellow competition kit" aria-label="Show Yellow competition kit" aria-pressed="false"><img src="store/yellow-competition-kit.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/nextgen-backpack.jpg" data-alt="FS NextGen backpack" aria-label="Show FS NextGen backpack" aria-pressed="false"><img src="store/nextgen-backpack.jpg" alt="" loading="lazy"></button>
+        </div>
+      </div>
+      <div class="bundle-info">
+        <div class="eyebrow">COMPLETE BOYS GEAR PACKAGE · 5 PIECES</div>
+        <h3>BUILT FOR <span>THE STANDARD.</span></h3>
+        <p>These are five pieces bundled into one boys package, not five individual store listings.</p>
+        <ol class="contents"><li>Relaxed-fit hooded tracksuit</li><li>Relaxed training hoodie</li><li>Graphite competition kit</li><li>Yellow competition kit</li><li>FS NextGen backpack</li></ol>
+        <div class="price"><strong>Package price: $150 USD</strong><span>One-time purchase. Enter athlete name, warm-up size and uniform size at secure Stripe checkout.</span></div>
+        <div class="stripe-payment" aria-label="Boys package payment">
+          <button type="button" class="stripe-buy" data-stripe-package="boys" disabled>Pay $150 with Stripe</button>
+          <div class="stripe-status" aria-live="polite">Secure $150 Stripe checkout is available. Enter requested athlete name and sizes.</div>
+        </div>
+        <a class="inquire" href="https://www.instagram.com/fsnextgenathletics/" target="_blank" rel="noopener noreferrer">Ask about Boys package</a>
+        <p class="disclaimer">Product mockups are shown as supplied; the warm-up silhouette is labeled for the requested fit. Actual manufacturing sizing and measurements will be confirmed with the vendor. Delivery or pickup arrangements are coordinated with the team after purchase. Stripe does not collect shipping fees at checkout.</p>
+      </div>
+    </div>
+    <div class="item-heading"><span class="eyebrow">EVERY PIECE IN THE BOYS PACKAGE</span><h3>THE FULL <span>SET.</span></h3></div>
+    <div class="piece-grid">          <figure class="piece"><img src="store/boys-full-tracksuit.jpg" loading="lazy" decoding="async" alt="Relaxed-fit hooded tracksuit"><figcaption><strong>Relaxed-fit hooded tracksuit</strong><span>Looser-cut full-length hoodie and joggers, boys front and back views</span></figcaption></figure>
+          <figure class="piece"><img src="store/boys-short-sleeve-hoodie.jpg" loading="lazy" decoding="async" alt="Relaxed training hoodie"><figcaption><strong>Relaxed training hoodie</strong><span>Short-sleeve hooded training top, boys front and back views</span></figcaption></figure>
+          <figure class="piece"><img src="store/graphite-competition-kit.jpg" loading="lazy" decoding="async" alt="Graphite competition kit"><figcaption><strong>Graphite competition kit</strong><span>Graphite FSN sleeveless top with blue/yellow camo compression shorts</span></figcaption></figure>
+          <figure class="piece"><img src="store/yellow-competition-kit.jpg" loading="lazy" decoding="async" alt="Yellow competition kit"><figcaption><strong>Yellow competition kit</strong><span>Yellow FSN sleeveless top with matching camo compression shorts</span></figcaption></figure>
+          <figure class="piece"><img src="store/nextgen-backpack.jpg" loading="lazy" decoding="async" alt="FS NextGen backpack"><figcaption><strong>FS NextGen backpack</strong><span>Black, royal-blue and yellow branded team backpack</span></figcaption></figure>
+    </div>
+  </section>
+  <section id="girls" class="package frame" aria-labelledby="girls-heading">
+    <div class="package-lead"><div><span class="eyebrow">FS NEXTGEN · GIRLS ATHLETE COLLECTION</span><h2 id="girls-heading">GIRLS <span>PERFORMANCE SET.</span></h2><p class="intro">A closer-fitting athletic warm-up cut paired with our updated graphite/blue and pink/blue checkerboard competition designs. Five team gear pieces presented together as one girls set.</p></div><span class="fit-badge">ATHLETIC FIT</span></div>
+    <div class="bundle">
+      <div class="preview">
+        <img class="main-image" id="girls-main-image" src="store/girls-full-tracksuit.jpg" alt="Fitted hooded tracksuit" width="900" height="1200">
+        <div class="thumbs" aria-label="Girls package images">            <button class="thumb selected" type="button" data-image="store/girls-full-tracksuit.jpg" data-alt="Fitted hooded tracksuit" aria-label="Show Fitted hooded tracksuit" aria-pressed="true"><img src="store/girls-full-tracksuit.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/girls-short-sleeve-hoodie.jpg" data-alt="Fitted training hoodie" aria-label="Show Fitted training hoodie" aria-pressed="false"><img src="store/girls-short-sleeve-hoodie.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/girls-graphite-checkerboard.jpg" data-alt="Graphite + blue competition kit" aria-label="Show Graphite + blue competition kit" aria-pressed="false"><img src="store/girls-graphite-checkerboard.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/girls-pink-checkerboard.jpg" data-alt="Pink + blue competition kit" aria-label="Show Pink + blue competition kit" aria-pressed="false"><img src="store/girls-pink-checkerboard.jpg" alt="" loading="lazy"></button>
+            <button class="thumb " type="button" data-image="store/nextgen-backpack.jpg" data-alt="FS NextGen backpack" aria-label="Show FS NextGen backpack" aria-pressed="false"><img src="store/nextgen-backpack.jpg" alt="" loading="lazy"></button>
+        </div>
+      </div>
+      <div class="bundle-info">
+        <div class="eyebrow">COMPLETE GIRLS GEAR PACKAGE · 5 PIECES</div>
+        <h3>BUILT FOR <span>THE STANDARD.</span></h3>
+        <p>These are five pieces bundled into one girls package, not five individual store listings.</p>
+        <ol class="contents"><li>Fitted hooded tracksuit</li><li>Fitted training hoodie</li><li>Graphite + blue competition kit</li><li>Pink + blue competition kit</li><li>FS NextGen backpack</li></ol>
+        <div class="price"><strong>Package price: $150 USD</strong><span>One-time purchase. Enter athlete name, warm-up size and uniform size at secure Stripe checkout.</span></div>
+        <div class="stripe-payment" aria-label="Girls package payment">
+          <button type="button" class="stripe-buy" data-stripe-package="girls" disabled>Pay $150 with Stripe</button>
+          <div class="stripe-status" aria-live="polite">Secure $150 Stripe checkout is available. Enter requested athlete name and sizes.</div>
+        </div>
+        <a class="inquire" href="https://www.instagram.com/fsnextgenathletics/" target="_blank" rel="noopener noreferrer">Ask about Girls package</a>
+        <p class="disclaimer">Product mockups are shown as supplied; the warm-up silhouette is labeled for the requested fit. Actual manufacturing sizing and measurements will be confirmed with the vendor. Delivery or pickup arrangements are coordinated with the team after purchase. Stripe does not collect shipping fees at checkout.</p>
+      </div>
+    </div>
+    <div class="item-heading"><span class="eyebrow">EVERY PIECE IN THE GIRLS PACKAGE</span><h3>THE FULL <span>SET.</span></h3></div>
+    <div class="piece-grid">          <figure class="piece"><img src="store/girls-full-tracksuit.jpg" loading="lazy" decoding="async" alt="Fitted hooded tracksuit"><figcaption><strong>Fitted hooded tracksuit</strong><span>Closer-cut blue hoodie and joggers, girls front and back views</span></figcaption></figure>
+          <figure class="piece"><img src="store/girls-short-sleeve-hoodie.jpg" loading="lazy" decoding="async" alt="Fitted training hoodie"><figcaption><strong>Fitted training hoodie</strong><span>Closer-cut short-sleeve hooded training top, girls front and back views</span></figcaption></figure>
+          <figure class="piece"><img src="store/girls-graphite-checkerboard.jpg" loading="lazy" decoding="async" alt="Graphite + blue competition kit"><figcaption><strong>Graphite + blue competition kit</strong><span>Graphite fitted FSN top and royal-blue checkerboard compression shorts</span></figcaption></figure>
+          <figure class="piece"><img src="store/girls-pink-checkerboard.jpg" loading="lazy" decoding="async" alt="Pink + blue competition kit"><figcaption><strong>Pink + blue competition kit</strong><span>Pink fitted FSN top and pink/royal-blue checkerboard compression shorts</span></figcaption></figure>
+          <figure class="piece"><img src="store/nextgen-backpack.jpg" loading="lazy" decoding="async" alt="FS NextGen backpack"><figcaption><strong>FS NextGen backpack</strong><span>Black, royal-blue and yellow branded team backpack</span></figcaption></figure>
+    </div>
+  </section>
+ </main>
+ <footer class="frame"><span>© <span id="year">2026</span> Florida Speed Academy · FS NextGen Athletics</span><a href="index.html#store">Return to homepage</a></footer>
+ <script>
+ (()=>{
+  document.querySelector('#year').textContent=new Date().getFullYear();
+  for(const pkg of document.querySelectorAll('.package')){
+   const main=pkg.querySelector('.main-image');const thumbs=[...pkg.querySelectorAll('.thumb')];
+   for(const button of thumbs){button.addEventListener('click',()=>{
+    main.src=button.dataset.image;main.alt=button.dataset.alt;
+    for(const b of thumbs){const current=b===button;b.classList.toggle('selected',current);b.setAttribute('aria-pressed',String(current));}
+   });}
+  }
+ })();
+ </script>
+
+  <script src="checkout-config.js"></script>
+  <script>
+  (()=>{
+    'use strict';
+    const links = window.FS_STRIPE_LINKS || {};
+    const isOfficialStripeLink = (value) => {
+      try {
+        const u = new URL(value);
+        return u.protocol === 'https:' && u.hostname === 'buy.stripe.com' && u.pathname.length > 1;
+      } catch(e) { return false; }
+    };
+    for (const button of document.querySelectorAll('button[data-stripe-package]')) {
+      const type = button.dataset.stripePackage;
+      const link = links[type];
+      if (isOfficialStripeLink(link)) {
+        button.disabled = false;
+        button.classList.add('is-ready');
+        button.textContent = 'Pay $150 securely with Stripe';
+        button.setAttribute('aria-label', 'Pay $150 securely with Stripe for the '+type+' package');
+        button.addEventListener('click', ()=>{ window.location.assign(link); });
+        const status=button.parentElement.querySelector('.stripe-status');
+        if(status) status.textContent='Secure Stripe checkout · $150 one-time. Athlete name and requested apparel sizes collected.';
+      }
+    }
+  })();
+  </script>
+</body>
+</html>

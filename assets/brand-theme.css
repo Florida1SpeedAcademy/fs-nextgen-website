@@ -1,0 +1,175 @@
+/* Florida Speed Academy / FS NextGen Athletics — unified visual identity.
+   ROYAL BLUE #005BFF  |  YELLOW #FFE200  |  GRAPHITE #24272B
+   White/light-grey are used for readable text. Original logos, photos, apparel
+   artwork, Stripe payments and application functionality are unchanged. */
+:root {
+  --royal: #005BFF;
+  --blue: #005BFF;
+  --yellow: #FFE200;
+  --graphite: #24272B;
+  --graphite-deep: #191B1F;
+  --graphite-soft: #30343A;
+  --coal: #191B1F;
+  --panel: #30343A;
+  --dark: #191B1F;
+  --white: #F7F8FB;
+  --muted: #D2D4D9;
+}
+:where(a,button):focus-visible { outline:3px solid var(--yellow); outline-offset:4px; }
+:where(h1,h2,h3,.section-title,.hero-title,.shop-title,.intro-slogan) {
+  -webkit-text-stroke:0 transparent;
+  text-shadow:none;
+}
+
+/* HOME: blue glows, graphite ground, gold details. */
+body.page-home { background:var(--graphite); }
+.page-home .site {
+  background:
+    radial-gradient(ellipse 65% 880px at 99% 30%,rgba(0,91,255,.19),transparent 76%),
+    radial-gradient(ellipse 65% 950px at -8% 77%,rgba(0,91,255,.17),transparent 80%),
+    var(--graphite);
+}
+.page-home .intro {
+  background:
+    radial-gradient(ellipse 60% 66% at 48% 40%,rgba(0,91,255,.27),transparent 76%),
+    radial-gradient(ellipse 40% 33% at 95% 95%,rgba(255,226,0,.055),transparent 90%),
+    var(--graphite-deep);
+}
+.page-home .intro::before {
+  background:repeating-linear-gradient(127deg,transparent 0 145px,rgba(0,91,255,.07) 146px,transparent 148px);
+}
+.page-home .hero {
+  background:
+    radial-gradient(ellipse 75% 69% at 96% 19%,rgba(0,91,255,.34),transparent 75%),
+    radial-gradient(ellipse 70% 66% at 1% 85%,rgba(0,91,255,.22),transparent 80%),
+    linear-gradient(154deg,var(--graphite-soft) 0%,var(--graphite) 58%,var(--graphite-deep) 100%);
+}
+.page-home .hero::after {height:5px;background:linear-gradient(90deg,var(--royal) 0 46%,var(--yellow) 46% 100%);}
+.page-home .hero::before {opacity:.15; background:repeating-linear-gradient(132deg,transparent 0 165px,rgba(255,226,0,.11) 166px,transparent 169px);}
+.page-home .action-primary,
+.page-home .reg-more,
+.page-home .shop-detail-link {
+  background:var(--yellow);
+  color:var(--graphite);
+  border-color:var(--yellow);
+}
+.page-home .action-secondary {
+  border:2px solid var(--royal);
+  background:rgba(0,91,255,.17);
+  color:var(--yellow);
+}
+.page-home .action-secondary:hover {background:rgba(0,91,255,.34);}
+.page-home .action-primary:hover,
+.page-home .reg-more:hover,
+.page-home .shop-detail-link:hover {
+  background:var(--royal); color:#fff; border-color:var(--royal);
+}
+.page-home .values {background:var(--yellow);color:var(--graphite);}
+.page-home .gallery figure {border:1px solid rgba(0,91,255,.68);}
+.page-home .gallery figcaption {background:var(--graphite-soft);border-top:2px solid var(--yellow);color:var(--yellow);}
+.page-home .programs,
+.page-home .registration-teaser,
+.page-home .shop-intro,
+.page-home .mission {border-top:2px solid rgba(0,91,255,.54);}
+.page-home .program,
+.page-home .shop-option {
+  background:linear-gradient(152deg,rgba(0,91,255,.18),transparent 72%),var(--graphite-soft);
+  border-top:4px solid var(--yellow);
+  border-bottom:2px solid rgba(0,91,255,.65);
+}
+.page-home .shop-option {border-left:1px solid rgba(0,91,255,.54);border-right:1px solid rgba(0,91,255,.54);}
+.page-home .shop-photos {background:var(--graphite-deep);}
+.page-home .shop-fit {background:var(--graphite-deep);border-left:4px solid var(--royal);}
+.page-home .registration-teaser {
+  background:
+    radial-gradient(ellipse 69% 93% at 96% 10%,rgba(0,91,255,.25),transparent 75%),
+    linear-gradient(145deg,var(--graphite-soft),var(--graphite-deep));
+}
+.page-home .reg-benefits li {background:rgba(0,91,255,.14);border-left-color:var(--yellow);}
+.page-home .reg-dates {background:var(--graphite-deep);border-color:var(--royal);}
+.page-home .reg-date-row {border-bottom-color:rgba(0,91,255,.5);}
+.page-home .stripe-buy.is-ready {background:var(--yellow);border-color:var(--yellow);color:var(--graphite);box-shadow:inset 5px 0 var(--royal);}
+.page-home footer {background:var(--graphite-deep);border-top:4px solid var(--royal);}
+
+/* STORE: match the exact same palette, including controls and image cards. */
+body.page-store {
+  background:
+    radial-gradient(ellipse 65% 760px at 98% 4%,rgba(0,91,255,.32),transparent 78%),
+    radial-gradient(ellipse 75% 870px at -9% 65%,rgba(0,91,255,.18),transparent 79%),
+    var(--graphite);
+}
+.page-store .stripe {background:linear-gradient(90deg,var(--royal) 0 45%,var(--yellow) 45% 100%);}
+.page-store .store-head {background:radial-gradient(ellipse 67% 120% at 96% 12%,rgba(0,91,255,.16),transparent 82%);}
+.page-store .back {color:var(--yellow);}
+.page-store .quick-nav a {border-color:var(--royal);background:rgba(0,91,255,.14);color:var(--yellow);}
+.page-store .quick-nav a:first-child {background:var(--yellow);border-color:var(--yellow);color:var(--graphite);}
+.page-store .quick-nav a:hover {background:var(--royal);border-color:var(--royal);color:#fff;}
+.page-store .package {border-top:2px solid rgba(0,91,255,.7);}
+.page-store .fit-badge {color:var(--yellow);border-color:var(--royal);background:rgba(0,91,255,.14);}
+.page-store .main-image {background:var(--graphite-soft);border-color:var(--royal);}
+.page-store .thumb {background:var(--graphite-soft);border-color:var(--graphite);}
+.page-store .thumb.selected,.page-store .thumb:hover {border-color:var(--yellow);}
+.page-store .bundle-info,.page-store .piece {
+  background:linear-gradient(148deg,rgba(0,91,255,.16),transparent 70%),var(--graphite-soft);
+}
+.page-store .bundle-info {border-top:4px solid var(--yellow);border-bottom:2px solid var(--royal);}
+.page-store .piece {border-color:rgba(0,91,255,.6);}
+.page-store .piece img {background:var(--graphite-soft);}
+.page-store .piece figcaption {border-top:2px solid var(--yellow);}
+.page-store .price {background:var(--graphite-deep);border-left:4px solid var(--royal);}
+.page-store .price strong {color:var(--yellow);}
+.page-store .inquire,.page-store .stripe-buy.is-ready {background:var(--yellow);border-color:var(--yellow);color:var(--graphite);}
+.page-store .inquire:hover,.page-store .stripe-buy.is-ready:hover {background:var(--royal);border-color:var(--royal);color:#fff;}
+.page-store footer {background:var(--graphite-deep);border-top:4px solid var(--royal);}
+
+/* REGISTRATION: single identity, same cards, deadlines, action buttons. */
+body.page-registration {
+  background:
+    radial-gradient(ellipse 69% 720px at 99% 4%,rgba(0,91,255,.29),transparent 80%),
+    radial-gradient(ellipse 75% 850px at -8% 65%,rgba(0,91,255,.16),transparent 78%),
+    var(--graphite);
+}
+.page-registration .hero {background:radial-gradient(ellipse 66% 100% at 98% 35%,rgba(0,91,255,.13),transparent 85%);}
+.page-registration .back {color:var(--yellow);border-color:var(--royal);background:rgba(0,91,255,.1);}
+.page-registration .btn {background:var(--yellow);border-color:var(--yellow);color:var(--graphite);}
+.page-registration .btn.alt {background:rgba(0,91,255,.18);border:2px solid var(--royal);color:var(--yellow);}
+.page-registration .btn:hover,.page-registration .btn.alt:hover {background:var(--royal);border-color:var(--royal);color:#fff;}
+.page-registration .stripe-line {
+  border-top:4px solid var(--yellow);
+  border-bottom:4px solid var(--royal);
+  background:linear-gradient(118deg,rgba(0,91,255,.18),transparent 68%),var(--graphite-deep);
+}
+.page-registration .card {
+  border:1px solid rgba(0,91,255,.63);
+  border-top:4px solid var(--yellow);
+  background:linear-gradient(145deg,rgba(0,91,255,.17),transparent 72%),var(--graphite-soft);
+}
+.page-registration .strip {
+  border-top:2px solid var(--royal);
+  border-bottom:2px solid var(--yellow);
+  background:linear-gradient(120deg,rgba(0,91,255,.21),transparent 75%),var(--graphite-deep);
+}
+.page-registration .step-list li {background:var(--graphite);border-left:4px solid var(--yellow);}
+.page-registration .notice {background:var(--graphite-deep);border:1px solid rgba(0,91,255,.62);border-left:4px solid var(--yellow);}
+.page-registration footer {background:var(--graphite-deep);border-top:4px solid var(--royal);}
+
+@media (max-width: 640px) {
+  .page-registration .hero {grid-template-columns:minmax(0,1fr);}
+  .page-registration .hero > div {min-width:0;}
+  .page-registration h1 {
+    font-size:clamp(41px,10.5vw,57px);
+    letter-spacing:-.01em;
+    line-height:1;
+  }
+  .page-registration .heading {font-size:clamp(40px,10.6vw,60px);}
+  .page-registration .actions {align-items:stretch;}
+  .page-registration .actions .btn {max-width:100%;white-space:normal;}
+  .page-registration .eyebrow {overflow-wrap:break-word;}
+  .page-registration .container,.page-registration .card {min-width:0;}
+  .page-registration .stripe-line .inner {flex-direction:column;}
+  .page-store h1 {overflow-wrap:break-word;}
+  .page-store .package h2 {font-size:clamp(33px,10vw,55px);overflow-wrap:break-word;}
+}
+@media (max-width: 400px) {
+  .page-registration h1 {font-size:39px;}
+}

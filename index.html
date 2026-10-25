@@ -1,284 +1,502 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#005BFF">
-  <meta name="description" content="Florida Speed Academy Inc. and FS NextGen Athletics build young athletes through track & field, speed training, football development and youth support in Central Florida. Grit. Swag. Effort.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#24272B">
+  <meta name="description" content="Florida Speed Academy is a Central Florida youth sports nonprofit. Home of FS NextGen Athletics. Grit. Swag. Effort. Be Who You Say You Are.">
+  <meta property="og:title" content="Florida Speed Academy | FS NextGen Athletics">
+  <meta property="og:description" content="Be Who You Say You Are. Youth sports, mentorship and development through Florida Speed Academy.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Florida Speed Academy | Be Who You Say You Are">
-  <meta property="og:description" content="Built for speed. Designed for greatness. Youth athletics, character and opportunity in Central Florida.">
-  <meta property="og:image" content="assets/medal-athlete.webp">
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="preload" as="image" href="assets/medal-athlete.webp">
-  <link rel="stylesheet" href="css/styles.css">
-  <title>Florida Speed Academy | FS NextGen Athletics</title>
+  <meta property="og:url" content="https://floridaspeedacademy.com/">
+  <meta property="og:image" content="https://floridaspeedacademy.com/assets/fs-lion-hero.png">
+  <link rel="canonical" href="https://floridaspeedacademy.com/">
+  <link rel="icon" type="image/png" href="assets/fs-lion-hero.png">
+  <title>Florida Speed Academy | Be Who You Say You Are</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --graphite:#24272B; --graphite-deep:#191B1F; --graphite-soft:#30343A;
+      --yellow:#FFE200; --royal:#005BFF; --white:#F7F8FB; --muted:#CFD2D8;
+      --display:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;
+      --body:'Inter',Arial,sans-serif;
+    }
+    *,*::before,*::after { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--graphite); color:var(--white); font-family:var(--body); }
+    body.intro-active { overflow:hidden; }
+    a,button { -webkit-tap-highlight-color:transparent; }
+    a:focus-visible,button:focus-visible { outline:3px solid var(--yellow); outline-offset:4px; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* LIVE STARTUP: the same official logo, with a four-second circular countdown. */
+    .intro { position:fixed; z-index:100; inset:0; display:grid; place-items:center; isolation:isolate;
+      padding:30px 20px 78px; overflow:hidden;
+      background:radial-gradient(ellipse at 50% 40%,#005bff25,transparent 49%),
+                 radial-gradient(ellipse at 85% 86%,#ffe20014,transparent 37%),#191B1F;
+      transition:opacity .6s ease,visibility .6s ease; }
+    .intro::before { content:''; position:absolute; pointer-events:none; inset:-25%; z-index:-1;
+      background:repeating-linear-gradient(127deg,transparent 0 145px,#ffffff06 146px,transparent 148px); }
+    .intro.is-done { opacity:0; visibility:hidden; pointer-events:none; }
+    .intro-name { position:absolute; top:clamp(24px,4vw,50px); left:15px; right:15px;
+      text-align:center; font:800 clamp(16px,2vw,22px)/1.1 var(--display);
+      letter-spacing:.22em; }
+    .intro-name span { color:var(--yellow); }
+    .intro-content { display:grid; justify-items:center; gap:21px; width:min(90vw,630px); }
+    .clock { position:relative; display:grid; place-items:center; width:min(78vw,55vh,510px); aspect-ratio:1; }
+    .clock::before { content:''; position:absolute; inset:4%; border-radius:50%;
+      border:1px solid #ffe20038; box-shadow:inset 0 0 35px #005bff18,0 0 45px #005bff18; }
+    .ring { position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); }
+    .ring-track { fill:none; stroke:#49515B; stroke-width:5; }
+    .ring-progress { fill:none; stroke:url(#ring-gradient); stroke-width:6.5; stroke-linecap:round;
+      stroke-dasharray:100; stroke-dashoffset:100; filter:url(#ring-glow); }
+    .ring-ticks { fill:none; stroke:#ffffff70; stroke-width:1.1; stroke-dasharray:.5 2.7; }
+    .intro-logo { position:relative; z-index:1; width:79%; height:79%; object-fit:contain; filter:drop-shadow(0 8px 20px #0008); }
+    .countdown { display:flex; align-items:baseline; gap:11px; }
+    .countdown strong { color:var(--yellow); font:900 44px/1 var(--display); font-variant-numeric:tabular-nums; }
+    .countdown span { font-size:11px; font-weight:800; letter-spacing:.24em; }
+    .intro-slogan { text-align:center; font:900 clamp(28px,5.4vw,46px)/1 var(--display); letter-spacing:.09em; }
+    .intro-values { color:var(--yellow); letter-spacing:.18em; font-weight:800; font-size:11px; text-align:center; }
+    .skip { position:absolute; left:50%; bottom:25px; transform:translateX(-50%);
+      padding:11px 22px; border-radius:50px; border:1px solid #ffe2006b;
+      background:transparent; color:var(--yellow); font:800 11px var(--body); letter-spacing:.13em;
+      cursor:pointer; }
+
+    /* HOMEPAGE: no top navigation/header. Actual lion logo is the hero. */
+    .site { overflow:hidden; background:var(--graphite); }
+    .hero { position:relative; display:flex; min-height:min(930px,100svh); flex-direction:column;
+      align-items:center; justify-content:center; text-align:center; padding:clamp(40px,6vw,72px) 22px 82px;
+      background:radial-gradient(ellipse at 50% 29%,#ffe2000d,transparent 54%),
+                 linear-gradient(160deg,#2E3237 0%,#24272B 47%,#1C1E22 100%); }
+    .hero::before { content:''; position:absolute; pointer-events:none; inset:0; opacity:.34;
+      background:repeating-linear-gradient(132deg,transparent 0 164px,#ffe20010 165px,transparent 167px); }
+    .hero::after { content:''; position:absolute; bottom:0; left:0; right:0; height:5px; background:var(--yellow); }
+    .hero > * { position:relative; }
+    .hero-kicker { color:var(--yellow); font:800 12px/1.2 var(--body); letter-spacing:.27em; text-transform:uppercase; }
+    .hero-logo { display:block; width:min(80vw,650px); height:auto; max-height:48vh; object-fit:contain;
+      margin:clamp(6px,2vw,25px) auto 5px; filter:drop-shadow(0 18px 28px #0005); }
+    .hero-title { margin:4px 0 12px; max-width:970px;
+      font:900 clamp(51px,8.2vw,112px)/.91 var(--display); letter-spacing:-.008em; text-transform:uppercase; }
+    .hero-title span { color:var(--yellow); }
+    .hero-summary { margin:7px 0 0; max-width:720px; color:#ECEDEF; font:500 clamp(14px,1.4vw,17px)/1.65 var(--body); }
+    .actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:28px; }
+    .action { display:inline-block; padding:16px 23px; text-decoration:none; text-transform:uppercase;
+      font-size:12px; font-weight:800; letter-spacing:.09em; border-radius:3px;
+      transition:transform .16s ease, background .16s ease; }
+    .action:hover { transform:translateY(-2px); }
+    .action-primary { background:var(--yellow); color:#1D2024; }
+    .action-secondary { border:2px solid var(--yellow); color:var(--yellow); }
+    .hero-foot { margin-top:27px; font:800 11px var(--body); letter-spacing:.25em; color:var(--yellow); }
+
+    .values { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:clamp(12px,3vw,40px);
+      padding:18px 20px; background:var(--yellow); color:#23262A; font:900 clamp(19px,2.6vw,26px) var(--display); letter-spacing:.14em; }
+    .values span[aria-hidden="true"] { font-size:10px; }
+    .content { width:min(1230px,100%); margin:0 auto; padding:clamp(68px,8vw,110px) 6%; }
+    .section-tag { color:var(--yellow); font:800 11px var(--body); letter-spacing:.2em; text-transform:uppercase; }
+    .section-title { margin:14px 0 19px; font:900 clamp(48px,6.6vw,84px)/.91 var(--display); text-transform:uppercase; }
+    .section-title span { color:var(--yellow); }
+    .section-copy { margin:0; max-width:730px; color:var(--muted); line-height:1.8; font-size:15px; }
+    .gallery { columns:3 280px; column-gap:17px; margin-top:35px; }
+    .gallery figure { break-inside:avoid; margin:0 0 17px; overflow:hidden; background:#1c1e20;
+      border:1px solid #ffe20044; }
+    .gallery img { display:block; width:100%; height:auto; }
+    .gallery figcaption { background:#34383E; padding:12px 13px; font-size:12px; font-weight:800;
+      color:var(--yellow); letter-spacing:.1em; text-transform:uppercase; }
+    .programs { border-top:1px solid #ffe20055; }
+    .program-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:17px; margin-top:32px; }
+    .program { padding:29px 24px; background:var(--graphite-soft); border-top:4px solid var(--yellow); }
+    .program h3 { color:var(--yellow); margin:0 0 10px; font:800 29px/1 var(--display); }
+    .program p { margin:0; color:#D6D8DD; font-size:14px; line-height:1.7; }
+    .mission { border-top:1px solid #ffe20044; padding-top:75px; padding-bottom:95px; }
+    footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+      padding:24px 6%; border-top:2px solid var(--yellow); color:var(--muted); background:var(--graphite-deep); font-size:12px; }
+    .replay { color:var(--yellow); background:transparent; border:1px solid var(--yellow); border-radius:3px;
+      padding:10px 15px; font:800 11px var(--body); cursor:pointer; letter-spacing:.09em; }
+
+    /* The two distinct team package collections */
+    .shop-intro { border-top:1px solid #ffe20055; }
+    .shop-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:21px; margin-top:30px; }
+    .shop-option { background:var(--graphite-soft);border:1px solid #ffe20055;overflow:hidden;min-width:0; }
+    .shop-photos { display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:12px;background:#1d2024; }
+    .shop-photos img { width:100%; aspect-ratio:1.1; object-fit:contain; display:block; background:#30343A; }
+    .shop-photos img:first-child { grid-column:1/-1;aspect-ratio:1.9; }
+    .shop-text { padding:clamp(20px,3vw,32px); }
+    .shop-tag { font-size:11px;font-weight:850;letter-spacing:.16em;color:var(--yellow);text-transform:uppercase; }
+    .shop-title { font:900 clamp(39px,5vw,58px)/.94 var(--display);text-transform:uppercase;margin:11px 0 16px; }
+    .shop-title span { color:var(--yellow); }
+    .shop-copy { font:500 14px/1.75 var(--body);color:var(--muted); }
+    .shop-fit { margin:18px 0; padding:12px 15px; background:#212429; border-left:3px solid var(--yellow); font-size:13px;font-weight:700; }
+    .shop-detail-link {display:inline-flex; align-items:center; justify-content:center; text-decoration:none; background:var(--yellow); color:#24272B; font-weight:900; font-size:12px; letter-spacing:.05em; padding:15px 20px; text-transform:uppercase; }
+    .shop-note {margin-top:20px;display:block;color:#cfd1d6;font-size:12px;line-height:1.6;}
+    @media(max-width:780px) { .shop-options{grid-template-columns:1fr;} }
+    @media(max-width:780px) {
+      .hero { min-height:100svh; padding:55px 6% 72px; }
+      .hero-logo { width:min(88vw,520px); max-height:41vh; }
+      .hero-title { font-size:clamp(52px,12.9vw,83px); }
+      .gallery { columns:2 170px; column-gap:10px; }
+      .gallery figure { margin-bottom:10px; }
+      .gallery figcaption { font-size:10px; padding:9px 10px; }
+      .program-cards { grid-template-columns:1fr; }
+    }
+    @media(max-width:450px) {
+      .hero { min-height:0; padding:54px 5% 66px; }
+      .hero-kicker { font-size:10px; letter-spacing:.16em; }
+      .hero-logo { width:95vw; max-height:none; }
+      .hero-title { font-size:clamp(48px,13vw,67px); margin-top:10px; }
+      .hero-summary { font-size:14px; }
+      .action { padding:13px 16px; font-size:11px; }
+      .hero-foot { font-size:10px; letter-spacing:.13em; }
+      .values { gap:9px; font-size:17px; padding:14px 10px; }
+      .gallery { columns:2 140px; }
+      .section-title { font-size:52px; }
+      .content { padding:60px 5%; }
+    }
+    @media(max-height:620px) { .intro-content{gap:10px}.clock{width:min(50vw,49vh,340px)}.intro-name{top:15px}.skip{bottom:12px} }
+    @media(prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.intro,.action{transition:none} }
+
+  /* Separate Stripe payments for boys and girls packages */
+  .shop-price{margin:10px 0;color:var(--white);font-size:14px;}
+  .shop-price strong{color:var(--yellow);font-size:22px;}
+  .stripe-payment {margin-top:18px;display:grid;gap:9px;}
+  .stripe-buy{width:100%;font:900 13px/1.25 var(--body);border:2px solid var(--yellow);border-radius:3px;padding:15px 16px;text-transform:uppercase;letter-spacing:.06em;background:var(--yellow);color:#24272B;cursor:pointer;}
+  .stripe-buy:disabled{background:#3a3d42;border-color:#a49c47;color:#f2e7a2;opacity:1;cursor:not-allowed;}
+  .stripe-buy.is-ready{background:var(--yellow);color:#222;}
+  .stripe-buy.is-ready:hover{filter:brightness(1.07);}
+  .stripe-status{font:500 12px/1.55 var(--body);color:var(--muted);}
+  .stripe-status strong{color:var(--yellow);}
+  
+
+/* Royal-blue atmosphere on graphite — text and logos stay unchanged */
+.site {
+  background:
+    radial-gradient(ellipse 65% 680px at 0% 34%, rgba(0,91,255,.12), transparent 75%),
+    radial-gradient(ellipse 70% 820px at 100% 73%, rgba(0,91,255,.10), transparent 76%),
+    var(--graphite);
+}
+.hero {
+  background:
+    radial-gradient(ellipse 70% 62% at 88% 15%, rgba(0,91,255,.24), transparent 72%),
+    radial-gradient(ellipse 55% 70% at 2% 82%, rgba(0,91,255,.14), transparent 75%),
+    radial-gradient(ellipse at 50% 29%,rgba(255,226,0,.035),transparent 58%),
+    linear-gradient(160deg,#2E3237 0%,#24272B 47%,#1C1E22 100%);
+}
+.program, .shop-option {
+  background:linear-gradient(148deg,rgba(0,91,255,.12),transparent 63%),var(--graphite-soft);
+}
+.gallery figcaption {
+  background:linear-gradient(115deg,rgba(0,91,255,.14),transparent 70%),#34383E;
+}
+
+
+/* FLORIDA SPEED ACADEMY — three-color design system
+   Royal blue #005BFF | Yellow #FFE200 | Graphite #24272B.
+   Product artwork, athlete photos and official logo are deliberately unchanged.
+   No text outlines. */
+:root{ --royal:#005BFF;--yellow:#FFE200;--graphite:#24272B;--graphite-deep:#191B1F;--graphite-soft:#30343A; }
+.site{background:radial-gradient(ellipse 80% 550px at 97% 25%,rgba(0,91,255,.14),transparent 75%),radial-gradient(ellipse 75% 600px at 0% 70%,rgba(0,91,255,.13),transparent 77%),var(--graphite);}
+.intro{background:radial-gradient(ellipse at 51% 38%,rgba(0,91,255,.22),transparent 55%),radial-gradient(ellipse at 82% 88%,rgba(255,226,0,.07),transparent 45%),var(--graphite-deep);}
+.intro::before{background:repeating-linear-gradient(127deg,transparent 0 145px,rgba(0,91,255,.06) 146px,transparent 148px);}
+.hero{background:radial-gradient(ellipse 58% 65% at 88% 25%,rgba(0,91,255,.28),transparent 75%),radial-gradient(ellipse 65% 60% at 1% 82%,rgba(0,91,255,.18),transparent 77%),linear-gradient(155deg,#30343A 0%,#24272B 54%,#191B1F 100%);}
+.hero::after{background:linear-gradient(90deg,var(--royal) 0 38%,var(--yellow) 38% 100%);}
+.action-primary{background:var(--yellow);color:var(--graphite);}
+.action-secondary{border-color:var(--royal);background:rgba(0,91,255,.19);color:var(--yellow);}
+.action-secondary:hover{background:rgba(0,91,255,.30);}
+.values{background:var(--yellow);color:var(--graphite);}
+.section-tag,.hero-kicker,.hero-foot,.shop-tag{color:var(--yellow);}
+.gallery figure{border-color:rgba(0,91,255,.62);}
+.gallery figcaption{background:linear-gradient(125deg,rgba(0,91,255,.17),transparent 75%),var(--graphite-soft);border-top:2px solid var(--yellow);}
+.program,.shop-option{background:linear-gradient(138deg,rgba(0,91,255,.15),transparent 62%),var(--graphite-soft);border-bottom:2px solid rgba(0,91,255,.50);}
+.program{border-top-color:var(--yellow);}
+.shop-option{border-top:3px solid var(--yellow);border-left:1px solid rgba(0,91,255,.55);border-right:1px solid rgba(0,91,255,.55);}
+.shop-photos{background:var(--graphite-deep);}
+.shop-fit{border-left:3px solid var(--royal);background:var(--graphite-deep);}
+.shop-detail-link{background:var(--yellow);color:var(--graphite);}
+.stripe-buy.is-ready{background:var(--yellow);color:var(--graphite);box-shadow:inset 5px 0 var(--royal);}
+footer{border-top-color:var(--royal);}
+/* Text remains solid: no text strokes, blue text borders or shadow outlines. */
+.hero-title,.section-title,.shop-title,.program h3,.intro-slogan{ -webkit-text-stroke:0 transparent;text-shadow:none; }
+
+
+/* 2027 athlete registration teaser — site-wide blue/yellow/graphite design */
+.registration-teaser {
+  border-top:1px solid rgba(255,226,0,.42);
+  border-bottom:1px solid rgba(0,91,255,.55);
+  background:
+    radial-gradient(ellipse 75% 115% at 98% 10%,rgba(0,91,255,.22),transparent 68%),
+    linear-gradient(155deg,#252930,#1c1e23);
+}
+.reg-lead {display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.83fr);gap:30px;align-items:center}
+.reg-lead .section-copy {max-width:660px}
+.reg-benefits {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:26px 0 0;padding:0;list-style:none}
+.reg-benefits li {background:rgba(0,91,255,.105);border-left:3px solid #FFE200;
+ padding:14px 15px;line-height:1.4;color:#f7f8fb;font-weight:700;font-size:13px}
+.reg-dates {border:1px solid #005BFF;background:#171b25;padding:22px;
+ box-shadow:0 18px 50px rgba(0,0,0,.2)}
+.reg-date-row {display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #404859}
+.reg-date-row:last-child {border-bottom:0}
+.reg-date-price {font:900 39px/.98 var(--display);color:var(--yellow);white-space:nowrap}
+.reg-date-row strong {display:block;margin:0 0 5px;font-size:14px}
+.reg-date-row small {display:block;color:#CDD3DB;line-height:1.5}
+.reg-footnote {font-size:12px;line-height:1.6;color:#C9D0D8;margin-top:18px}
+.reg-more {display:inline-flex;align-items:center;justify-content:center;margin-top:25px;
+ padding:15px 21px;border:2px solid var(--yellow);color:#171b20;
+ background:var(--yellow);font-size:12px;font-weight:900;letter-spacing:.09em;
+ text-decoration:none;text-transform:uppercase}
+.reg-more:hover,.reg-more:focus-visible {background:#005BFF;color:#fff;border-color:#005BFF}
+@media(max-width:840px){.reg-lead{grid-template-columns:1fr}.reg-benefits{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.reg-benefits{grid-template-columns:1fr}}
+
+</style>
+  <link rel="stylesheet" href="assets/brand-theme.css">
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <div class="top-bar">
-    <div class="top-bar-inner content-width">
-      <span class="top-message"><span aria-hidden="true">★</span> BUILT FOR SPEED. DESIGNED FOR GREATNESS.</span>
-      <a class="top-support" href="#support">SUPPORT OUR ATHLETES <span aria-hidden="true">↗</span></a>
+<body class="intro-active page-home">
+  <div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Florida Speed Academy loading screen">
+    <div class="intro-name">FLORIDA <span>SPEED</span> ACADEMY</div>
+    <div class="intro-content">
+      <div class="clock" aria-label="Animated circular countdown around FS lion logo">
+        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+          <defs>
+            <linearGradient id="ring-gradient"><stop offset="0" stop-color="#005BFF"/><stop offset=".65" stop-color="#005BFF"/><stop offset=".66" stop-color="#FFE200"/><stop offset="1" stop-color="#FFE200"/></linearGradient>
+            <filter id="ring-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation=".55" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <circle class="ring-track" cx="50" cy="50" r="46" pathLength="100"/>
+          <circle class="ring-progress" id="ring-progress" cx="50" cy="50" r="46" pathLength="100"/>
+          <circle class="ring-ticks" cx="50" cy="50" r="41" pathLength="100"/>
+        </svg>
+        <img class="intro-logo" src="assets/fs-lion-hero.png" alt="Official FS lion logo" width="1242" height="1046" fetchpriority="high">
+      </div>
+      <div class="countdown" aria-live="off"><strong id="counter">04</strong><span>SECONDS</span></div>
+      <div class="intro-slogan">FEAR THE STANDARD</div>
+      <div class="intro-values">GRIT · SWAG · EFFORT</div>
     </div>
+    <button class="skip" id="skip-intro" type="button">SKIP INTRO</button>
   </div>
-  <header class="site-header" id="top">
-    <div class="header-inner content-width">
-      <a class="site-brand" href="#home" aria-label="Florida Speed Academy home">
-        <span class="logo-shell"><img src="assets/fs-nextgen-logo.webp" alt="FS NextGen lion logo" width="67" height="67"></span>
-        <span class="brand-words"><strong>FLORIDA SPEED<br>ACADEMY</strong><small>FS NEXTGEN ATHLETICS</small></span>
-      </a>
-      <nav class="desktop-nav" aria-label="Primary navigation">
-        <a href="#home">HOME</a><a href="#programs">PROGRAMS</a><a href="#highlights">ATHLETES</a><a href="#about">ABOUT</a><a href="#support">SPONSOR</a><a href="#store">TEAM STORE</a>
-      </nav>
-      <div class="header-actions">
-        <button class="icon-button" id="search-toggle" aria-label="Open site search" aria-expanded="false" aria-controls="search-panel" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"></circle><path d="m16 16 5.5 5.5"></path></svg>
-        </button>
-        <button class="icon-button menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </button>
-      </div>
-    </div>
-    <div class="search-panel" id="search-panel" hidden>
-      <div class="content-width search-inner">
-        <label for="site-search">FIND A PROGRAM OR PAGE</label>
-        <div class="search-field"><input id="site-search" type="search" placeholder="Try track, scholarships, training..." autocomplete="off"><button id="search-close" type="button" aria-label="Close search">✕</button></div>
-        <div class="search-results" id="search-results" aria-live="polite"></div>
-      </div>
-    </div>
-    <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation" hidden>
-      <a href="#home">HOME <span>↗</span></a><a href="#programs">OUR PROGRAMS <span>↗</span></a><a href="#highlights">ATHLETE HIGHLIGHTS <span>↗</span></a><a href="#pricing">PROGRAM FEES <span>↗</span></a><a href="#about">ABOUT FSA <span>↗</span></a><a href="#support">BECOME A SPONSOR <span>↗</span></a><a href="#store">TEAM STORE <span>↗</span></a><a href="#contact">CONTACT <span>↗</span></a>
-    </nav>
-  </header>
 
-  <main id="main">
-    <section id="home" class="hero" aria-label="Florida Speed Academy home feature">
-      <div class="hero-media" id="hero-media">
-        <img src="assets/medal-athlete.webp" alt="Florida Speed Academy youth track athlete smiling with two earned medals" class="hero-slide is-active" data-label="THE NEXT GENERATION" fetchpriority="high">
-        <img src="assets/long-jump.webp" alt="Youth long jumper in the air during competition" class="hero-slide" data-label="THE WORK IS REAL" loading="lazy">
-        <img src="assets/team-trackside.webp" alt="Florida Speed Academy athletes together beside the track" class="hero-slide" data-label="ONE TEAM. ONE STANDARD." loading="lazy">
-        <div class="image-notch"><span class="small-gold">THE NEXT GENERATION</span><strong id="image-caption">OUR ATHLETES. OUR WHY.</strong></div>
+  <main id="main" class="site">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-kicker">FLORIDA SPEED ACADEMY · FS NEXTGEN ATHLETICS</div>
+      <img class="hero-logo" src="assets/fs-lion-hero.png" alt="FS NextGen roaring lion and interlocking FS emblem" width="1242" height="1046" fetchpriority="high">
+      <h1 class="hero-title" id="hero-title">BE WHO YOU<br><span>SAY YOU ARE.</span></h1>
+      <p class="hero-summary">Building the next generation of athletes through grit, mentorship, and opportunity in Central Florida.</p>
+      <div class="actions">
+        <a href="registration.html" class="action action-primary">ATHLETE REGISTRATION</a>
+        <a href="#programs" class="action action-secondary">EXPLORE PROGRAMS</a>
+        <a href="#athletes" class="action action-secondary">VIEW OUR ATHLETES</a>
+        <a href="store.html" class="action action-secondary">TEAM STORE</a>
       </div>
-      <div class="hero-copy">
-        <div class="hero-copy-inner">
-          <div class="eyebrow"><span class="eyebrow-line"></span> CENTRAL FLORIDA YOUTH ATHLETICS</div>
-          <h1>THE FUTURE<br><em>RUNS HERE.</em></h1>
-          <p>More than a team. We're building confident competitors, strong leaders, and the next generation of greatness.</p>
-          <div class="hero-actions"><a class="btn btn-gold" href="#programs">EXPLORE OUR PROGRAMS <span aria-hidden="true">↗</span></a><a class="btn btn-outline" href="#highlights">MEET OUR ATHLETES <span aria-hidden="true">→</span></a></div>
-          <div class="hero-meta"><span class="hero-meta-kicker">OUR STANDARD</span><b>GSE</b><span>GRIT <i>•</i> SWAG <i>•</i> EFFORT</span></div>
-          <div class="hero-controls" aria-label="Athlete photo carousel">
-            <button type="button" class="arrow-btn" id="slide-prev" aria-label="Previous athlete photo">←</button>
-            <button class="carousel-dot is-active" type="button" aria-label="Show athlete photo 1" aria-current="true" data-slide="0"></button>
-            <button class="carousel-dot" type="button" aria-label="Show athlete photo 2" data-slide="1"></button>
-            <button class="carousel-dot" type="button" aria-label="Show athlete photo 3" data-slide="2"></button>
-            <button type="button" class="arrow-btn" id="slide-next" aria-label="Next athlete photo">→</button>
+      <div class="hero-foot">FEAR THE STANDARD · GSE</div>
+    </section>
+
+    <div class="values" aria-label="Our values"><span>GRIT</span><span aria-hidden="true">◆</span><span>SWAG</span><span aria-hidden="true">◆</span><span>EFFORT</span></div>
+
+    <section class="content" id="athletes" aria-labelledby="athlete-title">
+      <div class="section-tag">OUR REAL ATHLETES · OUR REAL MOMENTS</div>
+      <h2 class="section-title" id="athlete-title">NEXTGEN <span>IN ACTION.</span></h2>
+      <p class="section-copy">From race-day smiles and medal moments to competition shots and results, every image reflects the work, growth, and relationships behind Florida Speed Academy.</p>
+      <div class="gallery">
+        <figure><img src="photos/athletes-medals-finish.jpg" alt="Three young athletes with race medals" loading="lazy" decoding="async"><figcaption>Race day</figcaption></figure>
+        <figure><img src="photos/arena-warmup.jpg" alt="Two athletes stretching outside Addition Financial Arena" loading="lazy" decoding="async"><figcaption>Preparation</figcaption></figure>
+        <figure><img src="photos/track-competitor.jpg" alt="Young track competitor in white uniform" loading="lazy" decoding="async"><figcaption>Competition</figcaption></figure>
+        <figure><img src="photos/team-awards.jpg" alt="Athletes and coaches celebrating their track medals" loading="lazy" decoding="async"><figcaption>Team pride</figcaption></figure>
+        <figure><img src="photos/coach-athletes-medals.jpg" alt="Coach and three youth athletes showing medals" loading="lazy" decoding="async"><figcaption>Mentorship</figcaption></figure>
+        <figure><img src="photos/girl-long-jump.jpg" alt="Young long jumper airborne over the runway" loading="lazy" decoding="async"><figcaption>Flight</figcaption></figure>
+        <figure><img src="photos/athlete-two-medals.jpg" alt="Track athlete proudly showing two medals" loading="lazy" decoding="async"><figcaption>Achievement</figcaption></figure>
+        <figure><img src="photos/two-champions-medals.jpg" alt="Two young runners with gold medals" loading="lazy" decoding="async"><figcaption>Champions</figcaption></figure>
+        <figure><img src="photos/athlete-long-jump-blue.jpg" alt="Youth athlete in blue uniform during long jump" loading="lazy" decoding="async"><figcaption>Growth</figcaption></figure>
+        <figure><img src="photos/athlete-long-jump-yellow.jpg" alt="Young athlete in blue and yellow during long jump" loading="lazy" decoding="async"><figcaption>NextGen</figcaption></figure>
+        <figure><img src="photos/powered-athlete-medal-wave.jpg" alt="Young athlete smiling and waving while holding a medal" loading="lazy" decoding="async"><figcaption>Joy</figcaption></figure>
+        <figure><img src="photos/two-girls-meet-medals.jpg" alt="Two young athletes smiling together at a meet with medals" loading="lazy" decoding="async"><figcaption>Together</figcaption></figure>
+        <figure><img src="photos/girl-running-track.jpg" alt="Young athlete running on the track during competition" loading="lazy" decoding="async"><figcaption>Drive</figcaption></figure>
+        <figure><img src="photos/bronze-medal-smile.jpg" alt="Young athlete smiling and holding a bronze medal" loading="lazy" decoding="async"><figcaption>Bronze finish</figcaption></figure>
+        <figure><img src="photos/two-athletes-candid.jpg" alt="Two athletes sharing a candid moment with medals" loading="lazy" decoding="async"><figcaption>Moments</figcaption></figure>
+        <figure><img src="photos/coach-athlete-hug.jpg" alt="Coach standing with athlete after competition" loading="lazy" decoding="async"><figcaption>Support</figcaption></figure>
+        <figure><img src="photos/full-team-medals.jpg" alt="Group of FS NextGen athletes showing medals together" loading="lazy" decoding="async"><figcaption>Squad goals</figcaption></figure>
+        <figure><img src="photos/pink-uniform-athlete.jpg" alt="Athlete in pink FS uniform posing at the meet" loading="lazy" decoding="async"><figcaption>Confidence</figcaption></figure>
+        <figure><img src="photos/results-board-1500m.jpg" alt="Track results board showing women's 1500 meter times" loading="lazy" decoding="async"><figcaption>Results</figcaption></figure>
+        <figure><img src="photos/two-pink-uniforms.jpg" alt="Two young athletes in pink uniforms standing together on the grass" loading="lazy" decoding="async"><figcaption>Future stars</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="content programs" id="programs" aria-labelledby="programs-title">
+      <div class="section-tag">TRAIN · COMPETE · GROW</div>
+      <h2 class="section-title" id="programs-title">OUR <span>PROGRAMS.</span></h2>
+      <p class="section-copy">Youth athletics and support built around the development of the whole athlete.</p>
+      <div class="program-cards">
+        <article class="program"><h3>TRACK &amp; FIELD</h3><p>Speed, technique, development and competition for young athletes.</p></article>
+        <article class="program"><h3>FOOTBALL</h3><p>Development opportunities rooted in athleticism, teamwork and discipline.</p></article>
+        <article class="program"><h3>YOUTH SERVICES</h3><p>Mentorship, tutoring and counseling support beyond sports.</p></article>
+      </div>
+    </section>
+
+
+    
+    <section class="content registration-teaser" id="registration" aria-labelledby="registration-title">
+      <div class="reg-lead">
+        <div>
+          <div class="section-tag">2027 OUTDOOR SEASON · ATHLETE ENROLLMENT</div>
+          <h2 class="section-title" id="registration-title">JOIN THE <span>NEXTGEN.</span></h2>
+          <p class="section-copy">Registration covers the essentials that keep the team organized, training and growing together. Athlete registration is separate from the Team Store apparel packages.</p>
+          <ul class="reg-benefits">
+            <li>AAU Team Registration</li><li>Athlete Registration</li>
+            <li>Weekly Track Rental</li><li>Monthly Team Activities</li>
+          </ul>
+          <a class="reg-more" href="registration.html#signup">Register &amp; Pay $150</a>
+          <a class="reg-more" href="registration.html" style="margin-left:10px;background:transparent;color:#FFE200;border-color:#005BFF">Full Registration Details</a>
+        </div>
+        <aside class="reg-dates" aria-label="2027 registration payment dates">
+          <div class="section-tag">SAVE YOUR PLACE · IMPORTANT DATES</div>
+          <div class="reg-date-row">
+            <div class="reg-date-price">$50</div>
+            <div><strong>Reserve your spot</strong><small>December 1, 2026</small></div>
           </div>
-        </div>
+          <div class="reg-date-row">
+            <div class="reg-date-price">$150</div>
+            <div><strong>Registration fees due</strong><small>By January 15, 2027</small></div>
+          </div>
+          <p class="reg-footnote">The $50 spot hold and $150 fee deadline are listed separately. Contact the team to confirm how the spot-hold payment is applied.</p>
+        </aside>
       </div>
     </section>
 
-    <section class="fast-lane" aria-label="Our mission and areas of focus">
-      <div class="content-width">
-        <div class="white-angle"><span class="section-mark" aria-hidden="true">≡◉</span><h2>ELITE ATHLETES <span>/</span> NEXTGEN PERFORMANCE</h2></div>
-        <div class="quick-links">
-          <a href="#programs" class="angle-link"><span class="angle-icon" aria-hidden="true">↗</span><span>TRACK &amp; FIELD <small>YEAR-ROUND DEVELOPMENT</small></span><b aria-hidden="true">➜</b></a>
-          <a href="#programs" class="angle-link highlight"><span class="angle-icon" aria-hidden="true">✦</span><span>SPEED &amp; AGILITY <small>TRAIN THE RIGHT WAY</small></span><b aria-hidden="true">➜</b></a>
-          <a href="#support" class="angle-link"><span class="angle-icon" aria-hidden="true">♥</span><span>SUPPORT OUR FUTURE <small>SCHOLARSHIPS &amp; SPONSORSHIPS</small></span><b aria-hidden="true">➜</b></a>
-        </div>
+    <section class="content shop-intro" id="store" aria-labelledby="store-heading">
+      <div class="section-tag">OFFICIAL FS NEXTGEN GEAR</div>
+      <h2 class="section-title" id="store-heading">TEAM <span>STORE.</span></h2>
+      <p class="section-copy">Two athlete packages, built for the way our boys and girls compete. Choose your set to see the warm-up fit, uniforms, and included backpack.</p>
+      <div class="shop-options">
+        <article class="shop-option" aria-labelledby="boys-package-title">
+          <div class="shop-photos">
+            <img src="store/boys-full-tracksuit.jpg" loading="lazy" alt="FS NextGen boys relaxed-fit blue hooded tracksuit, front and back">
+            <img src="store/graphite-competition-kit.jpg" loading="lazy" alt="Boys graphite competition uniform">
+            <img src="store/yellow-competition-kit.jpg" loading="lazy" alt="Boys yellow competition uniform">
+          </div>
+          <div class="shop-text">
+            <div class="shop-tag">BOYS · TEAM PACKAGE</div>
+            <h3 class="shop-title" id="boys-package-title">BOYS <span>PERFORMANCE SET</span></h3>
+            <p class="shop-copy">Roomier warm-ups for comfort and movement, two competition uniform colors, and matching team gear.</p>
+            <div class="shop-fit">Warm-up fit: relaxed / looser</div>
+            <p class="shop-price"><strong>$150 USD</strong> · one-time package purchase</p>
+            <a class="shop-detail-link" href="store.html#boys">View Boys Package</a>
+            <div class="stripe-payment" aria-label="Boys package payment">
+              <button type="button" class="stripe-buy" data-stripe-package="boys" disabled>Pay $150 with Stripe</button>
+              <span class="stripe-status">Secure one-time $150 checkout. Athlete name, warm-up size and uniform size requested in Stripe.</span>
+            </div>
+          </div>
+        </article>
+        <article class="shop-option" aria-labelledby="girls-package-title">
+          <div class="shop-photos">
+            <img src="store/girls-full-tracksuit.jpg" loading="lazy" alt="FS NextGen girls fitted blue hooded tracksuit, front and back">
+            <img src="store/girls-graphite-checkerboard.jpg" loading="lazy" alt="Girls graphite and blue checkerboard competition uniform">
+            <img src="store/girls-pink-checkerboard.jpg" loading="lazy" alt="Girls pink and blue checkerboard competition uniform">
+          </div>
+          <div class="shop-text">
+            <div class="shop-tag">GIRLS · TEAM PACKAGE</div>
+            <h3 class="shop-title" id="girls-package-title">GIRLS <span>PERFORMANCE SET</span></h3>
+            <p class="shop-copy">Closer-fitting warm-ups paired with the new graphite-and-blue and pink-and-blue checkerboard competition designs.</p>
+            <div class="shop-fit">Warm-up fit: athletic / tighter</div>
+            <p class="shop-price"><strong>$150 USD</strong> · one-time package purchase</p>
+            <a class="shop-detail-link" href="store.html#girls">View Girls Package</a>
+            <div class="stripe-payment" aria-label="Girls package payment">
+              <button type="button" class="stripe-buy" data-stripe-package="girls" disabled>Pay $150 with Stripe</button>
+              <span class="stripe-status">Secure one-time $150 checkout. Athlete name, warm-up size and uniform size requested in Stripe.</span>
+            </div>
+          </div>
+        </article>
       </div>
+      <small class="shop-note">Each package is $150 USD. Stripe securely collects payment and requested sizes. The team will coordinate delivery or pickup after purchase.</small>
     </section>
 
-    <section class="highlight-section section-pad" id="highlights">
-      <div class="content-width highlight-grid">
-        <div class="headline-stack"><span class="pretitle"><span class="gold-dash"></span> ATHLETE SPOTLIGHT</span><h2>REAL KIDS.<br>REAL WORK.<br><em>REAL RESULTS.</em></h2><p>Every photo tells a story. From long jump takeoffs to the finish line, our athletes put in the work and represent their team with pride.</p><a class="text-link" href="mailto:floridaspeedacademy@gmail.com?subject=FS%20NextGen%20Athlete%20Highlights">SHARE AN ATHLETE ACHIEVEMENT <span>↗</span></a></div>
-        <div class="highlight-pictures">
-          <figure class="jump-frame"><img src="assets/long-jump.webp" alt="Young track athlete competing in long jump" loading="lazy"><figcaption>THE MOMENT IS EARNED <span>01 / JUMPS</span></figcaption></figure>
-          <figure class="results-frame"><img src="assets/race-results.webp" alt="Competition scoreboard showing Diaz in the women's 1500 meters at 5:21.27" loading="lazy"><figcaption>ON THE BOARD <span>02 / DISTANCE</span></figcaption></figure>
-        </div>
-      </div>
+    <section class="content mission" id="mission" aria-labelledby="mission-title">
+      <div class="section-tag">MORE THAN A TEAM</div>
+      <h2 class="section-title" id="mission-title">FEAR THE <span>STANDARD.</span></h2>
+      <p class="section-copy">Florida Speed Academy is a 501(c)(3) nonprofit organization committed to expanding access to youth sports, mentorship and personal development.</p>
     </section>
-
-
-    <!-- Athlete results addition: existing content and design above/below are preserved. -->
-    <section class="athlete-progress-section" id="progress" aria-labelledby="ap-heading">
-      <div class="content-width">
-        <div class="ap-strap">FS NEXTGEN / COMPETITION RESULTS / 2026</div>
-        <div class="ap-intro"><div><span class="ap-eyebrow">GRIT · SWAG · EFFORT</span><h2 id="ap-heading">THE WORK.<br><em>THE PROGRESS.</em></h2></div><p>Real marks. Real meets. Compare selected verified competition results for our roster. Every result links to the published timing record.</p></div>
-        <div class="ap-count"><strong>16</strong><span>ROSTER MEMBERS WITH VERIFIED IMPROVEMENTS</span><strong>23</strong><span>ROSTER MEMBERS WITH PUBLISHED MARKS SHOWN</span></div>
-        <h3 class="ap-subtitle">VERIFIED IMPROVEMENTS <span>01 / EARLIER → LATER</span></h3>
-        <div class="ap-grid">
-<article class="ap-card" id="natalia-diaz-results">
- <div class="ap-card-top"><span class="ap-class">1500m · FS NextGen</span><span class="ap-delta">−28.29 sec</span></div>
- <h3>Natalia Diaz</h3>
- <div class="ap-state-placement" aria-label="2026 FLYRA middle school state championship 1500 meter results">
-   <div class="ap-state-placement-head"><span class="ap-place-value">40<sup>TH</sup></span><div><strong>FLYRA MIDDLE SCHOOL STATE</strong><span>2026 GIRLS 1500M · CHAMPIONSHIP FINISH</span></div></div>
-   <div class="ap-state-placement-stats"><span><b>5:21.27</b> STATE MEET TIME</span><span><b>29TH</b> PRE-MEET SEED</span></div>
-   <div class="ap-state-placement-links"><a href="https://fl.milesplit.com/meets/723241-flyra-middle-school-state-track-and-field-championship-2026/results/1304699/raw" target="_blank" rel="noopener noreferrer">OFFICIAL STATE RESULTS ↗</a><a href="https://fl.milesplit.com/articles/636657" target="_blank" rel="noopener noreferrer">OFFICIAL ENTRY SEEDS ↗</a></div>
-   <p>40th of 64 finishers at the FLYRA state championship; not a statewide season ranking.</p>
- </div>
- <div class="ap-run"><div><span>EARLIER · Mar 21 2026</span><strong>5:48.08</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · May 9 2026</span><strong>5:19.79</strong></div></div>
- <div class="ap-extra"><span>800m: <b>2:51.38</b> → <b>2:40.74</b> <small>(−10.64 sec)</small></span><span><a href="https://fl.milesplit.com/meets/740144-6th-annual-florida-international-featuring-olympic-champion-noah-2026/results/1268604/raw" target="_blank" rel="noopener noreferrer">Mar 21 <span aria-hidden="true">↗</span></a> · <a href="https://fl.milesplit.com/meets/744151-14th-annual-v12-invitational-2026/results/1273212/raw" target="_blank" rel="noopener noreferrer">Apr 4 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">1500m RESULTS: <a href="https://fl.milesplit.com/meets/740144-6th-annual-florida-international-featuring-olympic-champion-noah-2026/results/1268604/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/759960-blazing-the-city-2026/results/1300613/raw" target="_blank" rel="noopener noreferrer">May 9 winning time <span aria-hidden="true">↗</span></a></div>
- </article>
-<article class="ap-card" id="andrew-bailey-barnett-results">
- <div class="ap-card-top"><span class="ap-class">400m · FS NextGen</span><span class="ap-delta">−2.64 sec</span></div>
- <h3>Andrew Bailey-Barnett</h3>
- <div class="ap-run"><div><span>EARLIER · May 23 2026</span><strong>1:00.16</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 13 2026</span><strong>57.52</strong></div></div>
- <div class="ap-extra"><span>400m · May 30: <b>58.55</b></span><span>200m: <b>26.23</b> → <b>26.07</b> <small>(−0.16 sec)</small></span><span>100m: <b>12.65</b> <small>(+0.7 m/s)</small></span><span>800m: <b>2:46.30</b></span><span>Long jump: <b>4.57 m</b></span></div>
- <div class="ap-sources">OFFICIAL RESULTS: <a href="https://fl.milesplit.com/meets/747127-2026-central-florida-memorial-day-bash-2026/results/1307248/raw" target="_blank" rel="noopener noreferrer">May 23 ↗</a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">May 30 ↗</a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Jun 13 ↗</a></div>
- </article>
-<article class="ap-card" id="timmier-bryant-results">
- <div class="ap-card-top"><span class="ap-class">100m · FS NextGen</span><span class="ap-delta">−0.33 sec</span></div>
- <h3>Timmier Bryant</h3>
- <div class="ap-run"><div><span>EARLIER · Mar 7 2026</span><strong>12.85</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>FASTER · Mar 28 2026</span><strong>12.52</strong></div></div>
- <div class="ap-extra"><span>100m final: <b>12.66</b> <small>(Mar 28; 12.52 was prelim)</small></span><span>200m: <b>26.73</b> → <b>26.30</b> <small>(−0.43 sec)</small></span><span>Long jump: <b>4.87m</b> → <b>4.95m</b> <small>(+0.08m)</small></span></div>
- <div class="ap-sources">VERIFIED RESULTS: <a href="https://fl.milesplit.com/meets/736306-coach-miami-presents-3nd-annual-baychamps-2026/results/1255874/raw" target="_blank" rel="noopener noreferrer">Mar 7 ↗</a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/742312-smoke-in-the-city-sprint-series-2026/results/1267678/raw" target="_blank" rel="noopener noreferrer">Mar 28 ↗</a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/744151-14th-annual-v12-invitational-2026/results/1273212/raw" target="_blank" rel="noopener noreferrer">Apr 4 ↗</a></div>
- <details class="ap-history"><summary>VIEW ALL 19 VERIFIED 2026 PERFORMANCES <span aria-hidden="true">＋</span></summary>
-  <p>Seven published meets · ★ marks the fastest verified performance listed here. Wind readings shown where available.</p>
-  <div class="ap-history-scroll"><table><thead><tr><th>Date</th><th>Meet</th><th>Event</th><th>Result</th><th>Round / wind</th><th>Timing</th></tr></thead><tbody><tr><td>Mar 7</td><td>Baychamps</td><td>100m</td><td><strong>12.85</strong></td><td>Prelims</td><td><a href="https://fl.milesplit.com/meets/736306-coach-miami-presents-3nd-annual-baychamps-2026/results/1255874/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 7</td><td>Baychamps</td><td>200m</td><td><strong>26.73</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/736306-coach-miami-presents-3nd-annual-baychamps-2026/results/1255874/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 14</td><td>League of Champions hosted by HDTC</td><td>100m</td><td><strong>12.71</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 14</td><td>League of Champions hosted by HDTC</td><td>200m</td><td><strong>26.43</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 14</td><td>League of Champions hosted by HDTC</td><td>Long jump</td><td><strong>4.87m</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 21</td><td>Florida International</td><td>100m</td><td><strong>13.21</strong></td><td>Prelims</td><td><a href="https://fl.milesplit.com/meets/740144-6th-annual-florida-international-featuring-olympic-champion-noah-2026/results/1268604/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 21</td><td>Florida International</td><td>200m</td><td><strong>26.80</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/740144-6th-annual-florida-international-featuring-olympic-champion-noah-2026/results/1268604/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 21</td><td>Florida International</td><td>Long jump</td><td><strong>4.79m</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/740144-6th-annual-florida-international-featuring-olympic-champion-noah-2026/results/1268604/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 28</td><td>Smoke in the City: Sprint Series</td><td>100m</td><td><strong>12.52 ★</strong></td><td>Prelims</td><td><a href="https://fl.milesplit.com/meets/742312-smoke-in-the-city-sprint-series-2026/results/1267678/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 28</td><td>Smoke in the City: Sprint Series</td><td>100m</td><td><strong>12.66</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/742312-smoke-in-the-city-sprint-series-2026/results/1267678/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Mar 28</td><td>Smoke in the City: Sprint Series</td><td>200m</td><td><strong>26.30 ★</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/742312-smoke-in-the-city-sprint-series-2026/results/1267678/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Apr 4</td><td>V12 Invitational</td><td>100m</td><td><strong>12.67</strong></td><td>Finals · +1.4 m/s</td><td><a href="https://fl.milesplit.com/meets/744151-14th-annual-v12-invitational-2026/results/1273212/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Apr 4</td><td>V12 Invitational</td><td>200m</td><td><strong>26.62</strong></td><td>Finals · -0.1 m/s</td><td><a href="https://fl.milesplit.com/meets/744151-14th-annual-v12-invitational-2026/results/1273212/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Apr 4</td><td>V12 Invitational</td><td>Long jump</td><td><strong>4.95m ★</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/744151-14th-annual-v12-invitational-2026/results/1273212/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>May 16</td><td>The Call Out</td><td>100m</td><td><strong>12.61</strong></td><td>Finals · +1.2 m/s</td><td><a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>May 16</td><td>The Call Out</td><td>200m</td><td><strong>26.68</strong></td><td>Finals · +3.4 m/s</td><td><a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>May 16</td><td>The Call Out</td><td>Long jump</td><td><strong>4.75m</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Jun 3</td><td>Crossover Orlando Tournament 13–18</td><td>100m</td><td><strong>12.55</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/766484-crossover-orlando-track-and-field-tournament-13-18-2026/results/1308009/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr>
-<tr><td>Jun 3</td><td>Crossover Orlando Tournament 13–18</td><td>Long jump</td><td><strong>4.45m</strong></td><td>Finals</td><td><a href="https://fl.milesplit.com/meets/766484-crossover-orlando-track-and-field-tournament-13-18-2026/results/1308009/raw" target="_blank" rel="noopener noreferrer">Source ↗</a></td></tr></tbody></table></div>
- </details>
- </article>
-<article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">800m</span><span class="ap-delta">−11.66 sec</span></div>
- <h3>Lilian Edwards</h3>
- <div class="ap-run"><div><span>EARLIER · Mar 14 2026</span><strong>3:34.86</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · May 16 2026</span><strong>3:23.20</strong></div></div>
- <div class="ap-extra"><span>400m: <b>1:22.73</b> → <b>1:15.42</b> <small>(−7.31 sec)</small></span><span><a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Mar 14 <span aria-hidden="true">↗</span></a> · <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">May 16 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">1500m</span><span class="ap-delta">−34.01 sec</span></div>
- <h3>Caleb Nelson</h3>
- <div class="ap-run"><div><span>EARLIER · Mar 14 2026</span><strong>7:37.26</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · May 16 2026</span><strong>7:03.25</strong></div></div>
- <div class="ap-extra"><span>800m: <b>3:45.26</b> → <b>3:36.64</b> <small>(−8.62 sec)</small></span><span><a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Mar 14 <span aria-hidden="true">↗</span></a> · <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">May 16 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">1500m race walk</span><span class="ap-delta">−17.71 sec</span></div>
- <h3>Dallas Nelson</h3>
- <div class="ap-run"><div><span>EARLIER · Mar 14 2026</span><strong>13:14.28</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · May 16 2026</span><strong>12:56.57</strong></div></div>
- 
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/737056-league-of-champions-hosted-by-hdtc-2026/results/1266475/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">1500m (Masters)</span><span class="ap-delta">−14.88 sec</span></div>
- <h3>Shari Sipka</h3>
- <div class="ap-run"><div><span>EARLIER · Apr 25 2026</span><strong>7:41.09</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · May 30 2026</span><strong>7:26.21</strong></div></div>
- 
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/752943-5th-annual-war-on-i-4-hosted-by-juggernauts-2026/results/1290936/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">Shot put</span><span class="ap-delta">+0.41 m</span></div>
- <h3>Kylen Ford</h3>
- <div class="ap-run"><div><span>EARLIER · Apr 25 2026</span><strong>12.65 m</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 20 2026</span><strong>13.06 m</strong></div></div>
- <div class="ap-extra"><span>Discus: <b>30.75 m</b></span><span><a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">May 30 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/752943-5th-annual-war-on-i-4-hosted-by-juggernauts-2026/results/1290936/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/768153-4th-annual-the-florida-national-championships-2026/results/1309594/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">100m</span><span class="ap-delta">−0.39 sec</span></div>
- <h3>Parker Moore</h3>
- <div class="ap-run"><div><span>EARLIER · May 16 2026</span><strong>14.86</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 2 2026</span><strong>14.47</strong></div></div>
- <div class="ap-extra"><span>Javelin: <b>14.18 m</b> → <b>16.84 m</b> <small>(+2.66 m)</small></span><span><a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">May 16 <span aria-hidden="true">↗</span></a> · <a href="https://fl.milesplit.com/meets/768153-4th-annual-the-florida-national-championships-2026/results/1309594/raw" target="_blank" rel="noopener noreferrer">Jun 20 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/766486-crossover-orlando-track-and-field-tournament-6u-12-2026/results/1307999/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">100m</span><span class="ap-delta">−0.32 sec</span></div>
- <h3>Amyra Laforest</h3>
- <div class="ap-run"><div><span>EARLIER · Apr 25 2026</span><strong>18.12</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 13 2026</span><strong>17.80</strong></div></div>
- 
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/752943-5th-annual-war-on-i-4-hosted-by-juggernauts-2026/results/1290936/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">100m</span><span class="ap-delta">−0.22 sec</span></div>
- <h3>Kasondra Mcgriff</h3>
- <div class="ap-run"><div><span>EARLIER · May 23 2026</span><strong>13.49</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 13 2026</span><strong>13.27</strong></div></div>
- <div class="ap-extra"><span>200m: <b>26.86</b></span><span><a href="https://fl.milesplit.com/meets/747127-2026-central-florida-memorial-day-bash-2026/results/1307248/raw" target="_blank" rel="noopener noreferrer">May 23 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/747127-2026-central-florida-memorial-day-bash-2026/results/1307248/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">100m</span><span class="ap-delta">−0.19 sec</span></div>
- <h3>McCallister Jenkins</h3>
- <div class="ap-run"><div><span>EARLIER · Apr 25 2026</span><strong>15.07</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 13 2026</span><strong>14.88</strong></div></div>
- <div class="ap-extra"><span>Long jump: <b>3.69 m</b> → <b>3.80 m</b> <small>(+0.11 m)</small></span><span><a href="https://fl.milesplit.com/meets/752943-5th-annual-war-on-i-4-hosted-by-juggernauts-2026/results/1290936/raw" target="_blank" rel="noopener noreferrer">Apr 25 <span aria-hidden="true">↗</span></a> · <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">May 16 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/752943-5th-annual-war-on-i-4-hosted-by-juggernauts-2026/results/1290936/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">100m</span><span class="ap-delta">−0.12 sec</span></div>
- <h3>Terry Caldwell</h3>
- <div class="ap-run"><div><span>EARLIER · May 30 2026</span><strong>17.27</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 13 2026</span><strong>17.15</strong></div></div>
- 
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">100m</span><span class="ap-delta">−0.08 sec</span></div>
- <h3>Zamorah Heard</h3>
- <div class="ap-run"><div><span>EARLIER · May 16 2026</span><strong>14.57</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 2 2026</span><strong>14.49</strong></div></div>
- 
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/766486-crossover-orlando-track-and-field-tournament-6u-12-2026/results/1307999/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">100m</span><span class="ap-delta">−0.42 sec</span></div>
- <h3>Rheya Sipka</h3>
- <div class="ap-run"><div><span>EARLIER · May 16 2026</span><strong>16.12</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · May 30 2026</span><strong>15.70</strong></div></div>
- <div class="ap-extra"><span>Javelin: <b>11.48 m</b></span><span><a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">May 16 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article><article class="ap-card">
- <div class="ap-card-top"><span class="ap-class">1500m</span><span class="ap-delta">−5.90 sec</span></div>
- <h3>Makayla Brandt</h3>
- <div class="ap-run"><div><span>EARLIER · May 30 2026</span><strong>6:19.38</strong></div><span class="ap-arrow" aria-hidden="true">→</span><div><span>LATER · Jun 13 2026</span><strong>6:13.48</strong></div></div>
- <div class="ap-extra"><span>800m: <b>2:54.96</b></span><span><a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">May 30 <span aria-hidden="true">↗</span></a></span></div>
- <div class="ap-sources">RESULTS: <a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">Earlier meet <span aria-hidden="true">↗</span></a> &nbsp;·&nbsp; <a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Later meet <span aria-hidden="true">↗</span></a></div>
- </article></div>
-        <div class="ap-divider"></div>
-        <h3 class="ap-subtitle">MORE OFFICIAL RESULTS <span>02 / VERIFIED MARKS</span></h3>
-        <p class="ap-explainer">For these roster members, the following published results are confirmed, but a faster or farther earlier-to-later comparison has not been established.</p>
-        <div class="ap-marks-grid"><article class="ap-mark-card"><h3>Jade Brandt</h3><ul><li><span>100m</span><strong>16.82</strong><span>May 30 2026</span><a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li><li><span>1500m race walk</span><strong>11:11.30</strong><span>Jun 13 2026</span><a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li></ul></article><article class="ap-mark-card"><h3>Willow Hopkins</h3><ul><li><span>100m</span><strong>18.41</strong><span>May 30 2026</span><a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li><li><span>1500m race walk</span><strong>13:54.31</strong><span>Jun 13 2026</span><a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li></ul></article><article class="ap-mark-card"><h3>Janelle Jacinthe</h3><ul><li><span>55m</span><strong>10.48</strong><span>Jun 13 2026</span><a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li><li><span>Javelin</span><strong>4.84 m</strong><span>May 30 2026</span><a href="https://fl.milesplit.com/meets/766218-tnt-track-club-invitational-2026/results/1307561/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li></ul></article><article class="ap-mark-card"><h3>Mackenzie Ruping</h3><ul><li><span>100m</span><strong>14.28</strong><span>Apr 25 2026</span><a href="https://fl.milesplit.com/meets/752943-5th-annual-war-on-i-4-hosted-by-juggernauts-2026/results/1290936/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li><li><span>200m</span><strong>30.40</strong><span>Apr 25 2026</span><a href="https://fl.milesplit.com/meets/752943-5th-annual-war-on-i-4-hosted-by-juggernauts-2026/results/1290936/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li></ul></article><article class="ap-mark-card"><h3>Breoir Washington</h3><ul><li><span>55m</span><strong>10.39</strong><span>Jun 13 2026</span><a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li><li><span>100m</span><strong>19.11</strong><span>Jun 13 2026</span><a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li></ul></article><article class="ap-mark-card"><h3>Al King</h3><ul><li><span>55m</span><strong>11.98</strong><span>Jun 13 2026</span><a href="https://fl.milesplit.com/meets/767516-1st-annual-the-showdown-on-lake-toho-2026/results/1308959/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li></ul></article><article class="ap-mark-card"><h3>Amari Moseley</h3><ul><li><span>100m</span><strong>16.05</strong><span>Jun 2 2026</span><a href="https://fl.milesplit.com/meets/766486-crossover-orlando-track-and-field-tournament-6u-12-2026/results/1307999/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li><li><span>Javelin</span><strong>10.16 m</strong><span>May 16 2026</span><a href="https://fl.milesplit.com/meets/762967-1st-annual-the-call-out-hosted-by-mpowered-athletix-2026/results/1304375/raw" target="_blank" rel="noopener noreferrer">Result <span aria-hidden="true">↗</span></a></li></ul></article></div>
-        <p class="ap-disclaimer"><strong>About the comparisons:</strong> These are selected 2026 meet-to-meet results, not certified lifetime personal records or proof that every performance improved throughout the season. Sprints can be affected by wind and race conditions; field marks depend on comparable event rules. The published meet results are the source of record. Athlete names correspond to the supplied FS NextGen roster.</p>
-      </div>
-    </section>
-
-    <section class="motto" aria-label="Team values"><div class="content-width motto-inner"><span>G</span><span>R</span><span>I</span><span>T</span><b>·</b><span>S</span><span>W</span><span>A</span><span>G</span><b>·</b><span>E</span><span>F</span><span>F</span><span>O</span><span>R</span><span>T</span></div><p>BE WHO YOU SAY YOU ARE.</p></section>
-
-    <section class="program-section section-pad" id="programs">
-      <div class="content-width">
-        <div class="section-label"><span class="gold-dash"></span> BUILT FOR MORE</div>
-        <div class="section-heading-row"><h2>FIND YOUR<br><em>NEXT LEVEL.</em></h2><p>Training that builds the complete young athlete—speed, skill, discipline, and opportunity.</p></div>
-        <div class="program-grid">
-          <article class="program-card program-feature"><img src="assets/team-trackside.webp" alt="FS NextGen teammates watching the meet together" loading="lazy"><div class="program-gradient"></div><div class="program-bottom"><span class="program-number">01 / PERFORMANCE</span><h3>TRACK &amp; FIELD</h3><p>Sprints, distance, jumps, competition and team development.</p><a href="mailto:floridaspeedacademy@gmail.com?subject=Track%20and%20Field%20Program%20Inquiry" aria-label="Ask about track and field">LEARN MORE <span>↗</span></a></div></article>
-          <article class="program-card"><img src="assets/long-jump.webp" alt="Young athlete midair at long jump" loading="lazy"><div class="program-gradient"></div><div class="program-bottom"><span class="program-number">02 / DEVELOPMENT</span><h3>SPEED &amp; AGILITY</h3><p>Technique-first speed training and confident movement.</p><a href="mailto:floridaspeedacademy@gmail.com?subject=Speed%20Training%20Inquiry" aria-label="Ask about speed and agility training">LEARN MORE <span>↗</span></a></div></article>
-          <article class="program-card"><img src="assets/medal-athlete.webp" alt="Youth distance athlete displaying track medals" loading="lazy"><div class="program-gradient"></div><div class="program-bottom"><span class="program-number">03 / ENDURANCE</span><h3>CROSS COUNTRY</h3><p>Age-appropriate endurance, racing and team culture.</p><a href="mailto:floridaspeedacademy@gmail.com?subject=Cross%20Country%20Program%20Inquiry" aria-label="Ask about cross country">LEARN MORE <span>↗</span></a></div></article>
-          <article class="program-card program-graphic"><div class="football-art"><span>7<span>V</span>7</span><small>FOOTBALL DEVELOPMENT</small></div><div class="program-bottom"><span class="program-number">04 / FOOTBALL</span><h3>7V7 &amp; SKILL WORK</h3><p>Training sessions designed to develop young football talent.</p><a href="mailto:floridaspeedacademy@gmail.com?subject=7v7%20Football%20Inquiry" aria-label="Ask about football sessions">LEARN MORE <span>↗</span></a></div></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="fees-section section-pad" id="pricing">
-      <div class="content-width">
-        <div class="section-label light"><span class="gold-dash"></span> INVEST IN THE JOURNEY</div>
-        <div class="fees-heading"><h2>PROGRAMS &amp; <em>TRAINING.</em></h2><p>Clear pathways for athletes and families. Contact us to confirm dates, eligibility and current availability.</p></div>
-        <div class="fee-cards"><div class="fee-card"><span>SEASON PROGRAM</span><h3>INDOOR TRACK</h3><strong>$150</strong><small>PROGRAM FEE</small></div><div class="fee-card featured"><span>SEASON PROGRAM</span><h3>OUTDOOR TRACK</h3><strong>$275</strong><small>PROGRAM FEE</small></div><div class="fee-card"><span>ATHLETE PACKAGE</span><h3>NEXTGEN PACKAGE</h3><strong>$300</strong><small>PACKAGE RATE</small></div></div>
-        <div class="additional-fees"><span>PRIVATE TRAINING <b>$35 / SESSION</b></span><span>5 TRAINING SESSIONS <b>$135</b></span><span>TUTORING <b>$35 / SESSION</b></span><span>COUNSELING <b>$50 / SESSION</b></span></div>
-        <div class="fees-footer"><span>* Program fees are shown for planning; request confirmation before paying. Rain-cancelled training sessions do not count toward a session package.</span><a class="btn btn-gold" href="mailto:floridaspeedacademy@gmail.com?subject=FS%20NextGen%20Program%20Registration">ASK ABOUT REGISTRATION <span>↗</span></a></div>
-      </div>
-    </section>
-
-    <section class="scholarship-section section-pad" id="support">
-      <div class="content-width support-grid"><div><span class="pretitle"><span class="gold-dash"></span> POWER THE NEXT GENERATION</span><h2>THEIR POTENTIAL<br><em>HAS NO LIMIT.</em></h2><p>Florida Speed Academy Inc. is a 501(c)(3) nonprofit dedicated to opening doors for young athletes. Community sponsors help make competition, development and mentorship more accessible.</p><a class="btn btn-dark" href="mailto:floridaspeedacademy@gmail.com?subject=Florida%20Speed%20Academy%20Sponsorship%20Opportunity">BECOME A SPONSOR <span>↗</span></a></div><div class="support-stat"><small>ANNUAL ATHLETE SUPPORT</small><strong>$2,000<span>+</span></strong><p>IN SCHOLARSHIPS GIVEN EACH YEAR</p><div class="thin-rule"></div><b>YOUR SUPPORT CHANGES WHAT'S POSSIBLE.</b></div></div>
-    </section>
-
-    <section class="culture-section section-pad" id="about"><div class="content-width culture-grid"><div class="culture-image"><img src="assets/team-trackside.webp" alt="FS NextGen athletes sitting together by a track" loading="lazy"><div class="culture-sticker">FAMILY.<br>EFFORT.<br>FUTURE.</div></div><div class="culture-text"><span class="section-label light"><span class="gold-dash"></span> ABOUT FLORIDA SPEED ACADEMY</span><h2>MORE THAN<br><em>A FINISH LINE.</em></h2><p>We serve student-athletes in Winter Springs, Oviedo, Winter Park, Sanford, Longwood, Altamonte Springs and surrounding Central Florida communities.</p><p>Our standard is simple: build character, train with purpose and give every athlete a reason to believe in what comes next.</p><div class="value-pills"><span>GRIT</span><span>SWAG</span><span>EFFORT</span></div><div class="leadership"><span>LEADERSHIP</span><p>Stephen Moore — President<br>Ashlay Moore — Assistant President<br>Shari Sipka — Chief Operating Officer<br>Andrew Bailey Barnett — President of Football Operations</p></div></div></div></section>
-
-    <section class="store-section" id="store"><div class="content-width store-inner"><div><span class="section-label"><span class="gold-dash"></span> REP THE STANDARD</span><h2>NEXTGEN<br><em>TEAM GEAR.</em></h2><p>Interested in uniforms, spirit wear or team-store items? Contact us for the current selection and ordering details.</p><a class="btn btn-gold" href="mailto:floridaspeedacademy@gmail.com?subject=FS%20NextGen%20Team%20Store">ASK ABOUT TEAM GEAR <span>↗</span></a></div><div class="store-logo"><img src="assets/fs-nextgen-logo.webp" alt="Official FS NextGen Athletics lion logo" loading="lazy"></div></div></section>
+    <footer>
+      <span>© <span id="year">2026</span> Florida Speed Academy · FS NextGen Athletics</span>
+      <button type="button" id="replay-intro" class="replay">REPLAY STARTUP</button>
+    </footer>
   </main>
+  <script>
+    (() => {
+      'use strict';
+      const DURATION_MS = 4000;
+      const overlay = document.querySelector('#intro');
+      const counter = document.querySelector('#counter');
+      const progress = document.querySelector('#ring-progress');
+      const skip = document.querySelector('#skip-intro');
+      const replay = document.querySelector('#replay-intro');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let anim = null;
+      let started = null;
+      let running = false;
+      document.querySelector('#year').textContent = new Date().getFullYear();
 
-  <footer class="site-footer" id="contact"><div class="content-width footer-main"><div class="footer-brand"><div class="footer-logo"><img src="assets/fs-nextgen-logo.webp" alt="FS NextGen Athletics" loading="lazy"></div><h2>FLORIDA SPEED ACADEMY INC.</h2><p>Built for speed. Designed for greatness.<br>Fear the Standard. Be Who You Say You Are.</p></div><div class="footer-links"><h3>EXPLORE</h3><a href="#home">Home</a><a href="#programs">Programs</a><a href="#highlights">Athletes</a><a href="#pricing">Fees &amp; training</a><a href="#support">Sponsor an athlete</a></div><div class="footer-contact"><h3>GET IN TOUCH</h3><p>Central Florida · Seminole County</p><a href="mailto:floridaspeedacademy@gmail.com">floridaspeedacademy@gmail.com</a><a href="tel:+15612750654">561-275-0654</a><a class="footer-contact-cta" href="mailto:floridaspeedacademy@gmail.com?subject=Florida%20Speed%20Academy%20Inquiry">CONTACT THE ACADEMY ↗</a></div></div><div class="content-width footer-bottom"><span>© <span id="year">2026</span> FLORIDA SPEED ACADEMY INC. ALL RIGHTS RESERVED.</span><span>GSE · GRIT SWAG EFFORT</span><a href="#top">BACK TO TOP ↑</a></div></footer>
-  <script src="js/main.js" defer></script>
+      function finish() {
+        if (!running) return;
+        running = false;
+        if (anim !== null) cancelAnimationFrame(anim);
+        anim = null;
+        counter.textContent = '00';
+        progress.style.strokeDashoffset = '0';
+        overlay.classList.add('is-done');
+        overlay.setAttribute('aria-hidden', 'true');
+        overlay.removeAttribute('aria-modal');
+        document.body.classList.remove('intro-active');
+      }
+      function update(now) {
+        if (!running) return;
+        if (started === null) started = now;
+        const passed = Math.min(now - started, DURATION_MS);
+        progress.style.strokeDashoffset = String(100 * (1 - passed / DURATION_MS));
+        counter.textContent = String(Math.ceil(Math.max(0,DURATION_MS - passed) / 1000)).padStart(2,'0');
+        if (passed >= DURATION_MS) return finish();
+        anim = requestAnimationFrame(update);
+      }
+      function start() {
+        if (anim !== null) cancelAnimationFrame(anim);
+        running = true;
+        started = null;
+        counter.textContent = '04';
+        progress.style.strokeDashoffset = '100';
+        overlay.classList.remove('is-done');
+        overlay.removeAttribute('aria-hidden');
+        overlay.setAttribute('aria-modal','true');
+        document.body.classList.add('intro-active');
+        if (reduceMotion.matches) return finish();
+        anim = requestAnimationFrame(update);
+      }
+      skip.addEventListener('click',finish);
+      replay.addEventListener('click',start);
+      start();
+    })();
+  </script>
+
+  <script src="checkout-config.js"></script>
+  <script>
+  (()=>{
+    'use strict';
+    const links = window.FS_STRIPE_LINKS || {};
+    const isOfficialStripeLink = (value) => {
+      try {
+        const u = new URL(value);
+        return u.protocol === 'https:' && u.hostname === 'buy.stripe.com' && u.pathname.length > 1;
+      } catch(e) { return false; }
+    };
+    for (const button of document.querySelectorAll('button[data-stripe-package]')) {
+      const type = button.dataset.stripePackage;
+      const link = links[type];
+      if (isOfficialStripeLink(link)) {
+        button.disabled = false;
+        button.classList.add('is-ready');
+        button.textContent = 'Pay $150 securely with Stripe';
+        button.setAttribute('aria-label', 'Pay $150 securely with Stripe for the '+type+' package');
+        button.addEventListener('click', ()=>{ window.location.assign(link); });
+        const status=button.parentElement.querySelector('.stripe-status');
+        if(status) status.textContent='Secure Stripe checkout · $150 one-time. Athlete name and requested apparel sizes collected.';
+      }
+    }
+  })();
+  </script>
 </body>
 </html>
