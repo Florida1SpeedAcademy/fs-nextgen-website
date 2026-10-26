@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#24272B">
+<title>Team Photo Gallery | Florida Speed Academy · FS NextGen</title>
+<meta name="description" content="Real moments from FS NextGen Athletics: race day, medals, training, and our athletes in action.">
+<link rel="icon" href="assets/fs-lion-hero.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--royal:#005BFF;--yellow:#FFE200;--graphite:#24272B;--graphite-soft:#30343A;--graphite-deep:#191B1F;--white:#F7F8FB;--display:'Barlow Condensed',Impact,Arial,sans-serif;--body:Inter,Arial,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--white);font:400 15px/1.65 var(--body);background:radial-gradient(ellipse 69% 700px at 100% 0%,rgba(0,91,255,.28),transparent 79%),radial-gradient(ellipse 80% 900px at 0% 76%,rgba(0,91,255,.14),transparent 80%),var(--graphite)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.container{width:min(1230px,100%);padding:0 5.5%;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;padding-top:22px;padding-bottom:22px;border-bottom:2px solid var(--royal)}
+.brand{display:inline-flex;align-items:center;gap:11px;color:#fff;text-decoration:none;font:900 18px/1.1 var(--display);letter-spacing:.1em;text-transform:uppercase}
+.brand img{width:57px;height:48px;object-fit:contain}.brand strong{color:var(--yellow)}
+.nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.nav a{color:var(--yellow);border:1px solid var(--royal);padding:10px 12px;text-decoration:none;font-size:11px;font-weight:850;letter-spacing:.055em}
+.nav a:hover{background:var(--royal);color:#fff}
+.intro{padding-top:63px;padding-bottom:25px;text-align:center}
+.kicker{font-size:11px;color:var(--yellow);letter-spacing:.2em;font-weight:900;text-transform:uppercase}
+h1{font:900 clamp(51px,9vw,106px)/.93 var(--display);text-transform:uppercase;margin:12px 0 17px}
+h1 span{color:var(--yellow)}
+.deck{max-width:670px;color:#CFD4E0;margin:0 auto;line-height:1.75}
+.marker{display:inline-flex;margin-top:18px;border-left:4px solid var(--yellow);padding:7px 15px;background:rgba(0,91,255,.18);font-size:12px;letter-spacing:.10em;font-weight:850;color:#fff}
+.photo-gallery{column-count:3;column-gap:18px;padding-top:33px;padding-bottom:85px}
+.photo-card{display:block;break-inside:avoid;overflow:hidden;margin:0 0 18px;border:1px solid rgba(0,91,255,.74);border-bottom:2px solid var(--yellow);background:var(--graphite-soft)}
+.photo-open{display:block;padding:0;margin:0;width:100%;border:0;background:transparent;cursor:zoom-in}
+.photo-open img{display:block;width:100%;height:auto;transition:transform .2s ease}
+.photo-open:hover img{transform:scale(1.018)}
+.photo-card figcaption{padding:12px 14px;color:var(--yellow);font-weight:850;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.back-bottom{padding-bottom:55px;text-align:center}
+.link-button{display:inline-block;padding:15px 25px;border:2px solid var(--yellow);background:var(--yellow);color:var(--graphite);font-weight:900;font-size:12px;text-decoration:none;letter-spacing:.08em}
+.link-button:hover{background:var(--royal);border-color:var(--royal);color:white}
+footer{padding:23px 5%;text-align:center;background:var(--graphite-deep);border-top:3px solid var(--royal);font-size:12px;color:#cfd4dc}
+.viewer{border:2px solid var(--royal);border-radius:5px;padding:0;background:var(--graphite-deep);color:white;width:min(96vw,1050px);max-height:95vh;overflow:auto}
+.viewer::backdrop{background:rgba(0,0,0,.87)}
+.viewer-bar{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;background:var(--graphite-deep);z-index:2;border-bottom:2px solid var(--yellow)}
+.viewer-name{font-size:12px;font-weight:850;color:var(--yellow)}
+.viewer-close{border:1px solid var(--yellow);background:var(--graphite);color:var(--yellow);padding:8px 13px;cursor:pointer;font-weight:900;font-size:12px}
+.viewer img{display:block;max-height:calc(95vh - 62px);max-width:100%;width:auto;height:auto;margin:auto;object-fit:contain}
+@media(max-width:800px){.photo-gallery{column-count:2;column-gap:12px}.photo-card{margin-bottom:12px}}
+@media(max-width:420px){.container{padding-left:4.5%;padding-right:4.5%}.photo-gallery{column-count:2;column-gap:9px}.photo-card{margin-bottom:9px}.photo-card figcaption{padding:9px;font-size:10px}.brand{font-size:15px}.nav a{font-size:10px;padding:9px}}
+@media(prefers-reduced-motion:reduce){.photo-open img{transition:none}}
+</style>
+</head>
+<body>
+<header class="container top">
+ <a href="index.html" class="brand"><img src="assets/fs-lion-hero.png" alt="FS NextGen lion logo"><span>FLORIDA <strong>SPEED</strong> ACADEMY</span></a>
+ <nav class="nav" aria-label="Site"><a href="index.html">HOME</a><a href="registration.html">REGISTRATION</a><a href="store.html">TEAM STORE</a></nav>
+</header>
+<main>
+<section class="container intro" aria-labelledby="gallery-title">
+ <div class="kicker">FS NEXTGEN ATHLETICS · FEAR THE STANDARD</div>
+ <h1 id="gallery-title">OUR <span>ATHLETES.</span></h1>
+ <p class="deck">A dedicated place for our athletes, achievements, and memories. All original race-day, training, and team photos—together in one gallery.</p>
+ <div class="marker">23 TEAM PHOTOS</div>
+</section>
+<section class="container photo-gallery" aria-label="FS NextGen athlete photo gallery">
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="FS NextGen team athletes and coaches together on a track at sunset" aria-label="Enlarge: FS NextGen team athletes and coaches together on a track at sunset"><img loading="lazy" decoding="async" src="photos/team-track-practice-at-sunset.jpg" alt="FS NextGen team athletes and coaches together on a track at sunset"></button><figcaption>Team together</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Young track athlete in white uniform airborne on the long jump runway" aria-label="Enlarge: Young track athlete in white uniform airborne on the long jump runway"><img loading="lazy" decoding="async" src="photos/long-jump-competition-action.jpg" alt="Young track athlete in white uniform airborne on the long jump runway"></button><figcaption>Long jump action</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Athlete in white team uniform walking after a track competition" aria-label="Enlarge: Athlete in white team uniform walking after a track competition"><img loading="lazy" decoding="async" src="photos/athlete-competition-day.jpg" alt="Athlete in white team uniform walking after a track competition"></button><figcaption>Competition day</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Three young athletes with race medals" aria-label="Enlarge: Three young athletes with race medals"><img loading="lazy" decoding="async" src="photos/athletes-medals-finish.jpg" alt="Three young athletes with race medals"></button><figcaption>Race day</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Two athletes stretching outside Addition Financial Arena" aria-label="Enlarge: Two athletes stretching outside Addition Financial Arena"><img loading="lazy" decoding="async" src="photos/arena-warmup.jpg" alt="Two athletes stretching outside Addition Financial Arena"></button><figcaption>Preparation</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Young track competitor in white uniform" aria-label="Enlarge: Young track competitor in white uniform"><img loading="lazy" decoding="async" src="photos/track-competitor.jpg" alt="Young track competitor in white uniform"></button><figcaption>Competition</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Athletes and coaches celebrating their track medals" aria-label="Enlarge: Athletes and coaches celebrating their track medals"><img loading="lazy" decoding="async" src="photos/team-awards.jpg" alt="Athletes and coaches celebrating their track medals"></button><figcaption>Team pride</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Coach and three youth athletes showing medals" aria-label="Enlarge: Coach and three youth athletes showing medals"><img loading="lazy" decoding="async" src="photos/coach-athletes-medals.jpg" alt="Coach and three youth athletes showing medals"></button><figcaption>Mentorship</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Young long jumper airborne over the runway" aria-label="Enlarge: Young long jumper airborne over the runway"><img loading="lazy" decoding="async" src="photos/girl-long-jump.jpg" alt="Young long jumper airborne over the runway"></button><figcaption>Flight</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Track athlete proudly showing two medals" aria-label="Enlarge: Track athlete proudly showing two medals"><img loading="lazy" decoding="async" src="photos/athlete-two-medals.jpg" alt="Track athlete proudly showing two medals"></button><figcaption>Achievement</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Two young runners with gold medals" aria-label="Enlarge: Two young runners with gold medals"><img loading="lazy" decoding="async" src="photos/two-champions-medals.jpg" alt="Two young runners with gold medals"></button><figcaption>Champions</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Youth athlete in blue uniform during long jump" aria-label="Enlarge: Youth athlete in blue uniform during long jump"><img loading="lazy" decoding="async" src="photos/athlete-long-jump-blue.jpg" alt="Youth athlete in blue uniform during long jump"></button><figcaption>Growth</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Young athlete in blue and yellow during long jump" aria-label="Enlarge: Young athlete in blue and yellow during long jump"><img loading="lazy" decoding="async" src="photos/athlete-long-jump-yellow.jpg" alt="Young athlete in blue and yellow during long jump"></button><figcaption>NextGen</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Young athlete smiling and waving while holding a medal" aria-label="Enlarge: Young athlete smiling and waving while holding a medal"><img loading="lazy" decoding="async" src="photos/powered-athlete-medal-wave.jpg" alt="Young athlete smiling and waving while holding a medal"></button><figcaption>Joy</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Two young athletes smiling together at a meet with medals" aria-label="Enlarge: Two young athletes smiling together at a meet with medals"><img loading="lazy" decoding="async" src="photos/two-girls-meet-medals.jpg" alt="Two young athletes smiling together at a meet with medals"></button><figcaption>Together</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Young athlete running on the track during competition" aria-label="Enlarge: Young athlete running on the track during competition"><img loading="lazy" decoding="async" src="photos/girl-running-track.jpg" alt="Young athlete running on the track during competition"></button><figcaption>Drive</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Young athlete smiling and holding a bronze medal" aria-label="Enlarge: Young athlete smiling and holding a bronze medal"><img loading="lazy" decoding="async" src="photos/bronze-medal-smile.jpg" alt="Young athlete smiling and holding a bronze medal"></button><figcaption>Bronze finish</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Two athletes sharing a candid moment with medals" aria-label="Enlarge: Two athletes sharing a candid moment with medals"><img loading="lazy" decoding="async" src="photos/two-athletes-candid.jpg" alt="Two athletes sharing a candid moment with medals"></button><figcaption>Moments</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Coach standing with athlete after competition" aria-label="Enlarge: Coach standing with athlete after competition"><img loading="lazy" decoding="async" src="photos/coach-athlete-hug.jpg" alt="Coach standing with athlete after competition"></button><figcaption>Support</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Group of FS NextGen athletes showing medals together" aria-label="Enlarge: Group of FS NextGen athletes showing medals together"><img loading="lazy" decoding="async" src="photos/full-team-medals.jpg" alt="Group of FS NextGen athletes showing medals together"></button><figcaption>Squad goals</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Athlete in pink FS uniform posing at the meet" aria-label="Enlarge: Athlete in pink FS uniform posing at the meet"><img loading="lazy" decoding="async" src="photos/pink-uniform-athlete.jpg" alt="Athlete in pink FS uniform posing at the meet"></button><figcaption>Confidence</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Track results board showing women&#x27;s 1500 meter times" aria-label="Enlarge: Track results board showing women&#x27;s 1500 meter times"><img loading="lazy" decoding="async" src="photos/results-board-1500m.jpg" alt="Track results board showing women&#x27;s 1500 meter times"></button><figcaption>Results</figcaption></figure>
+        <figure class="photo-card"><button type="button" class="photo-open" data-label="Two young athletes in pink uniforms standing together on the grass" aria-label="Enlarge: Two young athletes in pink uniforms standing together on the grass"><img loading="lazy" decoding="async" src="photos/two-pink-uniforms.jpg" alt="Two young athletes in pink uniforms standing together on the grass"></button><figcaption>Future stars</figcaption></figure>
+</section>
+<div class="container back-bottom"><a href="index.html" class="link-button">BACK TO HOMEPAGE</a></div>
+</main>
+<footer>© <span id="year">2026</span> Florida Speed Academy · FS NextGen Athletics · Grit. Swag. Effort.</footer>
+<dialog id="viewer" class="viewer" aria-label="Photo preview"><div class="viewer-bar"><span id="viewer-name" class="viewer-name">PHOTO</span><button id="viewer-close" type="button" class="viewer-close">CLOSE ×</button></div><img id="viewer-image" src="data:," alt=""></dialog>
+<script>
+(()=>{'use strict';
+ document.getElementById('year').textContent=new Date().getFullYear();
+ const dialog=document.getElementById('viewer'),pic=document.getElementById('viewer-image'),caption=document.getElementById('viewer-name');
+ for(const button of document.querySelectorAll('.photo-open'))button.addEventListener('click',()=>{pic.src=button.querySelector('img').src;pic.alt=button.dataset.label;caption.textContent=button.closest('figure').querySelector('figcaption').textContent;if(typeof dialog.showModal==='function')dialog.showModal();else window.open(pic.src,'_blank','noopener');});
+ document.getElementById('viewer-close').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',(event)=>{if(event.target===dialog)dialog.close();});
+ dialog.addEventListener('close',()=>{pic.src='data:,';});
+})();
+</script>
+</body></html>

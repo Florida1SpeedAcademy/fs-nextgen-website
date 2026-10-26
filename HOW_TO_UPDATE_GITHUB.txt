@@ -1,0 +1,22 @@
+FLORIDA SPEED ACADEMY — 2027 WEBSITE UPDATE
+
+This is the complete website, including:
+- index.html: homepage, 4-second FS lion startup, programs, donations, gallery link
+- gallery.html and photos/: 23 photos on one separate gallery page
+- registration.html: consent form, $150 registration Stripe payment
+- store.html, store/, checkout-config.js: boys and girls apparel packages + $150 Stripe links
+- assets/: transparent FS lion logo, shared Royal Blue #005BFF, Yellow #FFE200, Graphite #24272B theme
+
+INSTALL IN THE REPOSITORY THAT POWERS floridaspeedacademy.com:
+1. Back up your existing GitHub repository before uploading.
+2. Download and EXTRACT this ZIP on your computer.
+3. Open your repository's Code page, on the GitHub Pages publishing branch.
+4. Choose Add file -> Upload files, then drag ALL ITEMS INSIDE THE EXTRACTED FOLDER into the upload area.
+   Do not upload this ZIP as-is. Keep files at the repository root, not inside another folder.
+5. Preserve the existing CNAME file, custom domain, and GitHub Pages settings.
+6. Commit the changes, then verify all four pages and Stripe links.
+
+Important: This package is not uploaded to GitHub by downloading it. Existing unrelated GitHub files remain unless you remove them separately. Only delete stale website files after confirming the updated site works.
+
+The registration/consent form supports printing/saving locally but DOES NOT securely submit athlete medical information to a server. Families must provide those records through a separate team-approved secure process.
+The $50 spot hold is informational only until credit/balance terms are confirmed and a separate payment link is authorized.

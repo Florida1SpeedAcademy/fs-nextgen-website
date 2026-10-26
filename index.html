@@ -248,6 +248,39 @@ footer{border-top-color:var(--royal);}
 @media(max-width:840px){.reg-lead{grid-template-columns:1fr}.reg-benefits{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.reg-benefits{grid-template-columns:1fr}}
 
+
+/* One-click photo gallery: no giant home photo wall */
+.gallery-invite { border-top:2px solid rgba(0,91,255,.60); border-bottom:2px solid rgba(255,226,0,.55);
+ background:radial-gradient(ellipse 75% 105% at 95% 10%,rgba(0,91,255,.26),transparent 75%),linear-gradient(145deg,#30343A,#24272B); }
+.gallery-invite-inner {max-width:830px;margin:auto;text-align:center;}
+.gallery-invite .section-copy {margin:0 auto;}
+.gallery-invite-button { display:inline-flex;gap:16px;align-items:center;justify-content:center;min-height:56px;
+ margin-top:28px;padding:16px 28px;background:var(--yellow);border:2px solid var(--yellow);
+ text-decoration:none;color:var(--graphite);font:900 13px var(--body);letter-spacing:.08em; }
+.gallery-invite-button:hover,.gallery-invite-button:focus-visible {background:var(--royal);color:#fff;border-color:var(--royal);}
+.gallery-invite-button span {font-size:20px;line-height:0;}
+
+
+/* COMMUNITY IMPACT + DONATIONS: royal blue, yellow, graphite only */
+.community-support {
+  border-top:2px solid rgba(0,91,255,.72);
+  background:
+    radial-gradient(ellipse 65% 100% at 100% 8%,rgba(0,91,255,.22),transparent 72%),
+    linear-gradient(148deg,var(--graphite-soft),var(--graphite-deep));
+}
+.community-support .section-copy {max-width:810px;}
+.donation-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin:29px 0 27px;}
+.donation-item {padding:27px 23px;background:rgba(25,27,31,.66);border-top:4px solid var(--yellow);border-bottom:2px solid var(--royal);}
+.donation-item h3 {font:900 27px/1.05 var(--display);text-transform:uppercase;color:var(--yellow);margin:0 0 12px;}
+.donation-item p {font:400 14px/1.7 var(--body);color:#e1e4ea;margin:0;}
+.donation-footer {display:flex;flex-wrap:wrap;align-items:center;gap:16px;}
+.donate-button {display:inline-flex;align-items:center;justify-content:center;text-align:center;padding:17px 24px;min-height:53px;
+  background:var(--yellow);color:#202329;text-decoration:none;font-weight:900;font-size:12px;letter-spacing:.09em;
+  text-transform:uppercase;border:2px solid var(--yellow);border-radius:3px;transition:background .18s ease,border-color .18s ease,color .18s ease;}
+.donate-button:hover,.donate-button:focus-visible {background:var(--royal);border-color:var(--royal);color:#fff;}
+.donation-footnote {max-width:640px;color:var(--muted);font-size:12px;line-height:1.65;}
+@media(max-width:800px){.donation-grid{grid-template-columns:1fr;gap:13px}.donation-item{padding:22px}}
+
 </style>
   <link rel="stylesheet" href="assets/brand-theme.css">
 </head>
@@ -283,7 +316,7 @@ footer{border-top-color:var(--royal);}
       <div class="actions">
         <a href="registration.html" class="action action-primary">ATHLETE REGISTRATION</a>
         <a href="#programs" class="action action-secondary">EXPLORE PROGRAMS</a>
-        <a href="#athletes" class="action action-secondary">VIEW OUR ATHLETES</a>
+        <a href="gallery.html" class="action action-secondary">PHOTO GALLERY</a>
         <a href="store.html" class="action action-secondary">TEAM STORE</a>
       </div>
       <div class="hero-foot">FEAR THE STANDARD · GSE</div>
@@ -291,31 +324,12 @@ footer{border-top-color:var(--royal);}
 
     <div class="values" aria-label="Our values"><span>GRIT</span><span aria-hidden="true">◆</span><span>SWAG</span><span aria-hidden="true">◆</span><span>EFFORT</span></div>
 
-    <section class="content" id="athletes" aria-labelledby="athlete-title">
-      <div class="section-tag">OUR REAL ATHLETES · OUR REAL MOMENTS</div>
-      <h2 class="section-title" id="athlete-title">NEXTGEN <span>IN ACTION.</span></h2>
-      <p class="section-copy">From race-day smiles and medal moments to competition shots and results, every image reflects the work, growth, and relationships behind Florida Speed Academy.</p>
-      <div class="gallery">
-        <figure><img src="photos/athletes-medals-finish.jpg" alt="Three young athletes with race medals" loading="lazy" decoding="async"><figcaption>Race day</figcaption></figure>
-        <figure><img src="photos/arena-warmup.jpg" alt="Two athletes stretching outside Addition Financial Arena" loading="lazy" decoding="async"><figcaption>Preparation</figcaption></figure>
-        <figure><img src="photos/track-competitor.jpg" alt="Young track competitor in white uniform" loading="lazy" decoding="async"><figcaption>Competition</figcaption></figure>
-        <figure><img src="photos/team-awards.jpg" alt="Athletes and coaches celebrating their track medals" loading="lazy" decoding="async"><figcaption>Team pride</figcaption></figure>
-        <figure><img src="photos/coach-athletes-medals.jpg" alt="Coach and three youth athletes showing medals" loading="lazy" decoding="async"><figcaption>Mentorship</figcaption></figure>
-        <figure><img src="photos/girl-long-jump.jpg" alt="Young long jumper airborne over the runway" loading="lazy" decoding="async"><figcaption>Flight</figcaption></figure>
-        <figure><img src="photos/athlete-two-medals.jpg" alt="Track athlete proudly showing two medals" loading="lazy" decoding="async"><figcaption>Achievement</figcaption></figure>
-        <figure><img src="photos/two-champions-medals.jpg" alt="Two young runners with gold medals" loading="lazy" decoding="async"><figcaption>Champions</figcaption></figure>
-        <figure><img src="photos/athlete-long-jump-blue.jpg" alt="Youth athlete in blue uniform during long jump" loading="lazy" decoding="async"><figcaption>Growth</figcaption></figure>
-        <figure><img src="photos/athlete-long-jump-yellow.jpg" alt="Young athlete in blue and yellow during long jump" loading="lazy" decoding="async"><figcaption>NextGen</figcaption></figure>
-        <figure><img src="photos/powered-athlete-medal-wave.jpg" alt="Young athlete smiling and waving while holding a medal" loading="lazy" decoding="async"><figcaption>Joy</figcaption></figure>
-        <figure><img src="photos/two-girls-meet-medals.jpg" alt="Two young athletes smiling together at a meet with medals" loading="lazy" decoding="async"><figcaption>Together</figcaption></figure>
-        <figure><img src="photos/girl-running-track.jpg" alt="Young athlete running on the track during competition" loading="lazy" decoding="async"><figcaption>Drive</figcaption></figure>
-        <figure><img src="photos/bronze-medal-smile.jpg" alt="Young athlete smiling and holding a bronze medal" loading="lazy" decoding="async"><figcaption>Bronze finish</figcaption></figure>
-        <figure><img src="photos/two-athletes-candid.jpg" alt="Two athletes sharing a candid moment with medals" loading="lazy" decoding="async"><figcaption>Moments</figcaption></figure>
-        <figure><img src="photos/coach-athlete-hug.jpg" alt="Coach standing with athlete after competition" loading="lazy" decoding="async"><figcaption>Support</figcaption></figure>
-        <figure><img src="photos/full-team-medals.jpg" alt="Group of FS NextGen athletes showing medals together" loading="lazy" decoding="async"><figcaption>Squad goals</figcaption></figure>
-        <figure><img src="photos/pink-uniform-athlete.jpg" alt="Athlete in pink FS uniform posing at the meet" loading="lazy" decoding="async"><figcaption>Confidence</figcaption></figure>
-        <figure><img src="photos/results-board-1500m.jpg" alt="Track results board showing women's 1500 meter times" loading="lazy" decoding="async"><figcaption>Results</figcaption></figure>
-        <figure><img src="photos/two-pink-uniforms.jpg" alt="Two young athletes in pink uniforms standing together on the grass" loading="lazy" decoding="async"><figcaption>Future stars</figcaption></figure>
+    <section class="content gallery-invite" id="athletes" aria-labelledby="athlete-title">
+      <div class="gallery-invite-inner">
+        <div class="section-tag">REAL ATHLETES · REAL RESULTS · REAL MOMENTS</div>
+        <h2 class="section-title" id="athlete-title">OUR PHOTO <span>GALLERY.</span></h2>
+        <p class="section-copy">All 23 athlete photos are organized on one dedicated page. Tap below to see our NextGen athletes in action, race-day memories and medals.</p>
+        <a class="gallery-invite-button" href="gallery.html">VIEW ALL 23 PHOTOS <span aria-hidden="true">↗</span></a>
       </div>
     </section>
 
@@ -405,6 +419,28 @@ footer{border-top-color:var(--royal);}
         </article>
       </div>
       <small class="shop-note">Each package is $150 USD. Stripe securely collects payment and requested sizes. The team will coordinate delivery or pickup after purchase.</small>
+    </section>
+
+
+    <section class="content community-support" id="donate" aria-labelledby="donate-title">
+      <div class="section-tag">GIVE BACK · CHANGE A YOUNG LIFE</div>
+      <h2 class="section-title" id="donate-title">SUPPORT OUR <span>ATHLETES.</span></h2>
+      <p class="section-copy">Your donation to Florida Speed Academy goes beyond sports. It helps us support children and families in need with educational resources, tutoring and counseling throughout our program. Contributions can also help athletes access physical therapy and recovery support through our team when appropriate and available. Every gift helps us develop the whole child—in the classroom, in competition and in life.</p>
+      <div class="donation-grid">
+        <article class="donation-item"><h3>EDUCATION &amp; TUTORING</h3>
+          <p>Help young athletes strengthen their academics through school-related resources and tutoring support.</p>
+        </article>
+        <article class="donation-item"><h3>COUNSELING &amp; WELLBEING</h3>
+          <p>Support access to counseling and guidance that promotes confidence, resilience and personal development.</p>
+        </article>
+        <article class="donation-item"><h3>PHYSICAL THERAPY SUPPORT</h3>
+          <p>Help athletes who need physical therapy treatment or recovery services access appropriate team-connected support, subject to availability.</p>
+        </article>
+      </div>
+      <div class="donation-footer">
+        <a class="donate-button" href="https://buy.stripe.com/28EcN7aku9ytaHZaPVcAo01" target="_blank" rel="noopener noreferrer" aria-label="Donate to Florida Speed Academy through secure Stripe checkout">DONATE SECURELY <span aria-hidden="true">&nbsp;↗</span></a>
+        <p class="donation-footnote">Donations are processed securely through Stripe. Services depend on athlete needs and program resources. This donation is separate from team registration and apparel purchases.</p>
+      </div>
     </section>
 
     <section class="content mission" id="mission" aria-labelledby="mission-title">
