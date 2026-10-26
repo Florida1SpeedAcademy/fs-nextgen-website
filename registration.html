@@ -93,6 +93,12 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
 @media(max-width:760px){.reg-flow-wrap {grid-template-columns:1fr}.reg-form-panel,.reg-detail-panel {padding:23px}}
 
 
+/* Direct emailed registration with responsive action button */
+.consent-send{background:var(--royal,#005BFF);color:#fff;border:2px solid var(--yellow,#FFE200);box-shadow:inset 5px 0 var(--yellow,#FFE200)}
+.consent-send:hover,.consent-send:focus-visible{background:#164ac9}
+.consent-send[disabled]{opacity:.65;cursor:progress}
+.consent-grid input[type="file"]{cursor:pointer;font-size:13px;max-width:100%}
+.docs-attachments{margin-top:29px}
 /* FS NEXTGEN SPORTS CONSENT: royal blue #005BFF, yellow #FFE200, graphite #24272B */
 .consent-wrap {padding-top:72px;padding-bottom:74px;scroll-margin-top:12px}
 .consent-title {font:900 clamp(43px,6vw,79px)/.94 var(--display);margin:10px 0 14px;text-transform:uppercase;letter-spacing:.008em}
@@ -163,7 +169,7 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
 <body class="page-registration">
 <header class="container top">
   <div class="brand">FLORIDA <span>SPEED</span> ACADEMY</div>
-  <a class="back" href="index.html">← BACK TO HOMEPAGE</a>
+  <a class="back" href="index.html?skipintro=1#home">← BACK TO HOMEPAGE</a>
 </header>
 <main>
 <section class="container hero">
@@ -198,14 +204,21 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
 <section class="container consent-wrap" id="signup" aria-labelledby="registration-form-title">
   <div class="eyebrow">FS NEXTGEN ATHLETICS · 2027 OUTDOOR SEASON</div>
   <h2 class="consent-title" id="registration-form-title">SPORTS CONSENT <span>& REGISTRATION.</span></h2>
-  <p class="consent-sub">Complete the athlete and guardian information, medical and emergency contact details, and parent consent. Save a copy to share privately with the team. Then use the separate secure Stripe button for the 2027 registration payment.</p>
+  <p class="consent-sub">Complete the athlete and guardian information, emergency details, and parent consent. Use the email submission button to send the registration form and optional signed documents to the team. You can also save a PDF copy for your records. Registration payment is separate.</p>
   <div class="consent-card">
     <div class="consent-print-header">Florida Speed Academy · FS NextGen Athletics · 2027 Athlete Registration & Sports Consent</div>
     <div class="consent-banner">
-      <div><h3>ATHLETE INFORMATION FORM</h3><p>Fields marked * are required. This is a printable form; information entered here is not uploaded, emailed, or saved by this GitHub Pages website.</p></div>
+      <div><h3>ATHLETE INFORMATION FORM</h3><p>Fields marked * are required. Submitted form fields and selected documents go to an external form service for forwarding by email to Florida Speed Academy. Never upload full medical records here.</p></div>
       <span class="consent-pill">2027 SEASON</span>
     </div>
-    <form id="sports-consent-form" autocomplete="on">
+    <form id="sports-consent-form" autocomplete="on" method="POST" action="https://formsubmit.co/floridaspeedacademy@gmail.com" enctype="multipart/form-data">
+      <!-- FormSubmit must be activated by the site owner once via the destination inbox. -->
+      <input type="hidden" name="_subject" value="FS NextGen 2027 - New Athlete Registration and Documents">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://floridaspeedacademy.com/registration-submitted.html">
+      <input type="hidden" name="_url" value="https://floridaspeedacademy.com/registration.html">
+      <input type="hidden" name="email" id="submission-reply-email" value="">
+      <div class="consent-live-only anti-spam" aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label>Leave this field blank <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
       <fieldset class="consent-fieldset"><legend>01 / Athlete Details</legend>
         <div class="consent-grid">
           <label class="consent-field"><span>Athlete first name <em>*</em></span><input name="athleteFirst" autocomplete="given-name" maxlength="80" placeholder="First name" required></label>
@@ -235,7 +248,7 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
         </div>
       </fieldset>
       <fieldset class="consent-fieldset"><legend>04 / Medical Conditions & Allergies</legend>
-        <p class="consent-note">Share only information the coaching staff needs for athlete safety. <strong>Do not send completed medical details via Instagram, a public message, or Stripe checkout.</strong> Ask the team how to provide this form securely.</p>
+        <p class="consent-note">Keep medical details limited to brief emergency safety instructions. <strong>Do not submit medical reports, diagnoses, detailed treatment documents, or therapy records through this email form.</strong> Request a restricted-access delivery method from the team for sensitive records.</p>
         <div class="consent-question" id="medical-question">Are there medical conditions or allergies the coaches should know about? <em style="color:var(--yellow)">*</em></div>
         <div class="consent-radio-row" role="group" aria-labelledby="medical-question"><label><input type="radio" name="medical" value="yes" required>Yes</label><label><input type="radio" name="medical" value="no" required>No</label></div>
         <div class="consent-grid" id="medical-details" hidden>
@@ -254,17 +267,28 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
       <fieldset class="consent-fieldset"><legend>06 / Parent Consent & Signature</legend>
         <label class="consent-check"><input type="checkbox" required name="guardianConsent"><span>I confirm that I am this athlete's parent/legal guardian or authorized representative, and I consent to the athlete's participation in FS NextGen team training and activities, subject to the team's enrollment and safety requirements.</span></label>
         <label class="consent-check"><input type="checkbox" required name="contactConsent"><span>I confirm the information is accurate to the best of my knowledge and authorize team staff to contact the listed parent/guardian and emergency contact in an emergency. Additional waivers or medical clearance may be required separately.</span></label>
-        <label class="consent-check consent-live-only"><input type="checkbox" required name="privacyAcknowledgement"><span>I understand this form is <strong>not sent or stored by the website</strong>. I must save/print it and give it to the team using a method the team confirms is private and secure. I will not put medical details into Stripe payment fields.</span></label>
+        <label class="consent-check consent-live-only"><input type="checkbox" required name="privacyAcknowledgement"><span>I authorize this registration form and any documents I choose to attach to be transmitted via <strong>FormSubmit (an external form-forwarding provider)</strong> to <strong>floridaspeedacademy@gmail.com</strong>. I understand the submitted information is processed by that provider and forwarded by ordinary email, which is not a private medical-record portal. I will not attach full medical records. I may print/save this form instead and request a more restricted delivery method.</span></label>
         <div class="consent-grid" style="margin-top:18px">
           <label class="consent-field"><span>Parent / guardian typed signature <em>*</em></span><input name="signature" maxlength="140" placeholder="Type full legal name" required></label>
           <label class="consent-field"><span>Date signed <em>*</em></span><input type="date" name="signedDate" id="consent-signed-date" required></label>
         </div>
       </fieldset>
+      <fieldset class="consent-fieldset consent-live-only docs-attachments"><legend>07 / Additional Registration Documents (Optional)</legend>
+        <p class="consent-help" style="margin:0 0 13px">Attach signed registration waivers or participation documents, if requested. PDF, JPG, or PNG files only, 10 MB total across attachments. Do not attach medical or PT records. If a signed document includes sensitive medical information, ask the team for a restricted-access way to deliver it.</p>
+        <div class="consent-grid">
+          <label class="consent-field"><span>Registration document 1</span><input type="file" name="registrationDocument1" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"></label>
+          <label class="consent-field"><span>Registration document 2</span><input type="file" name="registrationDocument2" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"></label>
+          <label class="consent-field"><span>Registration document 3</span><input type="file" name="registrationDocument3" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"></label>
+          <label class="consent-field"><span>Registration document 4</span><input type="file" name="registrationDocument4" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"></label>
+        </div>
+      </fieldset>
+      <p class="consent-note consent-live-only" style="margin-top:22px"><strong>REGISTRATION EMAIL:</strong> After you submit, FormSubmit forwards the registration fields and optional attachments to <strong>floridaspeedacademy@gmail.com</strong> once the team's email has been activated. This is a third-party email-forwarding service, not a secure medical portal. The team must first activate the service and test with dummy information.</p>
       <div class="consent-buttons consent-live-only">
+        <button type="submit" id="email-registration" class="consent-send">EMAIL REGISTRATION TO THE TEAM →</button>
         <button class="consent-print" type="button" id="print-consent">PRINT / SAVE COMPLETED FORM</button>
         <a class="consent-pay" href="https://buy.stripe.com/8x24gBeAKh0VdUbgafcAo04" rel="noopener noreferrer" target="_blank" aria-label="Pay 150 dollar athlete registration fee securely at Stripe">PAY REGISTRATION · $150 ON STRIPE →</a>
       </div>
-      <p class="consent-help consent-live-only" id="consent-feedback" role="status">First save a copy of the form, then arrange secure delivery with FS NextGen. The Stripe button opens a separate payment page; it does not upload this form.</p>
+      <p class="consent-help consent-live-only" id="consent-feedback" role="status">Complete the required fields and consent checkboxes, then email the registration and any attached documents. You can also print/save a copy. Stripe payment is a separate step.</p>
     </form>
     <div class="consent-payment-clarity consent-live-only"><strong>Registration payment:</strong> The $150 Stripe link is for 2027 athlete registration only and does not pay for team apparel. <strong>$50 spot hold:</strong> December 1, 2026; confirm separately whether it is applied toward the $150 registration fee. Completing payment does not automatically confirm a roster spot.</div>
   </div>
@@ -305,7 +329,7 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
  <p>Ready to compete, develop, and become part of FS NextGen? Reach out to reserve your athlete's place and confirm the registration process.</p>
  <div class="actions" style="justify-content:center">
   <a class="btn" href="https://www.instagram.com/fsnextgenathletics/" target="_blank" rel="noopener noreferrer">CONTACT FS NEXTGEN</a>
-  <a class="btn alt" href="index.html">RETURN TO HOMEPAGE</a>
+  <a class="btn alt" href="index.html?skipintro=1#home">RETURN TO HOMEPAGE</a>
  </div>
  <p class="note" style="margin-top:24px">Save the completed form, arrange secure delivery with the team, and pay registration separately using the verified Stripe checkout link above.</p>
 </section>
@@ -323,7 +347,7 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
  const feedback=document.getElementById('consent-feedback');
  const dob=document.getElementById('consent-dob');
  const signedDate=document.getElementById('consent-signed-date');
- // A minor's personal and medical data never leaves the browser through this form.
+ // FormSubmit forwards submitted registration fields and selected files to the team. Do not submit full medical records.
  if(dob) dob.max=new Date().toISOString().slice(0,10);
  if(signedDate){ const now=new Date(); signedDate.value=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10); }
  form.querySelectorAll('input[name="medical"]').forEach(radio=>radio.addEventListener('change',()=>{
@@ -337,10 +361,26 @@ footer{border-top:2px solid var(--yellow);background:#171A20;color:#cfd4de;paddi
      feedback.textContent='Please complete all required fields before printing or saving.';
      return;
    }
-   feedback.textContent='Use your browser print dialog to print, or choose Save as PDF. This site does not receive your form.';
+   feedback.textContent='Use your browser print dialog to print or choose Save as PDF. Nothing is emailed when you print.';
    window.print();
  });
- // No remote save, hidden analytics, browser storage, or email of sensitive form information.
+ const replyEmail=document.getElementById('submission-reply-email');
+ const sendButton=document.getElementById('email-registration');
+ const allowedExt=/\.(pdf|png|jpe?g)$/i;
+ form.addEventListener('submit',(event)=>{
+   if(!form.reportValidity()){event.preventDefault();feedback.textContent='Complete all required fields and check the consent boxes before sending.';return;}
+   const selected=Array.from(form.querySelectorAll('input[type="file"]')).flatMap(el=>Array.from(el.files||[]));
+   const size=selected.reduce((sum,f)=>sum+f.size,0);
+   if(size>10*1024*1024 || selected.some(f=>!allowedExt.test(f.name))){
+      event.preventDefault();
+      feedback.textContent='Please attach only PDF, JPG or PNG registration documents totaling 10 MB or less.';
+      return;
+   }
+   replyEmail.value=form.elements.parentEmail.value;
+   sendButton.textContent='OPENING SECURE CONNECTION…';
+   sendButton.disabled=true;
+   // The third-party service handles the submission; no claim of delivery is made here.
+ });
 })();
 </script>
 </body></html>

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#24272B">
+  <script>if(new URLSearchParams(location.search).get('skipintro')==='1')document.documentElement.classList.add('skip-home-intro');</script>
   <meta name="description" content="Florida Speed Academy is a Central Florida youth sports nonprofit. Home of FS NextGen Athletics. Grit. Swag. Effort. Be Who You Say You Are.">
   <meta property="og:title" content="Florida Speed Academy | FS NextGen Athletics">
   <meta property="og:description" content="Be Who You Say You Are. Youth sports, mentorship and development through Florida Speed Academy.">
@@ -27,6 +28,7 @@
     html { scroll-behavior:smooth; }
     body { margin:0; background:var(--graphite); color:var(--white); font-family:var(--body); }
     body.intro-active { overflow:hidden; }
+    html.skip-home-intro .intro{display:none!important} html.skip-home-intro body.intro-active{overflow:auto}
     a,button { -webkit-tap-highlight-color:transparent; }
     a:focus-visible,button:focus-visible { outline:3px solid var(--yellow); outline-offset:4px; }
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
@@ -504,7 +506,9 @@ footer{border-top-color:var(--royal);}
       }
       skip.addEventListener('click',finish);
       replay.addEventListener('click',start);
+      const returnedHome = new URLSearchParams(window.location.search).get('skipintro') === '1';
       start();
+      if (returnedHome) finish(); // Return links go directly to homepage, no intro replay.
     })();
   </script>
 
