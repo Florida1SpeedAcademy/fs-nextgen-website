@@ -1,556 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#24272B">
-  <script>if(new URLSearchParams(location.search).get('skipintro')==='1')document.documentElement.classList.add('skip-home-intro');</script>
-  <meta name="description" content="Florida Speed Academy is a Central Florida youth sports nonprofit. Home of FS NextGen Athletics. Grit. Swag. Effort. Be Who You Say You Are.">
-  <meta property="og:title" content="Florida Speed Academy | FS NextGen Athletics">
-  <meta property="og:description" content="Be Who You Say You Are. Youth sports, mentorship and development through Florida Speed Academy.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://floridaspeedacademy.com/">
-  <meta property="og:image" content="https://floridaspeedacademy.com/assets/fs-lion-hero.png">
-  <link rel="canonical" href="https://floridaspeedacademy.com/">
-  <link rel="icon" type="image/png" href="assets/fs-lion-hero.png">
-  <title>Florida Speed Academy | Be Who You Say You Are</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --graphite:#24272B; --graphite-deep:#191B1F; --graphite-soft:#30343A;
-      --yellow:#FFE200; --royal:#005BFF; --white:#F7F8FB; --muted:#CFD2D8;
-      --display:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;
-      --body:'Inter',Arial,sans-serif;
-    }
-    *,*::before,*::after { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; background:var(--graphite); color:var(--white); font-family:var(--body); }
-    body.intro-active { overflow:hidden; }
-    html.skip-home-intro .intro{display:none!important} html.skip-home-intro body.intro-active{overflow:auto}
-    a,button { -webkit-tap-highlight-color:transparent; }
-    a:focus-visible,button:focus-visible { outline:3px solid var(--yellow); outline-offset:4px; }
-    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-
-    /* LIVE STARTUP: the same official logo, with a four-second circular countdown. */
-    .intro { position:fixed; z-index:100; inset:0; display:grid; place-items:center; isolation:isolate;
-      padding:30px 20px 78px; overflow:hidden;
-      background:radial-gradient(ellipse at 50% 40%,#005bff25,transparent 49%),
-                 radial-gradient(ellipse at 85% 86%,#ffe20014,transparent 37%),#191B1F;
-      transition:opacity .6s ease,visibility .6s ease; }
-    .intro::before { content:''; position:absolute; pointer-events:none; inset:-25%; z-index:-1;
-      background:repeating-linear-gradient(127deg,transparent 0 145px,#ffffff06 146px,transparent 148px); }
-    .intro.is-done { opacity:0; visibility:hidden; pointer-events:none; }
-    .intro-name { position:absolute; top:clamp(24px,4vw,50px); left:15px; right:15px;
-      text-align:center; font:800 clamp(16px,2vw,22px)/1.1 var(--display);
-      letter-spacing:.22em; }
-    .intro-name span { color:var(--yellow); }
-    .intro-content { display:grid; justify-items:center; gap:21px; width:min(90vw,630px); }
-    .clock { position:relative; display:grid; place-items:center; width:min(78vw,55vh,510px); aspect-ratio:1; }
-    .clock::before { content:''; position:absolute; inset:4%; border-radius:50%;
-      border:1px solid #ffe20038; box-shadow:inset 0 0 35px #005bff18,0 0 45px #005bff18; }
-    .ring { position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); }
-    .ring-track { fill:none; stroke:#49515B; stroke-width:5; }
-    .ring-progress { fill:none; stroke:url(#ring-gradient); stroke-width:6.5; stroke-linecap:round;
-      stroke-dasharray:100; stroke-dashoffset:100; filter:url(#ring-glow); }
-    .ring-ticks { fill:none; stroke:#ffffff70; stroke-width:1.1; stroke-dasharray:.5 2.7; }
-    .intro-logo { position:relative; z-index:1; width:79%; height:79%; object-fit:contain; filter:drop-shadow(0 8px 20px #0008); }
-    .countdown { display:flex; align-items:baseline; gap:11px; }
-    .countdown strong { color:var(--yellow); font:900 44px/1 var(--display); font-variant-numeric:tabular-nums; }
-    .countdown span { font-size:11px; font-weight:800; letter-spacing:.24em; }
-    .intro-slogan { text-align:center; font:900 clamp(28px,5.4vw,46px)/1 var(--display); letter-spacing:.09em; }
-    .intro-values { color:var(--yellow); letter-spacing:.18em; font-weight:800; font-size:11px; text-align:center; }
-    .skip { position:absolute; left:50%; bottom:25px; transform:translateX(-50%);
-      padding:11px 22px; border-radius:50px; border:1px solid #ffe2006b;
-      background:transparent; color:var(--yellow); font:800 11px var(--body); letter-spacing:.13em;
-      cursor:pointer; }
-
-    /* HOMEPAGE: no top navigation/header. Actual lion logo is the hero. */
-    .site { overflow:hidden; background:var(--graphite); }
-    .hero { position:relative; display:flex; min-height:min(930px,100svh); flex-direction:column;
-      align-items:center; justify-content:center; text-align:center; padding:clamp(40px,6vw,72px) 22px 82px;
-      background:radial-gradient(ellipse at 50% 29%,#ffe2000d,transparent 54%),
-                 linear-gradient(160deg,#2E3237 0%,#24272B 47%,#1C1E22 100%); }
-    .hero::before { content:''; position:absolute; pointer-events:none; inset:0; opacity:.34;
-      background:repeating-linear-gradient(132deg,transparent 0 164px,#ffe20010 165px,transparent 167px); }
-    .hero::after { content:''; position:absolute; bottom:0; left:0; right:0; height:5px; background:var(--yellow); }
-    .hero > * { position:relative; }
-    .hero-kicker { color:var(--yellow); font:800 12px/1.2 var(--body); letter-spacing:.27em; text-transform:uppercase; }
-    .hero-logo { display:block; width:min(80vw,650px); height:auto; max-height:48vh; object-fit:contain;
-      margin:clamp(6px,2vw,25px) auto 5px; filter:drop-shadow(0 18px 28px #0005); }
-    .hero-title { margin:4px 0 12px; max-width:970px;
-      font:900 clamp(51px,8.2vw,112px)/.91 var(--display); letter-spacing:-.008em; text-transform:uppercase; }
-    .hero-title span { color:var(--yellow); }
-    .hero-summary { margin:7px 0 0; max-width:720px; color:#ECEDEF; font:500 clamp(14px,1.4vw,17px)/1.65 var(--body); }
-    .actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:28px; }
-    .action { display:inline-block; padding:16px 23px; text-decoration:none; text-transform:uppercase;
-      font-size:12px; font-weight:800; letter-spacing:.09em; border-radius:3px;
-      transition:transform .16s ease, background .16s ease; }
-    .action:hover { transform:translateY(-2px); }
-    .action-primary { background:var(--yellow); color:#1D2024; }
-    .action-secondary { border:2px solid var(--yellow); color:var(--yellow); }
-    .hero-foot { margin-top:27px; font:800 11px var(--body); letter-spacing:.25em; color:var(--yellow); }
-
-    .values { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:clamp(12px,3vw,40px);
-      padding:18px 20px; background:var(--yellow); color:#23262A; font:900 clamp(19px,2.6vw,26px) var(--display); letter-spacing:.14em; }
-    .values span[aria-hidden="true"] { font-size:10px; }
-    .content { width:min(1230px,100%); margin:0 auto; padding:clamp(68px,8vw,110px) 6%; }
-    .section-tag { color:var(--yellow); font:800 11px var(--body); letter-spacing:.2em; text-transform:uppercase; }
-    .section-title { margin:14px 0 19px; font:900 clamp(48px,6.6vw,84px)/.91 var(--display); text-transform:uppercase; }
-    .section-title span { color:var(--yellow); }
-    .section-copy { margin:0; max-width:730px; color:var(--muted); line-height:1.8; font-size:15px; }
-    .gallery { columns:3 280px; column-gap:17px; margin-top:35px; }
-    .gallery figure { break-inside:avoid; margin:0 0 17px; overflow:hidden; background:#1c1e20;
-      border:1px solid #ffe20044; }
-    .gallery img { display:block; width:100%; height:auto; }
-    .gallery figcaption { background:#34383E; padding:12px 13px; font-size:12px; font-weight:800;
-      color:var(--yellow); letter-spacing:.1em; text-transform:uppercase; }
-    .programs { border-top:1px solid #ffe20055; }
-    .program-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:17px; margin-top:32px; }
-    .program { padding:29px 24px; background:var(--graphite-soft); border-top:4px solid var(--yellow); }
-    .program h3 { color:var(--yellow); margin:0 0 10px; font:800 29px/1 var(--display); }
-    .program p { margin:0; color:#D6D8DD; font-size:14px; line-height:1.7; }
-    .mission { border-top:1px solid #ffe20044; padding-top:75px; padding-bottom:95px; }
-    footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
-      padding:24px 6%; border-top:2px solid var(--yellow); color:var(--muted); background:var(--graphite-deep); font-size:12px; }
-    .replay { color:var(--yellow); background:transparent; border:1px solid var(--yellow); border-radius:3px;
-      padding:10px 15px; font:800 11px var(--body); cursor:pointer; letter-spacing:.09em; }
-
-    /* The two distinct team package collections */
-    .shop-intro { border-top:1px solid #ffe20055; }
-    .shop-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:21px; margin-top:30px; }
-    .shop-option { background:var(--graphite-soft);border:1px solid #ffe20055;overflow:hidden;min-width:0; }
-    .shop-photos { display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:12px;background:#1d2024; }
-    .shop-photos img { width:100%; aspect-ratio:1.1; object-fit:contain; display:block; background:#30343A; }
-    .shop-photos img:first-child { grid-column:1/-1;aspect-ratio:1.9; }
-    .shop-text { padding:clamp(20px,3vw,32px); }
-    .shop-tag { font-size:11px;font-weight:850;letter-spacing:.16em;color:var(--yellow);text-transform:uppercase; }
-    .shop-title { font:900 clamp(39px,5vw,58px)/.94 var(--display);text-transform:uppercase;margin:11px 0 16px; }
-    .shop-title span { color:var(--yellow); }
-    .shop-copy { font:500 14px/1.75 var(--body);color:var(--muted); }
-    .shop-fit { margin:18px 0; padding:12px 15px; background:#212429; border-left:3px solid var(--yellow); font-size:13px;font-weight:700; }
-    .shop-detail-link {display:inline-flex; align-items:center; justify-content:center; text-decoration:none; background:var(--yellow); color:#24272B; font-weight:900; font-size:12px; letter-spacing:.05em; padding:15px 20px; text-transform:uppercase; }
-    .shop-note {margin-top:20px;display:block;color:#cfd1d6;font-size:12px;line-height:1.6;}
-    @media(max-width:780px) { .shop-options{grid-template-columns:1fr;} }
-    @media(max-width:780px) {
-      .hero { min-height:100svh; padding:55px 6% 72px; }
-      .hero-logo { width:min(88vw,520px); max-height:41vh; }
-      .hero-title { font-size:clamp(52px,12.9vw,83px); }
-      .gallery { columns:2 170px; column-gap:10px; }
-      .gallery figure { margin-bottom:10px; }
-      .gallery figcaption { font-size:10px; padding:9px 10px; }
-      .program-cards { grid-template-columns:1fr; }
-    }
-    @media(max-width:450px) {
-      .hero { min-height:0; padding:54px 5% 66px; }
-      .hero-kicker { font-size:10px; letter-spacing:.16em; }
-      .hero-logo { width:95vw; max-height:none; }
-      .hero-title { font-size:clamp(48px,13vw,67px); margin-top:10px; }
-      .hero-summary { font-size:14px; }
-      .action { padding:13px 16px; font-size:11px; }
-      .hero-foot { font-size:10px; letter-spacing:.13em; }
-      .values { gap:9px; font-size:17px; padding:14px 10px; }
-      .gallery { columns:2 140px; }
-      .section-title { font-size:52px; }
-      .content { padding:60px 5%; }
-    }
-    @media(max-height:620px) { .intro-content{gap:10px}.clock{width:min(50vw,49vh,340px)}.intro-name{top:15px}.skip{bottom:12px} }
-    @media(prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.intro,.action{transition:none} }
-
-  /* Separate Stripe payments for boys and girls packages */
-  .shop-price{margin:10px 0;color:var(--white);font-size:14px;}
-  .shop-price strong{color:var(--yellow);font-size:22px;}
-  .stripe-payment {margin-top:18px;display:grid;gap:9px;}
-  .stripe-buy{width:100%;font:900 13px/1.25 var(--body);border:2px solid var(--yellow);border-radius:3px;padding:15px 16px;text-transform:uppercase;letter-spacing:.06em;background:var(--yellow);color:#24272B;cursor:pointer;}
-  .stripe-buy:disabled{background:#3a3d42;border-color:#a49c47;color:#f2e7a2;opacity:1;cursor:not-allowed;}
-  .stripe-buy.is-ready{background:var(--yellow);color:#222;}
-  .stripe-buy.is-ready:hover{filter:brightness(1.07);}
-  .stripe-status{font:500 12px/1.55 var(--body);color:var(--muted);}
-  .stripe-status strong{color:var(--yellow);}
-  
-
-/* Royal-blue atmosphere on graphite — text and logos stay unchanged */
-.site {
-  background:
-    radial-gradient(ellipse 65% 680px at 0% 34%, rgba(0,91,255,.12), transparent 75%),
-    radial-gradient(ellipse 70% 820px at 100% 73%, rgba(0,91,255,.10), transparent 76%),
-    var(--graphite);
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#03070e">
+<meta name="description" content="Florida Speed Academy Inc. — FS NextGen Athletics. Track and field, 7v7 football and youth services. Fear the Standard.">
+<meta property="og:title" content="Florida Speed Academy | Fear the Standard">
+<meta property="og:image" content="https://floridaspeedacademy.com/assets/fsa-home-no-prices.png">
+<title>Florida Speed Academy Inc. | FS NextGen Athletics</title>
+<style>
+:root{color-scheme:dark;--blue:#005BFF;--gold:#FFE200;--dark:#03070e}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#03070e;color:#fff;font:500 16px/1.45 system-ui, -apple-system, Segoe UI, Arial, sans-serif}
+a{color:inherit}
+a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.desktop{position:relative;width:100%;max-width:1199px;margin:0 auto}
+.desktop img{display:block;width:100%;height:auto}
+.hot{position:absolute;display:block;background:transparent;z-index:1}
+.hot:hover{background:rgba(255,226,0,.08)}
+.hot:focus-visible{outline:3px solid #ffe200;outline-offset:-3px}
+.mobile{display:none}
+.info{max-width:1040px;margin:0 auto;padding:50px 22px 78px;text-align:center}
+.info h2{font-size:clamp(24px,4vw,38px);font-weight:1000;font-style:italic;letter-spacing:.02em;margin:0 0 8px}
+.info p{max-width:750px;margin:12px auto 22px;color:#cfd9ec}
+.info a{color:#ffe200;font-weight:800}
+.quicklinks{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.quicklinks a{padding:12px 18px;border:1px solid #2958b9;border-radius:5px;text-decoration:none}
+footer{background:#080b13;border-top:2px solid #123da7;text-align:center;padding:28px 16px;color:#adb8cf;font-size:14px}
+footer a{color:#ffe200}
+@media(max-width:699px){
+.desktop{display:none}
+.mobile{display:block;overflow:hidden}
+.mobile header{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;background:#050914;border-bottom:2px solid #104ede;gap:8px}
+.mobile header a{font-weight:900;font-size:12px;text-decoration:none;white-space:nowrap}
+.mobile header .m-donate{background:#ffe200;color:#111;padding:11px 15px;transform:skew(-7deg);border-radius:3px}
+.mobile .brand{display:flex;align-items:center;gap:5px}
+.mobile .brand img{width:54px;height:54px;object-fit:contain}
+.mobile .brand span{font-weight:1000;line-height:1.0;letter-spacing:.025em}
+.mobile .brand small{display:block;font-size:10px;color:#ffe200;letter-spacing:.12em}
+.mobile .hero{padding:18px 20px 35px;text-align:center;background:radial-gradient(ellipse at 50% 38%,#1645a9 0%,#081a48 43%,#020712 84%);border-bottom:3px solid #ffe200}
+.mobile .hero-logo{width:min(72vw,310px);aspect-ratio:1;object-fit:contain;display:block;margin:-3px auto -19px}
+.mobile h1{font-size:clamp(26px,8vw,40px);font-weight:1000;font-style:italic;line-height:1;letter-spacing:.008em;text-shadow:2px 3px #05060d;margin:8px auto}
+.mobile .tag{color:#ffe200;letter-spacing:.14em;text-transform:uppercase;font-size:11px;font-weight:900}
+.mobile .motto{margin:20px auto;color:#ffe200;font-weight:950;font-style:italic;font-size:24px}
+.mobile .values{font-size:12px;color:white;font-weight:900;line-height:1.9}
+.mobile .m-actions{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.mobile .pill{display:inline-block;padding:12px 18px;background:linear-gradient(#ffed36,#e0a300);color:#0b0b10;font-size:14px;font-weight:950;text-decoration:none;transform:skew(-6deg);border-radius:3px}
+.mobile .pill.blue{background:linear-gradient(#1284ff,#0036be);color:white;border:1px solid #57b2ff}
+.mobile .programs{background:linear-gradient(#08112a,#030711);padding:25px 14px 35px}
+.mobile .programs h2{background:linear-gradient(#ffdc34,#ec9b00);width:max-content;max-width:100%;margin:0 auto 18px;padding:8px 25px;color:#07080b;text-align:center;font-size:28px;transform:skew(-7deg);font-style:italic;font-weight:1000}
+.mobile .p-card{border:2px solid #086eff;background:#080f1f;border-radius:14px;overflow:hidden;max-width:420px;margin:0 auto 18px;box-shadow:0 0 12px #005bff99}
+.mobile .p-card figure{margin:0;height:220px;overflow:hidden;background:#0c182a}
+.mobile .p-card figure img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.mobile .p-card:first-of-type figure img{object-position:center top}
+.mobile .p-card h3{text-align:center;background:linear-gradient(110deg,#0062f9,#020835 80%);margin:0;padding:9px 8px;border-top:1px solid #319aff;border-bottom:2px solid #1686ff;font-size:28px;font-style:italic;font-weight:1000;text-transform:uppercase}
+.mobile .p-card p{color:white;text-align:center;text-transform:uppercase;font-size:13px;font-style:italic;line-height:1.6;letter-spacing:.015em;margin:12px 15px}
+.mobile .p-card .action{text-align:center;margin:16px 0 20px}
+.mobile .p-card .action a{background:#ffe200;color:#050509;padding:11px 29px;font-weight:950;font-style:italic;text-decoration:none;display:inline-block;transform:skew(-8deg)}
 }
-.hero {
-  background:
-    radial-gradient(ellipse 70% 62% at 88% 15%, rgba(0,91,255,.24), transparent 72%),
-    radial-gradient(ellipse 55% 70% at 2% 82%, rgba(0,91,255,.14), transparent 75%),
-    radial-gradient(ellipse at 50% 29%,rgba(255,226,0,.035),transparent 58%),
-    linear-gradient(160deg,#2E3237 0%,#24272B 47%,#1C1E22 100%);
-}
-.program, .shop-option {
-  background:linear-gradient(148deg,rgba(0,91,255,.12),transparent 63%),var(--graphite-soft);
-}
-.gallery figcaption {
-  background:linear-gradient(115deg,rgba(0,91,255,.14),transparent 70%),#34383E;
-}
-
-
-/* FLORIDA SPEED ACADEMY — three-color design system
-   Royal blue #005BFF | Yellow #FFE200 | Graphite #24272B.
-   Product artwork, athlete photos and official logo are deliberately unchanged.
-   No text outlines. */
-:root{ --royal:#005BFF;--yellow:#FFE200;--graphite:#24272B;--graphite-deep:#191B1F;--graphite-soft:#30343A; }
-.site{background:radial-gradient(ellipse 80% 550px at 97% 25%,rgba(0,91,255,.14),transparent 75%),radial-gradient(ellipse 75% 600px at 0% 70%,rgba(0,91,255,.13),transparent 77%),var(--graphite);}
-.intro{background:radial-gradient(ellipse at 51% 38%,rgba(0,91,255,.22),transparent 55%),radial-gradient(ellipse at 82% 88%,rgba(255,226,0,.07),transparent 45%),var(--graphite-deep);}
-.intro::before{background:repeating-linear-gradient(127deg,transparent 0 145px,rgba(0,91,255,.06) 146px,transparent 148px);}
-.hero{background:radial-gradient(ellipse 58% 65% at 88% 25%,rgba(0,91,255,.28),transparent 75%),radial-gradient(ellipse 65% 60% at 1% 82%,rgba(0,91,255,.18),transparent 77%),linear-gradient(155deg,#30343A 0%,#24272B 54%,#191B1F 100%);}
-.hero::after{background:linear-gradient(90deg,var(--royal) 0 38%,var(--yellow) 38% 100%);}
-.action-primary{background:var(--yellow);color:var(--graphite);}
-.action-secondary{border-color:var(--royal);background:rgba(0,91,255,.19);color:var(--yellow);}
-.action-secondary:hover{background:rgba(0,91,255,.30);}
-.values{background:var(--yellow);color:var(--graphite);}
-.section-tag,.hero-kicker,.hero-foot,.shop-tag{color:var(--yellow);}
-.gallery figure{border-color:rgba(0,91,255,.62);}
-.gallery figcaption{background:linear-gradient(125deg,rgba(0,91,255,.17),transparent 75%),var(--graphite-soft);border-top:2px solid var(--yellow);}
-.program,.shop-option{background:linear-gradient(138deg,rgba(0,91,255,.15),transparent 62%),var(--graphite-soft);border-bottom:2px solid rgba(0,91,255,.50);}
-.program{border-top-color:var(--yellow);}
-.shop-option{border-top:3px solid var(--yellow);border-left:1px solid rgba(0,91,255,.55);border-right:1px solid rgba(0,91,255,.55);}
-.shop-photos{background:var(--graphite-deep);}
-.shop-fit{border-left:3px solid var(--royal);background:var(--graphite-deep);}
-.shop-detail-link{background:var(--yellow);color:var(--graphite);}
-.stripe-buy.is-ready{background:var(--yellow);color:var(--graphite);box-shadow:inset 5px 0 var(--royal);}
-footer{border-top-color:var(--royal);}
-/* Text remains solid: no text strokes, blue text borders or shadow outlines. */
-.hero-title,.section-title,.shop-title,.program h3,.intro-slogan{ -webkit-text-stroke:0 transparent;text-shadow:none; }
-
-
-/* 2027 athlete registration teaser — site-wide blue/yellow/graphite design */
-.registration-teaser {
-  border-top:1px solid rgba(255,226,0,.42);
-  border-bottom:1px solid rgba(0,91,255,.55);
-  background:
-    radial-gradient(ellipse 75% 115% at 98% 10%,rgba(0,91,255,.22),transparent 68%),
-    linear-gradient(155deg,#252930,#1c1e23);
-}
-.reg-lead {display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.83fr);gap:30px;align-items:center}
-.reg-lead .section-copy {max-width:660px}
-.reg-benefits {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:26px 0 0;padding:0;list-style:none}
-.reg-benefits li {background:rgba(0,91,255,.105);border-left:3px solid #FFE200;
- padding:14px 15px;line-height:1.4;color:#f7f8fb;font-weight:700;font-size:13px}
-.reg-dates {border:1px solid #005BFF;background:#171b25;padding:22px;
- box-shadow:0 18px 50px rgba(0,0,0,.2)}
-.reg-date-row {display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid #404859}
-.reg-date-row:last-child {border-bottom:0}
-.reg-date-price {font:900 39px/.98 var(--display);color:var(--yellow);white-space:nowrap}
-.reg-date-row strong {display:block;margin:0 0 5px;font-size:14px}
-.reg-date-row small {display:block;color:#CDD3DB;line-height:1.5}
-.reg-footnote {font-size:12px;line-height:1.6;color:#C9D0D8;margin-top:18px}
-.reg-more {display:inline-flex;align-items:center;justify-content:center;margin-top:25px;
- padding:15px 21px;border:2px solid var(--yellow);color:#171b20;
- background:var(--yellow);font-size:12px;font-weight:900;letter-spacing:.09em;
- text-decoration:none;text-transform:uppercase}
-.reg-more:hover,.reg-more:focus-visible {background:#005BFF;color:#fff;border-color:#005BFF}
-@media(max-width:840px){.reg-lead{grid-template-columns:1fr}.reg-benefits{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.reg-benefits{grid-template-columns:1fr}}
-
-
-/* One-click photo gallery: no giant home photo wall */
-.gallery-invite { border-top:2px solid rgba(0,91,255,.60); border-bottom:2px solid rgba(255,226,0,.55);
- background:radial-gradient(ellipse 75% 105% at 95% 10%,rgba(0,91,255,.26),transparent 75%),linear-gradient(145deg,#30343A,#24272B); }
-.gallery-invite-inner {max-width:830px;margin:auto;text-align:center;}
-.gallery-invite .section-copy {margin:0 auto;}
-.gallery-invite-button { display:inline-flex;gap:16px;align-items:center;justify-content:center;min-height:56px;
- margin-top:28px;padding:16px 28px;background:var(--yellow);border:2px solid var(--yellow);
- text-decoration:none;color:var(--graphite);font:900 13px var(--body);letter-spacing:.08em; }
-.gallery-invite-button:hover,.gallery-invite-button:focus-visible {background:var(--royal);color:#fff;border-color:var(--royal);}
-.gallery-invite-button span {font-size:20px;line-height:0;}
-
-
-/* COMMUNITY IMPACT + DONATIONS: royal blue, yellow, graphite only */
-.community-support {
-  border-top:2px solid rgba(0,91,255,.72);
-  background:
-    radial-gradient(ellipse 65% 100% at 100% 8%,rgba(0,91,255,.22),transparent 72%),
-    linear-gradient(148deg,var(--graphite-soft),var(--graphite-deep));
-}
-.community-support .section-copy {max-width:810px;}
-.donation-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin:29px 0 27px;}
-.donation-item {padding:27px 23px;background:rgba(25,27,31,.66);border-top:4px solid var(--yellow);border-bottom:2px solid var(--royal);}
-.donation-item h3 {font:900 27px/1.05 var(--display);text-transform:uppercase;color:var(--yellow);margin:0 0 12px;}
-.donation-item p {font:400 14px/1.7 var(--body);color:#e1e4ea;margin:0;}
-.donation-footer {display:flex;flex-wrap:wrap;align-items:center;gap:16px;}
-.donate-button {display:inline-flex;align-items:center;justify-content:center;text-align:center;padding:17px 24px;min-height:53px;
-  background:var(--yellow);color:#202329;text-decoration:none;font-weight:900;font-size:12px;letter-spacing:.09em;
-  text-transform:uppercase;border:2px solid var(--yellow);border-radius:3px;transition:background .18s ease,border-color .18s ease,color .18s ease;}
-.donate-button:hover,.donate-button:focus-visible {background:var(--royal);border-color:var(--royal);color:#fff;}
-.donation-footnote {max-width:640px;color:var(--muted);font-size:12px;line-height:1.65;}
-@media(max-width:800px){.donation-grid{grid-template-columns:1fr;gap:13px}.donation-item{padding:22px}}
-
 </style>
-  <link rel="stylesheet" href="assets/brand-theme.css">
 </head>
-<body class="intro-active page-home">
-  <div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Florida Speed Academy loading screen">
-    <div class="intro-name">FLORIDA <span>SPEED</span> ACADEMY</div>
-    <div class="intro-content">
-      <div class="clock" aria-label="Animated circular countdown around FS lion logo">
-        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
-          <defs>
-            <linearGradient id="ring-gradient"><stop offset="0" stop-color="#005BFF"/><stop offset=".65" stop-color="#005BFF"/><stop offset=".66" stop-color="#FFE200"/><stop offset="1" stop-color="#FFE200"/></linearGradient>
-            <filter id="ring-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation=".55" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <circle class="ring-track" cx="50" cy="50" r="46" pathLength="100"/>
-          <circle class="ring-progress" id="ring-progress" cx="50" cy="50" r="46" pathLength="100"/>
-          <circle class="ring-ticks" cx="50" cy="50" r="41" pathLength="100"/>
-        </svg>
-        <img class="intro-logo" src="assets/fs-lion-hero.png" alt="Official FS lion logo" width="1242" height="1046" fetchpriority="high">
-      </div>
-      <div class="countdown" aria-live="off"><strong id="counter">04</strong><span>SECONDS</span></div>
-      <div class="intro-slogan">FEAR THE STANDARD</div>
-      <div class="intro-values">GRIT · SWAG · EFFORT</div>
-    </div>
-    <button class="skip" id="skip-intro" type="button">SKIP INTRO</button>
-  </div>
-
-  <main id="main" class="site">
-    <section class="hero" id="home" aria-labelledby="hero-title">
-      <div class="hero-kicker">FLORIDA SPEED ACADEMY · FS NEXTGEN ATHLETICS</div>
-      <img class="hero-logo" src="assets/fs-lion-hero.png" alt="FS NextGen roaring lion and interlocking FS emblem" width="1242" height="1046" fetchpriority="high">
-      <h1 class="hero-title" id="hero-title">BE WHO YOU<br><span>SAY YOU ARE.</span></h1>
-      <p class="hero-summary">Building the next generation of athletes through grit, mentorship, and opportunity in Central Florida.</p>
-      <div class="actions">
-        <a href="registration.html" class="action action-primary">ATHLETE REGISTRATION</a>
-        <a href="#programs" class="action action-secondary">EXPLORE PROGRAMS</a>
-        <a href="gallery.html" class="action action-secondary">PHOTO GALLERY</a>
-        <a href="store.html" class="action action-secondary">TEAM STORE</a>
-      </div>
-      <div class="hero-foot">FEAR THE STANDARD · GSE</div>
-    </section>
-
-    <div class="values" aria-label="Our values"><span>GRIT</span><span aria-hidden="true">◆</span><span>SWAG</span><span aria-hidden="true">◆</span><span>EFFORT</span></div>
-
-    <section class="content gallery-invite" id="athletes" aria-labelledby="athlete-title">
-      <div class="gallery-invite-inner">
-        <div class="section-tag">REAL ATHLETES · REAL RESULTS · REAL MOMENTS</div>
-        <h2 class="section-title" id="athlete-title">OUR PHOTO <span>GALLERY.</span></h2>
-        <p class="section-copy">All 23 athlete photos are organized on one dedicated page. Tap below to see our NextGen athletes in action, race-day memories and medals.</p>
-        <a class="gallery-invite-button" href="gallery.html">VIEW ALL 23 PHOTOS <span aria-hidden="true">↗</span></a>
-      </div>
-    </section>
-
-    <section class="content programs" id="programs" aria-labelledby="programs-title">
-      <div class="section-tag">TRAIN · COMPETE · GROW</div>
-      <h2 class="section-title" id="programs-title">OUR <span>PROGRAMS.</span></h2>
-      <p class="section-copy">Youth athletics and support built around the development of the whole athlete.</p>
-      <div class="program-cards">
-        <article class="program"><h3>TRACK &amp; FIELD</h3><p>Speed, technique, development and competition for young athletes.</p></article>
-        <article class="program"><h3>FOOTBALL</h3><p>Development opportunities rooted in athleticism, teamwork and discipline.</p></article>
-        <article class="program"><h3>YOUTH SERVICES</h3><p>Mentorship, tutoring and counseling support beyond sports.</p></article>
-      </div>
-    </section>
-
-
-    
-    <section class="content registration-teaser" id="registration" aria-labelledby="registration-title">
-      <div class="reg-lead">
-        <div>
-          <div class="section-tag">2027 OUTDOOR SEASON · ATHLETE ENROLLMENT</div>
-          <h2 class="section-title" id="registration-title">JOIN THE <span>NEXTGEN.</span></h2>
-          <p class="section-copy">Registration covers the essentials that keep the team organized, training and growing together. Athlete registration is separate from the Team Store apparel packages.</p>
-          <ul class="reg-benefits">
-            <li>AAU Team Registration</li><li>Athlete Registration</li>
-            <li>Weekly Track Rental</li><li>Monthly Team Activities</li>
-          </ul>
-          <a class="reg-more" href="registration.html#signup">Register &amp; Pay $150</a>
-          <a class="reg-more" href="registration.html" style="margin-left:10px;background:transparent;color:#FFE200;border-color:#005BFF">Full Registration Details</a>
-        </div>
-        <aside class="reg-dates" aria-label="2027 registration payment dates">
-          <div class="section-tag">SAVE YOUR PLACE · IMPORTANT DATES</div>
-          <div class="reg-date-row">
-            <div class="reg-date-price">$50</div>
-            <div><strong>Reserve your spot</strong><small>December 1, 2026</small></div>
-          </div>
-          <div class="reg-date-row">
-            <div class="reg-date-price">$150</div>
-            <div><strong>Registration fees due</strong><small>By January 15, 2027</small></div>
-          </div>
-          <p class="reg-footnote">The $50 spot hold and $150 fee deadline are listed separately. Contact the team to confirm how the spot-hold payment is applied.</p>
-        </aside>
-      </div>
-    </section>
-
-    <section class="content shop-intro" id="store" aria-labelledby="store-heading">
-      <div class="section-tag">OFFICIAL FS NEXTGEN GEAR</div>
-      <h2 class="section-title" id="store-heading">TEAM <span>STORE.</span></h2>
-      <p class="section-copy">Two athlete packages, built for the way our boys and girls compete. Choose your set to see the warm-up fit, uniforms, and included backpack.</p>
-      <div class="shop-options">
-        <article class="shop-option" aria-labelledby="boys-package-title">
-          <div class="shop-photos">
-            <img src="store/boys-full-tracksuit.jpg" loading="lazy" alt="FS NextGen boys relaxed-fit blue hooded tracksuit, front and back">
-            <img src="store/graphite-competition-kit.jpg" loading="lazy" alt="Boys graphite competition uniform">
-            <img src="store/yellow-competition-kit.jpg" loading="lazy" alt="Boys yellow competition uniform">
-          </div>
-          <div class="shop-text">
-            <div class="shop-tag">BOYS · TEAM PACKAGE</div>
-            <h3 class="shop-title" id="boys-package-title">BOYS <span>PERFORMANCE SET</span></h3>
-            <p class="shop-copy">Roomier warm-ups for comfort and movement, two competition uniform colors, and matching team gear.</p>
-            <div class="shop-fit">Warm-up fit: relaxed / looser</div>
-            <p class="shop-price"><strong>$150 USD</strong> · one-time package purchase</p>
-            <a class="shop-detail-link" href="store.html#boys">View Boys Package</a>
-            <div class="stripe-payment" aria-label="Boys package payment">
-              <button type="button" class="stripe-buy" data-stripe-package="boys" disabled>Pay $150 with Stripe</button>
-              <span class="stripe-status">Secure one-time $150 checkout. Athlete name, warm-up size and uniform size requested in Stripe.</span>
-            </div>
-          </div>
-        </article>
-        <article class="shop-option" aria-labelledby="girls-package-title">
-          <div class="shop-photos">
-            <img src="store/girls-full-tracksuit.jpg" loading="lazy" alt="FS NextGen girls fitted blue hooded tracksuit, front and back">
-            <img src="store/girls-graphite-checkerboard.jpg" loading="lazy" alt="Girls graphite and blue checkerboard competition uniform">
-            <img src="store/girls-pink-checkerboard.jpg" loading="lazy" alt="Girls pink and blue checkerboard competition uniform">
-          </div>
-          <div class="shop-text">
-            <div class="shop-tag">GIRLS · TEAM PACKAGE</div>
-            <h3 class="shop-title" id="girls-package-title">GIRLS <span>PERFORMANCE SET</span></h3>
-            <p class="shop-copy">Closer-fitting warm-ups paired with the new graphite-and-blue and pink-and-blue checkerboard competition designs.</p>
-            <div class="shop-fit">Warm-up fit: athletic / tighter</div>
-            <p class="shop-price"><strong>$150 USD</strong> · one-time package purchase</p>
-            <a class="shop-detail-link" href="store.html#girls">View Girls Package</a>
-            <div class="stripe-payment" aria-label="Girls package payment">
-              <button type="button" class="stripe-buy" data-stripe-package="girls" disabled>Pay $150 with Stripe</button>
-              <span class="stripe-status">Secure one-time $150 checkout. Athlete name, warm-up size and uniform size requested in Stripe.</span>
-            </div>
-          </div>
-        </article>
-      </div>
-      <small class="shop-note">Each package is $150 USD. Stripe securely collects payment and requested sizes. The team will coordinate delivery or pickup after purchase.</small>
-    </section>
-
-
-    <section class="content community-support" id="donate" aria-labelledby="donate-title">
-      <div class="section-tag">GIVE BACK · CHANGE A YOUNG LIFE</div>
-      <h2 class="section-title" id="donate-title">SUPPORT OUR <span>ATHLETES.</span></h2>
-      <p class="section-copy">Your donation to Florida Speed Academy goes beyond sports. It helps us support children and families in need with educational resources, tutoring and counseling throughout our program. Contributions can also help athletes access physical therapy and recovery support through our team when appropriate and available. Every gift helps us develop the whole child—in the classroom, in competition and in life.</p>
-      <div class="donation-grid">
-        <article class="donation-item"><h3>EDUCATION &amp; TUTORING</h3>
-          <p>Help young athletes strengthen their academics through school-related resources and tutoring support.</p>
-        </article>
-        <article class="donation-item"><h3>COUNSELING &amp; WELLBEING</h3>
-          <p>Support access to counseling and guidance that promotes confidence, resilience and personal development.</p>
-        </article>
-        <article class="donation-item"><h3>PHYSICAL THERAPY SUPPORT</h3>
-          <p>Help athletes who need physical therapy treatment or recovery services access appropriate team-connected support, subject to availability.</p>
-        </article>
-      </div>
-      <div class="donation-footer">
-        <a class="donate-button" href="https://buy.stripe.com/28EcN7aku9ytaHZaPVcAo01" target="_blank" rel="noopener noreferrer" aria-label="Donate to Florida Speed Academy through secure Stripe checkout">DONATE SECURELY <span aria-hidden="true">&nbsp;↗</span></a>
-        <p class="donation-footnote">Donations are processed securely through Stripe. Services depend on athlete needs and program resources. This donation is separate from team registration and apparel purchases.</p>
-      </div>
-    </section>
-
-    <section class="content mission" id="mission" aria-labelledby="mission-title">
-      <div class="section-tag">MORE THAN A TEAM</div>
-      <h2 class="section-title" id="mission-title">FEAR THE <span>STANDARD.</span></h2>
-      <p class="section-copy">Florida Speed Academy is a 501(c)(3) nonprofit organization committed to expanding access to youth sports, mentorship and personal development.</p>
-    </section>
-    <footer>
-      <span>© <span id="year">2026</span> Florida Speed Academy · FS NextGen Athletics</span>
-      <button type="button" id="replay-intro" class="replay">REPLAY STARTUP</button>
-    </footer>
-  </main>
-  <script>
-    (() => {
-      'use strict';
-      const DURATION_MS = 4000;
-      const overlay = document.querySelector('#intro');
-      const counter = document.querySelector('#counter');
-      const progress = document.querySelector('#ring-progress');
-      const skip = document.querySelector('#skip-intro');
-      const replay = document.querySelector('#replay-intro');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let anim = null;
-      let started = null;
-      let running = false;
-      document.querySelector('#year').textContent = new Date().getFullYear();
-
-      function finish() {
-        if (!running) return;
-        running = false;
-        if (anim !== null) cancelAnimationFrame(anim);
-        anim = null;
-        counter.textContent = '00';
-        progress.style.strokeDashoffset = '0';
-        overlay.classList.add('is-done');
-        overlay.setAttribute('aria-hidden', 'true');
-        overlay.removeAttribute('aria-modal');
-        document.body.classList.remove('intro-active');
-      }
-      function update(now) {
-        if (!running) return;
-        if (started === null) started = now;
-        const passed = Math.min(now - started, DURATION_MS);
-        progress.style.strokeDashoffset = String(100 * (1 - passed / DURATION_MS));
-        counter.textContent = String(Math.ceil(Math.max(0,DURATION_MS - passed) / 1000)).padStart(2,'0');
-        if (passed >= DURATION_MS) return finish();
-        anim = requestAnimationFrame(update);
-      }
-      function start() {
-        if (anim !== null) cancelAnimationFrame(anim);
-        running = true;
-        started = null;
-        counter.textContent = '04';
-        progress.style.strokeDashoffset = '100';
-        overlay.classList.remove('is-done');
-        overlay.removeAttribute('aria-hidden');
-        overlay.setAttribute('aria-modal','true');
-        document.body.classList.add('intro-active');
-        if (reduceMotion.matches) return finish();
-        anim = requestAnimationFrame(update);
-      }
-      skip.addEventListener('click',finish);
-      replay.addEventListener('click',start);
-      const returnedHome = new URLSearchParams(window.location.search).get('skipintro') === '1';
-      start();
-      if (returnedHome) finish(); // Return links go directly to homepage, no intro replay.
-    })();
-  </script>
-
-  <script src="checkout-config.js"></script>
-  <script>
-  (()=>{
-    'use strict';
-    const links = window.FS_STRIPE_LINKS || {};
-    const isOfficialStripeLink = (value) => {
-      try {
-        const u = new URL(value);
-        return u.protocol === 'https:' && u.hostname === 'buy.stripe.com' && u.pathname.length > 1;
-      } catch(e) { return false; }
-    };
-    for (const button of document.querySelectorAll('button[data-stripe-package]')) {
-      const type = button.dataset.stripePackage;
-      const link = links[type];
-      if (isOfficialStripeLink(link)) {
-        button.disabled = false;
-        button.classList.add('is-ready');
-        button.textContent = 'Pay $150 securely with Stripe';
-        button.setAttribute('aria-label', 'Pay $150 securely with Stripe for the '+type+' package');
-        button.addEventListener('click', ()=>{ window.location.assign(link); });
-        const status=button.parentElement.querySelector('.stripe-status');
-        if(status) status.textContent='Secure Stripe checkout · $150 one-time. Athlete name and requested apparel sizes collected.';
-      }
+<body>
+<!-- DESKTOP/TABLET: Exact, approved visual preview; invisible hotspots make the depicted controls functional. -->
+<main>
+<div class="desktop" aria-label="Florida Speed Academy homepage">
+<img src="assets/fsa-home-no-prices.png" alt="Florida Speed Academy FS lion hero and Our Programs: Track and Field, 7v7 Football and Youth Services. Track Field homepage has no prices." width="1199" height="1312" fetchpriority="high">
+<a class="hot" style="left:55.8%;top:1.4%;width:5.9%;height:5.5%" href="index.html" aria-label="Home"><span class="sr-only">Home</span></a>
+<a class="hot" style="left:61.6%;top:1.4%;width:5.9%;height:5.5%" href="about.html" aria-label="About Florida Speed Academy"><span class="sr-only">About</span></a>
+<a class="hot" style="left:67.3%;top:1.4%;width:12.3%;height:5.5%" href="#programs" aria-label="Our programs"><span class="sr-only">Our programs</span></a>
+<a class="hot" style="left:79.5%;top:1.4%;width:8.2%;height:5.5%" href="track-and-field.html#meets" aria-label="Meet schedule"><span class="sr-only">Meet schedule</span></a>
+<a class="hot" style="left:87.8%;top:1.4%;width:5.8%;height:5.5%" href="https://floridaspeedacademy.com/store.html" aria-label="Store"><span class="sr-only">Store</span></a>
+<a class="hot" style="left:92.2%;top:1.1%;width:7.4%;height:6.1%" href="donate.html" aria-label="Donate"><span class="sr-only">Donate</span></a>
+<a class="hot" style="left:27%;top:1.5%;width:34%;height:22.5%" href="index.html" aria-label="Florida Speed Academy homepage logo"><span class="sr-only">Florida Speed Academy</span></a>
+<a class="hot" style="left:20.0%;top:43.2%;width:62%;height:8.0%" href="#programs" aria-label="View our programs"><span class="sr-only">Our programs</span></a>
+<a class="hot" style="left:4.9%;top:87.7%;width:24%;height:6.0%" href="track-and-field.html" aria-label="Explore Track and Field"><span class="sr-only">Track and Field - Learn more</span></a>
+<a class="hot" style="left:37%;top:87.7%;width:24%;height:6.0%" href="7v7-hub.html" aria-label="Explore 7v7 football"><span class="sr-only">7v7 football - Learn more</span></a>
+<a class="hot" style="left:69%;top:87.7%;width:27%;height:6.0%" href="youth-services.html" aria-label="Explore Youth Services"><span class="sr-only">Youth Services - Learn more</span></a>
+</div>
+<!-- MOBILE: The same visual branding and content reflowed for usability on phones. -->
+<div class="mobile">
+<header><a class="brand" href="index.html"><img src="assets/fs-lion-transparent.png" alt="FS Lion logo"><span>FLORIDA<br>SPEED ACADEMY<small>FS NEXTGEN ATHLETICS</small></span></a><a href="donate.html" class="m-donate">DONATE</a></header>
+<section class="hero"><img class="hero-logo" src="assets/fs-lion-transparent.png" alt="Florida Speed Academy FS lion emblem"><h1>FLORIDA SPEED<br>ACADEMY INC.</h1><div class="tag">FS NEXTGEN ATHLETICS</div><div class="tag">BUILT FOR SPEED. DESIGNED FOR GREATNESS.</div><div class="motto">FEAR THE STANDARD</div><div class="values">GSE — GRIT · SWAG · EFFORT<br>BE WHO YOU SAY YOU ARE</div><div class="m-actions"><a class="pill blue" href="#programs">OUR PROGRAMS</a><a class="pill" href="donate.html">DONATE</a></div></section>
+<section class="programs" id="programs"><h2>OUR PROGRAMS</h2>
+<article class="p-card"><figure><img src="assets/track-athlete-original.jpg" alt="FS NextGen athlete at track and field meet"></figure><h3>TRACK & FIELD</h3><p>Training · Meet Schedule<br>Registration · Athlete Profiles</p><div class="action"><a href="track-and-field.html">LEARN MORE ›</a></div></article>
+<article class="p-card"><figure><img src="assets/seven-on-seven-preview.jpg" alt="7v7 football athlete graphic"></figure><h3>7V7 FOOTBALL</h3><p>Uniforms · Schedule<br>Registration · Team Merchandise</p><div class="action"><a href="7v7-hub.html">LEARN MORE ›</a></div></article>
+<article class="p-card"><figure><img src="assets/youth-services-preview.jpg" alt="Youth Services counseling tutoring and mentorship graphic"></figure><h3>YOUTH SERVICES</h3><p>Counseling · Tutoring<br>Mentorship</p><div class="action"><a href="youth-services.html">LEARN MORE ›</a></div></article>
+</section></div>
+</main>
+<script>
+// In the exact visual, OUR PROGRAMS begins around 43% down the image.
+// On mobile, use the native #programs section instead.
+for (const a of document.querySelectorAll('.desktop a[href="#programs"]')) {
+  a.addEventListener('click', (event) => {
+    if (window.matchMedia('(min-width:700px)').matches) {
+      event.preventDefault();
+      const el = document.querySelector('.desktop');
+      window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY + el.offsetHeight * .435, behavior: 'smooth'});
     }
-  })();
-  </script>
-
-<!-- FS NEXTGEN 7V7 FOOTBALL -->
-<section id="nextgen-7v7" style="background:linear-gradient(135deg,#24272B,#005BFF);color:white;text-align:center;padding:65px 20px;border-top:4px solid #FFE200;">
-  <p style="color:#FFE200;font-weight:900;">FLORIDA SPEED ACADEMY</p>
-  <h2 style="font-size:clamp(32px,6vw,60px);">NEXTGEN 7V7 FOOTBALL</h2>
-  <p>SPEED. SKILL. FOOTBALL IQ.</p>
-  <p>Developing the next generation of playmakers.</p>
-  <h3 style="color:#FFE200;font-size:30px;">$200 REGISTRATION</h3>
-  <p>Includes uniforms and practice facility.</p>
-  <p>Payment due before the first practice.</p>
-  <a href="7v7.html" style="display:inline-block;background:#FFE200;color:#24272B;padding:18px 30px;margin-top:20px;font-weight:900;text-decoration:none;border-radius:5px;">VIEW 7V7 &amp; REGISTER</a>
-</section>
-<!-- END 7V7 SECTION -->
-
+  });
+}
+</script>
+<script src="fsa-lion-intro.js" defer></script>
 </body>
 </html>
