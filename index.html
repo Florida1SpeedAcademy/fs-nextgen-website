@@ -16,6 +16,68 @@
   <link rel="stylesheet" href="assets/homepage-2027/base.css">
   <link rel="stylesheet" href="assets/homepage-2027/style.css?v=track-lanes-1">
   <script src="assets/homepage-2027/app.js" defer></script>
+
+  <style id="compact-homepage">
+    /* Compact layout for the current homepage, retaining its colors and content. */
+    .navigation { min-height:80px; }
+    .hero-grid { gap:32px; padding-block:28px; align-items:center; }
+    .hero-copy { min-width:0; }
+    .hero-copy::before { height:100%; left:-48px; right:-32px; }
+    #hero-title { font-size:clamp(1.6rem,3.2vw,2.85rem); line-height:1.18; letter-spacing:0; }
+    #hero-title .hero-line { display:block; color:inherit; text-wrap:balance; }
+    .hero .eyebrow { margin-bottom:12px; }
+    .hero-lead { margin-block:16px; }
+    .hero .button-row { gap:12px 20px; }
+    .hero-facts { margin-top:20px; padding-top:16px; }
+    .hero-image { min-height:0; height:auto; width:min(100%,360px); justify-self:end; aspect-ratio:3 / 4; }
+    .hero .hero-image>img { position:relative; height:auto; width:100%; object-fit:contain; }
+    .hero-image figcaption { left:20px; bottom:20px; }
+    .hero-image figcaption strong { font-size:2.4rem; }
+    .section { padding-block:64px; }
+    .section-heading { gap:32px; margin-bottom:28px; }
+    .season { padding-block:56px; }
+    .season-grid,.academy-grid,.faq-grid { gap:48px; }
+    .track-program { padding:28px; min-height:0; }
+    .program-top { margin-bottom:20px; }
+    .track-bottom { margin-top:24px; padding-top:20px; flex-wrap:wrap; }
+    .academy-mark { min-height:320px; padding:24px; }
+    .academy-mark img { max-height:220px; }
+    .questions { padding-block:32px 56px; }
+    summary { min-height:64px; padding-block:16px; }
+    .join { padding-block:32px; }
+    .join h2 { max-width:none; font-size:clamp(1.35rem,2.5vw,2rem); text-wrap:balance; }
+    .footer { padding-top:40px; }
+    .footer-grid { padding-bottom:32px; }
+    @media(max-width:900px) {
+      .hero-grid { gap:24px; }
+      .season-grid,.academy-grid,.faq-grid { gap:28px; }
+      .section { padding-block:48px; }
+      .navigation { min-height:76px; }
+    }
+    @media(max-width:600px) {
+      .navigation { min-height:72px; }
+      .hero-grid { padding-block:20px 24px; gap:24px; }
+      #hero-title { font-size:clamp(1.4rem,6.2vw,2.3rem); }
+      .hero-lead { margin-block:14px; }
+      .hero-facts { margin-top:16px; padding-top:12px; }
+      .hero-image { width:min(100%,300px); justify-self:center; }
+      .hero-image figcaption strong { font-size:2rem; }
+      .section,.season { padding-block:36px; }
+      .section-heading { gap:16px; margin-bottom:24px; }
+      .track-program,.fees { padding:20px; }
+      .program-top { flex-wrap:wrap; }
+      .track-details { flex-wrap:wrap; gap:8px 16px; margin-block:16px 20px; }
+      .track-bottom { margin-top:20px; padding-top:16px; }
+      .program-row { grid-template-columns:88px minmax(0,1fr); gap:16px; }
+      .program-row img { width:88px; }
+      .academy-mark { min-height:280px; }
+      .academy-mark img { height:190px; }
+      .academy-mark p { margin-top:12px; }
+      .questions { padding-block:12px 36px; }
+      .join-inner { gap:20px; }
+      .footer-grid { gap:24px; }
+    }
+  </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -40,7 +102,7 @@
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">CENTRAL FLORIDA / YOUTH ATHLETICS</p>
-          <h1 id="hero-title">BUILT FOR<br><span>SPEED.</span><br>DESIGNED FOR<br><span>GREATNESS.</span></h1>
+          <h1 id="hero-title"><span class="hero-line">BUILT FOR <span>SPEED.</span></span><span class="hero-line">DESIGNED FOR <span>GREATNESS.</span></span></h1>
           <p class="hero-lead">Track &amp; field. 7v7 football. Growth beyond the game. The next generation starts here.</p>
           <div class="button-row"><a class="button yellow" href="registration.html#signup">Register for 2027 track <span aria-hidden="true">↗</span></a><a class="text-link light" href="#programs">Explore programs <span aria-hidden="true">↓</span></a></div>
           <div class="hero-facts"><span><strong>AGES 5–14</strong>2027 track &amp; field</span><span><strong>AAU</strong>Competition focus</span><span><strong>CENTRAL FL</strong>Our community</span></div>
