@@ -80,3 +80,12 @@ The 7v7 homepage program card and 7v7 hero both display `assets/underdog-mentali
 - Updated the homepage under the Track & Field programs, Track & Field pricing comparison, and registration information. The registration dropdown already included these exact amounts and still does.
 - These track registration fees are separate from the standalone team-store merchandise. Do not confuse the store's existing $150 athlete apparel bundle with the $150 indoor-season enrollment fee. Confirm package overlap with the staff before accepting duplicate payments.
 - Program prices are advertised, but the static registration form still creates an email inquiry and does **not** process or collect payment.
+
+
+## Athlete registration (Google Docs / Google Forms)
+
+- A new `REGISTER ATHLETE` button is included in the main navigation and homepage; it points to `registration.html#signup`.
+- The registration page has a Google Docs-compatible template (`FS_NextGen_2027_Athlete_Registration_Google_Docs_Template.docx`). To use it in Google Docs, upload it to Drive and open it with Google Docs. Make one private copy for each family.
+- The existing on-site web form currently uses a `mailto:` message and is NOT connected to Google Forms, Sheets, or payment processing. Do not describe it as completed enrollment.
+- For a real online submission workflow: create a form at https://forms.google.com, add athlete and guardian fields and the $150/$275/$375 program choices, select Responses → Link to Sheets, then replace the website registration CTA URL with the published Google Form responder link. Check access permissions and test with a dummy submission before publishing.
+- **Privacy:** Do not use one shared editable Google Doc for all athlete registrations. Restrict access to submissions; avoid payment card data and sensitive medical information.

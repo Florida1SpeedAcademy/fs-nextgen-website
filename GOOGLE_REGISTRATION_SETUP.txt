@@ -1,0 +1,13 @@
+FS NEXTGEN — SET UP PRIVATE GOOGLE ATHLETE REGISTRATION
+
+1. In Google Drive, open Google Forms (New → Google Forms) or go to forms.google.com.
+2. Title: FS NextGen Athletics | 2027 Athlete Registration Interest.
+3. Add required questions: Parent/Guardian Name (short answer), Contact Email (email), Contact Phone (phone), Athlete Full Name (short answer), Athlete Age (number 5–14), Program (multiple choice: Indoor Track — $150; Outdoor Track — $275; Indoor + Outdoor — $375), Parent/guardian confirmation checkbox.
+4. Add optional questions: School, prior sports experience, questions for the coaches.
+5. Do not collect card numbers, SSNs, or medical documents.
+6. Under Responses, choose Link to Sheets → Create a new spreadsheet. Limit access to authorized coaches/staff.
+7. Publish/share the responder form, copy the responder URL (not editor URL). Test submitting dummy information, then check Sheets receives it.
+8. Update the website's REGISTER ATHLETE buttons to use your published responder URL when ready. Until then, the website includes an email inquiry and a Google Docs template.
+9. Do not publicly share a single editable Google Doc containing athlete information.
+
+2027 Track fees: Indoor $150 / Outdoor $275 / Combined $375.

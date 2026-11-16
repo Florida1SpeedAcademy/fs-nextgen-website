@@ -7,7 +7,7 @@ function openEmail(subject,body,status){const url=`mailto:${email}?subject=${enc
 for(const form of document.querySelectorAll('form[data-mailto-subject]')){
  form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const entries=Array.from(new FormData(form).entries()).filter(([key])=>key);const lines=entries.map(([key,val])=>`${key}: ${val}`);const status=form.querySelector('.form-message');openEmail(form.dataset.mailtoSubject,`Hello FS NextGen,\n\n${lines.join('\n')}\n\nPlease let me know the next steps.\n`,status)});
 }
-const params=new URLSearchParams(location.search);const program=document.getElementById('program-select');if(program){const match={'track':'Indoor + Outdoor Track — $375','full':'Indoor + Outdoor Track — $375','indoor':'Indoor Track — $150','outdoor':'Outdoor Track — $275','7v7':'Underdog Mentality 7v7'}[params.get('program')];if(match)program.value=match;}
+const params=new URLSearchParams(location.search);const program=document.getElementById('program-select');if(program){const match={'track':'Track & Field — $225 registration','full':'Track & Field — $225 registration','indoor':'Track & Field — $225 registration','outdoor':'Track & Field — $225 registration','7v7':'Underdog Mentality 7v7'}[params.get('program')];if(match)program.value=match;}
 const uniformGroup=document.getElementById('uniform-group');if(uniformGroup&&params.get('group')==='girls')uniformGroup.selectedIndex=1;
 // Fan gear: order inquiry only. No price or payment is collected.
 const bag=[];const products=[...document.querySelectorAll('.shop-item')];const inquiryItems=document.getElementById('inquiry-items');const send=document.getElementById('submit-inquiry');
