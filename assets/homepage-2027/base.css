@@ -50,3 +50,8 @@ body .program-row img{background:#f1f4fb}
 body .hero-image:after{background:linear-gradient(transparent,rgba(37,39,43,.9))}
 body .skip{background:var(--yellow);color:var(--graphite)}
 body a:focus-visible,body button:focus-visible,body summary:focus-visible{outline:3px solid var(--yellow);outline-offset:5px;box-shadow:0 0 0 2px var(--graphite)}
+
+/* Keep the complete slogan on one line, sized to its content column. */
+body .hero-grid,body .hero-copy{container-type:inline-size}
+body #hero-title{display:flex;flex-wrap:nowrap;align-items:baseline;gap:.25em;min-width:0;max-width:100%;white-space:nowrap;letter-spacing:0;font-size:clamp(.5rem,2vw,2.5rem);font-size:clamp(.5rem,4.5cqi,2.5rem);line-height:1.2}
+body #hero-title .hero-line{display:inline;flex:0 0 auto;white-space:nowrap;text-wrap:nowrap;color:inherit}
