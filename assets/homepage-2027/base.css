@@ -58,3 +58,6 @@ body #hero-title .hero-line{display:inline;flex:0 0 auto;white-space:nowrap;text
 
 /* Remove the hero location label without leaving an empty layout row. */
 body .hero .hero-copy>.eyebrow{display:none;margin:0;padding:0}
+
+/* Hide the square exterior around the circular 7v7 badge, not its artwork. */
+body .program-row img[src="assets/homepage-2027/assets/underdog.webp"]{background:transparent;border-radius:50%;clip-path:circle(49% at 50% 50%)}
