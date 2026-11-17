@@ -70,6 +70,18 @@
   }
   logo.addEventListener('load', () => {
     if (!finished) displayTimer = window.setTimeout(closeIntro, reducedMotion ? 500 : 1800);
+    if (!finished && !reducedMotion && typeof logo.animate === 'function') {
+      try {
+        logo.animate([
+          { transform: 'scale(1)', offset: 0 },
+          { transform: 'scale(1.065)', offset: 0.14 },
+          { transform: 'scale(1)', offset: 0.28 },
+          { transform: 'scale(1.04)', offset: 0.42 },
+          { transform: 'scale(1)', offset: 0.58 },
+          { transform: 'scale(1)', offset: 1 }
+        ], { duration: 1050, iterations: Infinity, easing: 'ease-in-out' });
+      } catch (error) { /* Keep the intro functional without animation support. */ }
+    }
   }, { once: true });
   logo.addEventListener('error', closeIntro, { once: true });
   overlay.addEventListener('click', closeIntro);
