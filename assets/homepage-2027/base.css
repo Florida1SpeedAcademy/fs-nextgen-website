@@ -27,3 +27,26 @@
   body .hero .hero-image figcaption strong{font-size:2.4rem}
   body .hero .photo-tag{top:16px;padding:8px 12px;font-size:.7rem}
 }
+
+/* Homepage palette: royal blue, yellow, and graphite. */
+body{--royal:#2451d1;--yellow:#ffdf00;--graphite:#25272b;--blue-dark:#25272b;--ink:#f5f5f5;--muted:#d1d3d6;--pale:#303237;--line:#ffffff30;background:var(--graphite);color:var(--ink)}
+body .site-header,body .site-header nav,body .programs,body .academy,body .questions,body .footer{background:var(--graphite);color:var(--ink)}
+body .site-header{border-bottom-color:#ffdf004d}
+body .hero,body .track-program,body .join{background:var(--royal);color:#fff}
+body .season{background:#303237;color:var(--ink)}
+body .fees{background:var(--graphite);border-top:3px solid var(--yellow)}
+body .programs .eyebrow,body .academy .eyebrow,body .questions .eyebrow,body .season .eyebrow,body .coach-lines strong,body summary>span{color:var(--yellow)}
+body .text-link{color:var(--yellow)}
+body .text-link.light{color:#fff}
+body .yellow,body .photo-tag,body .standards-strip{background:var(--yellow);color:var(--graphite)}
+body .yellow:hover{background:#fff;color:var(--graphite)}
+body .royal{background:var(--royal);color:#fff}
+body .royal:hover{background:var(--yellow);color:var(--graphite)}
+body .total{color:var(--yellow);border-bottom-color:var(--royal)}
+body .fees dd,body .academy-mark p{color:var(--yellow)}
+body .academy-mark{background:var(--graphite)}
+body .inline:hover{color:var(--yellow)}
+body .program-row img{background:#f1f4fb}
+body .hero-image:after{background:linear-gradient(transparent,rgba(37,39,43,.9))}
+body .skip{background:var(--yellow);color:var(--graphite)}
+body a:focus-visible,body button:focus-visible,body summary:focus-visible{outline:3px solid var(--yellow);outline-offset:5px;box-shadow:0 0 0 2px var(--graphite)}
