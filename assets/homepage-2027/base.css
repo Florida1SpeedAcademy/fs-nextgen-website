@@ -55,3 +55,6 @@ body a:focus-visible,body button:focus-visible,body summary:focus-visible{outlin
 body .hero-grid,body .hero-copy{container-type:inline-size}
 body #hero-title{display:flex;flex-wrap:nowrap;align-items:baseline;gap:.25em;min-width:0;max-width:100%;white-space:nowrap;letter-spacing:0;font-size:clamp(.5rem,2vw,2.5rem);font-size:clamp(.5rem,4.5cqi,2.5rem);line-height:1.2}
 body #hero-title .hero-line{display:inline;flex:0 0 auto;white-space:nowrap;text-wrap:nowrap;color:inherit}
+
+/* Remove the hero location label without leaving an empty layout row. */
+body .hero .hero-copy>.eyebrow{display:none;margin:0;padding:0}
