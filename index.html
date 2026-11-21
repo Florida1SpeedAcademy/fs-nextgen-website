@@ -125,6 +125,67 @@
     }
     #academy .academy-mark p span { color:#2451d1; }
   </style>
+
+  <style id="fsa-athlete-first-layout">
+    /* The athlete photo is the first full-width homepage feature. No image crop. */
+    .athlete-hero { background:#071326; color:#fff; overflow:hidden; }
+    .athlete-hero .athlete-hero-inner {
+      display:flex; justify-content:center; padding-block:clamp(12px,2.4vw,32px);
+    }
+    .athlete-hero .hero-image {
+      position:relative; width:min(100%,1000px); height:clamp(500px,78svh,760px);
+      min-height:0; margin:0 auto; overflow:hidden;
+      background:#081529;
+    }
+    .athlete-hero .hero-image::before {
+      content:""; position:absolute; inset:-25px;
+      background:url("assets/homepage-2027/assets/athlete.webp") center / cover no-repeat;
+      filter:blur(25px) brightness(.34); transform:scale(1.05);
+    }
+    .athlete-hero .hero-image>img {
+      position:absolute !important; inset:0; width:100% !important; height:100% !important;
+      object-fit:contain !important; object-position:center !important;
+    }
+    .athlete-hero .hero-image::after {
+      inset:68% 0 0; background:linear-gradient(transparent,rgba(5,15,32,.55));
+    }
+    .athlete-hero .hero-image figcaption { z-index:2; left:clamp(14px,3vw,36px); bottom:clamp(14px,3vw,36px); }
+    /* Enrollment block is an independent, royal-blue section beneath the image. */
+    .hero-enrollment {
+      background:var(--royal,#2451d1); color:#fff;
+      padding-block:clamp(32px,5vw,72px);
+    }
+    .hero-enrollment .hero-copy { max-width:1100px; margin-inline:auto; }
+    .hero-enrollment .hero-copy::before { display:none !important; }
+    .hero-enrollment .eyebrow {color:var(--yellow,#ffdf00);}
+    .hero-enrollment #hero-title {
+      font-size:clamp(1.65rem,3.2vw,3.15rem);
+      line-height:1.14; letter-spacing:0;
+    }
+    .hero-enrollment #hero-title .hero-line {
+      display:block; color:inherit; text-wrap:balance;
+    }
+    .hero-enrollment .hero-lead {
+      max-width:62ch; font-size:clamp(1rem,1.5vw,1.32rem);
+      margin-block:20px; line-height:1.55;
+    }
+    .hero-enrollment .small-note {
+      max-width:82ch; color:rgba(255,255,255,.82); line-height:1.6;
+    }
+    .hero-enrollment .button-row {margin-block:24px;}
+    .hero-enrollment .text-link.light { color:white; }
+    .hero-enrollment .hero-facts { max-width:900px; }
+    @media(max-width:600px) {
+      .athlete-hero .athlete-hero-inner { padding-block:8px 12px; }
+      .athlete-hero .hero-image { width:100%; height:min(70svh,570px); min-height:420px; }
+      .athlete-hero .hero-image figcaption strong { font-size:clamp(1.65rem,7vw,2.4rem); }
+      .athlete-hero .hero-image .photo-tag {font-size:.65rem;}
+      .hero-enrollment {padding-block:30px 38px;}
+      .hero-enrollment #hero-title {font-size:clamp(1.55rem,6vw,2.35rem);}
+      .hero-enrollment .button-row>.button {width:100%;}
+      .hero-enrollment .hero-facts {grid-template-columns:repeat(3,1fr);}
+    }
+  </style>
 </head>
 <body>
   <div id="fsng-video-intro" aria-label="FS NextGen lion intro" role="status">
@@ -149,8 +210,18 @@
     </div>
   </header>
   <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="wrap hero-grid">
+    <!-- Athlete-first homepage: photo leads; enrollment information immediately follows below. -->
+    <section class="hero athlete-hero" aria-label="FS NextGen featured athlete">
+      <div class="wrap athlete-hero-inner">
+        <figure class="hero-image">
+          <img src="assets/homepage-2027/assets/athlete.webp" width="900" height="1200" alt="An FS NextGen youth track athlete at a meet" fetchpriority="high">
+          <figcaption><span>FS NEXTGEN ATHLETICS</span><strong>THE WORK<br>SHOWS.</strong></figcaption>
+          <span class="photo-tag">2027 / NEXT UP</span>
+        </figure>
+      </div>
+    </section>
+    <section class="hero-enrollment" aria-labelledby="hero-title">
+      <div class="wrap">
         <div class="hero-copy">
           <p class="eyebrow">CENTRAL FLORIDA / YOUTH ATHLETICS</p>
           <h1 id="hero-title"><span class="hero-line">BUILT FOR <span>SPEED.</span></span><span class="hero-line">DESIGNED FOR <span>GREATNESS.</span></span></h1>
@@ -160,11 +231,6 @@
           <p class="small-note">Track &amp; group development: Monday–Wednesday. Field events &amp; mechanics: Thursday. Exact locations, practice times, and season dates are available from the academy.</p>
           <div class="hero-facts"><span><strong>AGES 5–14</strong>2027 track &amp; field</span><span><strong>AAU</strong>Competition focus</span><span><strong>CENTRAL FL</strong>Our community</span></div>
         </div>
-        <figure class="hero-image">
-          <img src="assets/homepage-2027/assets/athlete.webp" width="900" height="1200" alt="An FS NextGen youth track athlete at a meet" fetchpriority="high">
-          <figcaption><span>FS NEXTGEN ATHLETICS</span><strong>THE WORK<br>SHOWS.</strong></figcaption>
-          <span class="photo-tag">2027 / NEXT UP</span>
-        </figure>
       </div>
     </section>
     <div class="standards-strip" aria-label="Academy values"><div class="wrap"><span>GRIT.</span><span>SWAG.</span><span>EFFORT.</span><p>BE WHO YOU SAY YOU ARE.</p></div></div>
