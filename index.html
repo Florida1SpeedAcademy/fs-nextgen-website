@@ -86,10 +86,31 @@
 
     /* During the intro, hide the homepage itself so mobile browser viewport
        resizing cannot expose blue page content beneath the black overlay. */
+    /* Lock the document itself while the intro is on screen: no webpage
+       scrollbars or scroll gestures should appear over the full-screen logo. */
     html.fsng-intro-active,
     html.fsng-intro-active body {
       background:#000 !important;
-      overscroll-behavior:none;
+      overflow:hidden !important;
+      overscroll-behavior:none !important;
+      scrollbar-width:none !important;
+      touch-action:none !important;
+    }
+    html.fsng-intro-active {
+      height:100% !important;
+    }
+    html.fsng-intro-active body {
+      position:fixed !important;
+      inset:0 !important;
+      width:100% !important;
+      height:100% !important;
+      margin:0 !important;
+    }
+    html.fsng-intro-active::-webkit-scrollbar,
+    html.fsng-intro-active body::-webkit-scrollbar {
+      display:none !important;
+      width:0 !important;
+      height:0 !important;
     }
     html.fsng-intro-active body > :not(#fsng-video-intro):not(script) {
       visibility:hidden !important;
