@@ -100,6 +100,31 @@
       #fsng-video-intro,#fsng-video-intro img {animation:none;transition:none}
     }
   </style>
+
+  <!-- Borderless lion logo feature adopted from FSNextGen_Logo_No_Box_Website_Update.zip.
+       Scoped to the academy section; intro and other sections are untouched. -->
+  <style id="fsng-no-box-logo-style">
+    #academy .academy-mark {
+      background:transparent !important;
+      border:0 !important;
+      border-bottom:0 !important;
+      outline:0 !important;
+      box-shadow:none !important;
+      border-radius:0 !important;
+      overflow:visible !important;
+    }
+    #academy .academy-mark::before,
+    #academy .academy-mark::after {
+      content:none !important;
+      display:none !important;
+    }
+    #academy .academy-mark p {
+      color:#15244b;
+      text-align:center;
+      font-size:clamp(1.55rem,3vw,2.3rem);
+    }
+    #academy .academy-mark p span { color:#2451d1; }
+  </style>
 </head>
 <body>
   <div id="fsng-video-intro" aria-label="FS NextGen lion intro" role="status">
@@ -170,7 +195,7 @@
     </section>
     <section id="academy" class="section academy">
       <div class="wrap academy-grid">
-        <div class="academy-mark"><img src="assets/homepage-2027/assets/fs-lion.png" width="320" height="320" alt="FS NextGen roaring lion emblem" loading="lazy"><p>FEAR THE STANDARD.</p></div>
+        <div class="academy-mark"><img src="assets/homepage-2027/assets/fs-lion.png" width="320" height="320" alt="FS NextGen roaring lion emblem" loading="lazy"><p>FEAR THE <span>STANDARD.</span></p></div>
         <div class="academy-copy"><p class="eyebrow">THE NEXTGEN WAY</p><h2>MORE THAN FAST.<br>READY FOR WHAT’S NEXT.</h2><p>Show up. Put in the work. Let your progress speak. At <a class="inline" href="https://floridaspeedacademy.com/" target="_blank" rel="noopener noreferrer">Florida Speed Academy</a>, athletics and youth development go hand in hand.</p><div class="coach-lines"><div><strong>FOUNDATION</strong><span>Coach Moore · Development</span></div><div><strong>SPEED</strong><span>Coach Andrew · Sprints</span></div><div><strong>ENDURANCE</strong><span>Coach Shari · Distance</span></div></div><p>Explore our <a class="inline" href="athlete-profiles.html">athlete profiles</a> and <a class="inline" href="meets.html">meet schedule</a> to learn more about the team and competition.</p><a class="text-link" href="https://floridaspeedacademy.com/track-and-field.html" target="_blank" rel="noopener noreferrer">Meet the track program <span aria-hidden="true">↗</span></a></div>
       </div>
     </section>
