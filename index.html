@@ -81,12 +81,29 @@
 
   <!-- FS NextGen intro matched to the video shown by the site owner: black background, centered FS lion, brief fade to homepage. -->
   <link rel="preload" href="assets/homepage-2027/assets/fs-lion.png" as="image">
+  <script id="fsng-intro-preflight">document.documentElement.classList.add('fsng-intro-active');</script>
   <style id="fsng-video-intro-styles">
+
+    /* During the intro, hide the homepage itself so mobile browser viewport
+       resizing cannot expose blue page content beneath the black overlay. */
+    html.fsng-intro-active,
+    html.fsng-intro-active body {
+      background:#000 !important;
+      overscroll-behavior:none;
+    }
+    html.fsng-intro-active body > :not(#fsng-video-intro):not(script) {
+      visibility:hidden !important;
+    }
+    html.fsng-intro-active #fsng-video-intro::before {
+      content:""; position:fixed; inset:-100vh -100vw;
+      background:#000; pointer-events:none; z-index:-1;
+    }
     #fsng-video-intro {
-      position:fixed; inset:0; z-index:2147483000;
-      width:100%; height:100dvh; min-height:100vh;
+      position:fixed !important; inset:0 !important; z-index:2147483000;
+      width:auto !important; height:auto !important; min-height:0 !important;
       display:flex; align-items:center; justify-content:center;
-      background:#000; overflow:hidden; opacity:1; visibility:visible;
+      background:#000; overflow:visible; opacity:1; visibility:visible;
+      isolation:isolate;
       transition:opacity .46s ease, visibility .46s ease;
     }
     #fsng-video-intro img {
@@ -288,6 +305,7 @@
         if(finished)return;
         finished=true;
         intro.classList.add('fsng-intro-hide');
+        document.documentElement.classList.remove('fsng-intro-active');
         window.setTimeout(function(){if(intro.parentNode)intro.parentNode.removeChild(intro);},500);
       }
       window.setTimeout(finish,4000);
