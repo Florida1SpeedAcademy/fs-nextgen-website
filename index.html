@@ -57,6 +57,77 @@
     }
   </style>
 
+  <style id="fsng-upcoming-events-style">
+    /* Compact header ticker placed between GSE and Menu +. */
+    .site-header .fsng-upcoming-ticker {
+      display:flex; align-items:center; gap:10px;
+      flex:1 1 190px; min-width:0; max-width:480px;
+      margin-inline:clamp(8px,1.8vw,22px);
+      height:44px; color:#fff; overflow:hidden;
+    }
+    .site-header .fsng-ticker-kicker {
+      flex:0 0 auto; font-size:10px; line-height:1;
+      font-weight:900; letter-spacing:.12em; color:#FFE200;
+      white-space:nowrap;
+    }
+    .site-header .fsng-ticker-window {
+      flex:1 1 auto; min-width:0; overflow:hidden;
+      white-space:nowrap; position:relative;
+      -webkit-mask-image:linear-gradient(to right,transparent,#000 4%,#000 92%,transparent);
+      mask-image:linear-gradient(to right,transparent,#000 4%,#000 92%,transparent);
+    }
+    .site-header .fsng-ticker-track {
+      display:flex; width:max-content; align-items:center;
+      animation:fsng-events-scroll 26s linear infinite;
+      will-change:transform;
+    }
+    .site-header .fsng-ticker-set {
+      display:flex; flex:0 0 auto; align-items:center;
+      gap:28px; padding-right:28px;
+    }
+    .site-header .fsng-ticker-event {
+      display:inline-flex; align-items:center; gap:5px;
+      color:#e9eef9; font-size:clamp(11px,.85vw,13px);
+      font-weight:750; text-transform:uppercase; letter-spacing:.035em;
+      line-height:1.3; white-space:nowrap; min-height:35px;
+      text-decoration:none;
+    }
+    .site-header .fsng-ticker-event b {
+      color:#FFE200; font-weight:900; white-space:nowrap;
+    }
+    .site-header .fsng-ticker-event[href]:hover,
+    .site-header .fsng-ticker-event[href]:focus-visible {
+      text-decoration:underline; text-underline-offset:4px;
+    }
+    .site-header .fsng-ticker-window:hover .fsng-ticker-track,
+    .site-header .fsng-ticker-window:focus-within .fsng-ticker-track {
+      animation-play-state:paused;
+    }
+    @keyframes fsng-events-scroll {
+      from {transform:translateX(0);}
+      to {transform:translateX(-50%);}
+    }
+    @media(max-width:900px) {
+      .site-header .fsng-upcoming-ticker {
+        max-width:none; gap:0; height:40px;
+        margin-inline:clamp(7px,2.5vw,16px);
+      }
+      .site-header .fsng-ticker-kicker {display:none;}
+      .site-header .fsng-ticker-event {font-size:11px;}
+      .site-header .menu-button {flex-shrink:0;}
+    }
+    @media(max-width:380px) {
+      .site-header .fsng-upcoming-ticker {margin-inline:6px;}
+      .site-header .fsng-ticker-set {gap:16px;padding-right:16px;}
+      .site-header .fsng-ticker-event {font-size:10px;}
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .site-header .fsng-ticker-track {animation:none;will-change:auto;}
+      .site-header .fsng-ticker-window {overflow-x:auto;scrollbar-width:none;}
+      .site-header .fsng-ticker-window::-webkit-scrollbar {display:none;}
+    }
+  </style>
+
   <style id="compact-homepage">
     /* Compact layout for the current homepage, retaining its colors and content. */
     .navigation { min-height:80px; }
@@ -330,6 +401,25 @@
       <a class="gse-header-mark" href="index.html" aria-label="GSE — Grit, Swag, Effort. Home">
         <span class="gse-g" aria-hidden="true">G</span><span class="gse-s" aria-hidden="true">S</span><span class="gse-e" aria-hidden="true">E</span>
       </a>
+      <div id="fsng-upcoming-ticker" class="fsng-upcoming-ticker" role="region" aria-label="Upcoming FS NextGen events">
+        <span class="fsng-ticker-kicker" aria-hidden="true">UP NEXT</span>
+        <div class="fsng-ticker-window">
+          <div class="fsng-ticker-track">
+            <div class="fsng-ticker-set">
+              <span class="fsng-ticker-event" data-until="2026-11-29"><b>NOV 29</b> OFFSEASON CONDITIONING · 4 PM</span>
+              <a class="fsng-ticker-event" data-until="2026-12-12" href="7v7-hub.html#tryouts"><b>DEC 12</b> 7V7 TRYOUTS · 7:30 AM</a>
+              <a class="fsng-ticker-event" data-until="2027-02-27" href="meets.html"><b>FEB 27</b> FLORIDA GRAND PRIX</a>
+              <a class="fsng-ticker-event" href="registration.html#signup"><b>2027</b> TRACK ENROLLMENT</a>
+            </div>
+            <div class="fsng-ticker-set" aria-hidden="true" inert>
+              <span class="fsng-ticker-event" data-until="2026-11-29"><b>NOV 29</b> OFFSEASON CONDITIONING · 4 PM</span>
+              <span class="fsng-ticker-event" data-until="2026-12-12"><b>DEC 12</b> 7V7 TRYOUTS · 7:30 AM</span>
+              <span class="fsng-ticker-event" data-until="2027-02-27"><b>FEB 27</b> FLORIDA GRAND PRIX</span>
+              <span class="fsng-ticker-event"><b>2027</b> TRACK ENROLLMENT</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <button class="menu-button" type="button" aria-expanded="false" aria-controls="navigation">Menu <span aria-hidden="true">+</span></button>
       <nav id="navigation" aria-label="Main navigation">
         <a href="#programs">Our programs</a>
@@ -427,6 +517,24 @@
       }
       window.setTimeout(finish,4000);
       window.addEventListener('pageshow',function(event){if(event.persisted)finish();});
+    })();
+  </script>
+  <script id="fsng-upcoming-events-expiry">
+    /* Event dates are in Eastern Time; past events drop out automatically. */
+    (function(){
+      var el=document.getElementById('fsng-upcoming-ticker');
+      if(!el)return;
+      try{
+        var parts=new Intl.DateTimeFormat('en-US',{
+          timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'
+        }).formatToParts(new Date());
+        var data={};
+        parts.forEach(function(p){data[p.type]=p.value;});
+        var today=data.year+'-'+data.month+'-'+data.day;
+        el.querySelectorAll('[data-until]').forEach(function(item){
+          if(item.getAttribute('data-until') < today)item.remove();
+        });
+      }catch(err){/* Keep the original ticker visible if time-zone support is missing. */}
     })();
   </script>
 </body>
