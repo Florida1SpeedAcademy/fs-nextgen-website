@@ -130,10 +130,18 @@
     #fsng-video-intro img {
       display:block; width:min(72vw,420px); max-height:72dvh;
       height:auto; object-fit:contain;
-      animation:fsng-logo-appear .38s ease-out both;
+      animation:fsng-logo-appear .38s ease-out both, fsng-logo-heartbeat 1.4s ease-in-out .38s infinite;
     }
     #fsng-video-intro.fsng-intro-hide {opacity:0;visibility:hidden;pointer-events:none}
     @keyframes fsng-logo-appear {from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+    /* A restrained heartbeat: a stronger beat and a softer follow-up, then rest. */
+    @keyframes fsng-logo-heartbeat {
+      0%, 55%, 100% {transform:scale(1);}
+      13% {transform:scale(1.055);}
+      24% {transform:scale(1);}
+      35% {transform:scale(1.03);}
+      45% {transform:scale(1);}
+    }
     @media (prefers-reduced-motion:reduce){
       #fsng-video-intro,#fsng-video-intro img {animation:none;transition:none}
     }
