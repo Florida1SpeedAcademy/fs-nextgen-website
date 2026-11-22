@@ -14,8 +14,15 @@
   <link rel="icon" href="assets/homepage-2027/assets/fs-lion.png">
   <link rel="preload" href="assets/homepage-2027/assets/anton.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/homepage-2027/base.css?v=homepage-20261117-0514">
-  <link rel="stylesheet" href="assets/homepage-2027/style.css?v=homepage-20261117-0514">
+  <link rel="stylesheet" href="assets/homepage-2027/style.css?v=header-clean-20261122">
   <script src="assets/homepage-2027/app.js?v=homepage-20261117-0514" defer></script>
+
+  <style id="fsng-header-brand-hide">
+    /* Permanent header-only removal; footer and loading screen untouched */
+    .site-header .navigation > a.brand,
+    .site-header .navigation > .brand {display:none !important;visibility:hidden !important;}
+    .site-header .navigation {justify-content:flex-end !important;}
+  </style>
 
   <style id="compact-homepage">
     /* Compact layout for the current homepage, retaining its colors and content. */
