@@ -18,10 +18,43 @@
   <script src="assets/homepage-2027/app.js?v=homepage-20261117-0514" defer></script>
 
   <style id="fsng-header-brand-hide">
-    /* Permanent header-only removal; footer and loading screen untouched */
+    /* Replace the removed header logo with GSE / Grit, Swag, Effort.
+       Rushmoxa Demo is marked personal-use only; do not embed that font
+       in the public website until the owner supplies a web-use license. */
     .site-header .navigation > a.brand,
     .site-header .navigation > .brand {display:none !important;visibility:hidden !important;}
-    .site-header .navigation {justify-content:flex-end !important;}
+    .site-header .navigation {justify-content:space-between !important;}
+    .site-header .gse-header-mark {
+      display:inline-flex;
+      align-items:center;
+      flex-shrink:0;
+      white-space:nowrap;
+      gap:.04em;
+      padding:0;
+      min-height:44px;
+      color:#FFE200;
+      text-decoration:none;
+      line-height:1;
+      font-family:"Rushmoxa Demo Regular","Rushmoxa Demo",var(--font-display),Impact,sans-serif;
+      font-size:clamp(2.15rem,4.4vw,3.2rem);
+      font-weight:400;
+      letter-spacing:.025em;
+      text-shadow:0 2px 0 #0008;
+      transform:skew(-5deg);
+    }
+    .site-header .gse-header-mark .gse-g {color:#4285FF;}
+    .site-header .gse-header-mark .gse-s {color:#FFE200;}
+    .site-header .gse-header-mark .gse-e {color:#FFFFFF;}
+    .site-header .gse-header-mark:focus-visible {
+      outline:2px solid #FFE200;
+      outline-offset:6px;
+    }
+    @media(max-width:600px) {
+      .site-header .gse-header-mark {
+        font-size:clamp(2rem,9vw,2.65rem);
+        min-height:40px;
+      }
+    }
   </style>
 
   <style id="compact-homepage">
@@ -293,7 +326,10 @@
 
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
-    <div class="wrap navigation" style="justify-content:flex-end;">
+    <div class="wrap navigation">
+      <a class="gse-header-mark" href="index.html" aria-label="GSE — Grit, Swag, Effort. Home">
+        <span class="gse-g" aria-hidden="true">G</span><span class="gse-s" aria-hidden="true">S</span><span class="gse-e" aria-hidden="true">E</span>
+      </a>
       <button class="menu-button" type="button" aria-expanded="false" aria-controls="navigation">Menu <span aria-hidden="true">+</span></button>
       <nav id="navigation" aria-label="Main navigation">
         <a href="#programs">Our programs</a>
