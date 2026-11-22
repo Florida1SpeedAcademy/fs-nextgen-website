@@ -121,6 +121,39 @@
       .site-header .fsng-ticker-set {gap:16px;padding-right:16px;}
       .site-header .fsng-ticker-event {font-size:10px;}
     }
+    /* The portrait mobile header has insufficient width for three columns.
+       Give events their own visible line beneath GSE and Menu. */
+    @media(max-width:600px) {
+      .site-header .navigation {
+        flex-wrap:wrap !important;
+        align-items:center !important;
+        justify-content:space-between !important;
+        gap:0 !important;
+        padding-top:8px;
+        padding-bottom:7px;
+      }
+      .site-header .gse-header-mark {order:1; flex:0 0 auto;}
+      .site-header .menu-button {order:2; margin-left:auto;}
+      .site-header #fsng-upcoming-ticker {
+        order:3; flex:0 0 100% !important; width:100% !important;
+        min-width:100% !important; max-width:100% !important;
+        height:33px; margin:5px 0 0 !important;
+        padding:3px 4px 0;
+        border-top:1px solid rgba(255,226,0,.42);
+        overflow:hidden; gap:8px;
+      }
+      .site-header .fsng-ticker-kicker {
+        display:inline-block !important;
+        flex-shrink:0; font-size:10px;
+      }
+      .site-header .fsng-ticker-window {
+        display:block; min-width:0 !important;
+        flex:1 1 0 !important;
+        height:28px;
+      }
+      .site-header .fsng-ticker-event {font-size:11px; min-height:25px;}
+      .site-header .fsng-ticker-set {gap:18px; padding-right:18px;}
+    }
     @media(prefers-reduced-motion:reduce) {
       .site-header .fsng-ticker-track {animation:none;will-change:auto;}
       .site-header .fsng-ticker-window {overflow-x:auto;scrollbar-width:none;}
