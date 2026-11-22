@@ -1,0 +1,8 @@
+# Roster endpoints are called by Stripe and by public registration forms.
+# Both handle authentication/validation inside the function.
+# NEVER turn off database RLS or expose a service role key in the website.
+[functions.fsa-roster-register]
+verify_jwt = false
+
+[functions.fsa-stripe-webhook]
+verify_jwt = false
