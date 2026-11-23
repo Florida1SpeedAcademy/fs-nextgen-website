@@ -1,107 +1,254 @@
-(()=>{"use strict";
-const $=id=>document.getElementById(id);
-const cfg=window.FSA_ROSTER_CONFIG||{};
-const show=(id,yes)=>{$(id).hidden=!yes;};
-let db=null,session=null,rows=[],unmatched=[],loaded=false;
-const usd=cents=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format((Number(cents)||0)/100);
-const date=s=>s?new Date(s).toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric"}):"—";
-function message(text){$("message").textContent=text;show("message",!!text);}
-function status(row){
- if(row.balance<=0&&row.paid>0)return"paid";
- if(row.paid>0)return"partial";
- return"unpaid";
-}
-function td(tr,text,cls){const cell=document.createElement("td");cell.textContent=text;if(cls)cell.className=cls;tr.append(cell);return cell;}
-function combined(athletes,payments){
- const byId=new Map(athletes.map(a=>[a.id,{...a,paid:0,balance:0}]));
- const left=[];
- for(const p of payments){
-  if(p.currency!=="usd")continue;
-  const net=Math.max(0,Number(p.amount_cents||0)-Number(p.amount_refunded_cents||0));
-  if(net<=0)continue;
-  const row=p.registration_id&&byId.get(p.registration_id);
-  if(row)row.paid+=net;else left.push({...p,net});
- }
- const results=Array.from(byId.values()).map(r=>({...r,balance:Math.max(0,Number(r.total_due_cents||0)-r.paid)}));
- return {results,left};
-}
-function render(){
- const q=$("search").value.toLocaleLowerCase().trim(),filter=$("filter").value;
- const visible=rows.filter(r=>(filter==="all"||status(r)===filter)&&(!q||[r.first_name,r.last_name,r.guardian_name,r.guardian_email].join(" ").toLocaleLowerCase().includes(q)));
- const body=$("roster-body");body.replaceChildren();
- for(const r of visible){
-  const tr=document.createElement("tr");
-  const name=td(tr,[r.first_name,r.last_name].join(" "));name.style.fontWeight="800";
-  const guardian=td(tr,r.guardian_name||"—");const contact=document.createElement("div");contact.className="muted";contact.textContent=r.guardian_email||"";guardian.append(contact);
-  td(tr,r.program||"Track & Field");td(tr,usd(r.paid),"money");td(tr,usd(r.balance),"money");
-  const state=td(tr,"");const flag=document.createElement("span");flag.className="status "+status(r);flag.textContent=({paid:"PAID",partial:"PARTIAL",unpaid:"UNPAID"})[status(r)];state.append(flag);
-  td(tr,date(r.created_at));body.append(tr);
- }
- show("roster-empty",!visible.length);
- const due=rows.reduce((sum,r)=>sum+r.balance,0),collected=rows.reduce((sum,r)=>sum+r.paid,0);
- $("athlete-count").textContent=String(rows.length);
- $("paid-count").textContent=String(rows.filter(r=>status(r)==="paid").length);
- $("collected-total").textContent=usd(collected);
- $("balance-total").textContent=usd(due);
- const other=$("unmatched-body");other.replaceChildren();
- for(const r of unmatched){
-  const tr=document.createElement("tr");td(tr,r.checkout_session_id||"—");td(tr,usd(r.net),"money");td(tr,date(r.created_at));td(tr,"Manual verification needed");other.append(tr);
- }
- show("unmatched-empty",!unmatched.length);
-}
-function csvCell(value){
- let s=String(value??"");
- if(/^[=+\-@\t\r]/.test(s))s="'"+s;
- return '"'+s.replace(/"/g,'""')+'"';
-}
-function exportCsv(){
- if(!loaded){message("Load the secure roster before exporting.");return;}
- const headings=["Athlete first name","Athlete last name","Guardian","Guardian email","Program","Season","Paid USD","Balance USD","Payment status","Registered"];
- const data=rows.map(r=>[r.first_name,r.last_name,r.guardian_name,r.guardian_email,r.program,r.season,(r.paid/100).toFixed(2),(r.balance/100).toFixed(2),status(r),r.created_at]);
- const csv=[headings,...data].map(row=>row.map(csvCell).join(",")).join("\r\n");
- const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
- const link=document.createElement("a");link.href=url;link.download="FSNextGen-Private-Roster-2027.csv";document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-async function load(){
- if(!session)return;loaded=false;show("auth-panel",false);show("roster-panel",false);message("Verifying administrator access…");
- try{
-  const {data:auth,error:authError}=await db.from("fsa_roster_admins").select("user_id").eq("user_id",session.user.id).limit(1);
-  if(authError)throw authError;
-  if(!auth?.length){message("This account is not approved for the private athlete roster. Contact the website administrator.");await db.auth.signOut();show("auth-panel",true);return;}
-  const [athletes,payments]=await Promise.all([
-   db.from("fsa_athlete_roster").select("id,first_name,last_name,guardian_name,guardian_email,program,season,total_due_cents,created_at").eq("season",2027).order("created_at",{ascending:false}).limit(1000),
-   db.from("fsa_roster_payments").select("checkout_session_id,registration_id,amount_cents,amount_refunded_cents,payment_status,currency,created_at").in("payment_status",["paid","partially_refunded","refunded"]).order("created_at",{ascending:false}).limit(1000)
-  ]);
-  if(athletes.error)throw athletes.error;if(payments.error)throw payments.error;
-  if((athletes.data||[]).length>=1000||(payments.data||[]).length>=1000)throw Error("More than 1,000 records. Add secure pagination before exporting or reviewing totals.");
-  const {results,left}=combined(athletes.data||[],payments.data||[]);rows=results;unmatched=left;loaded=true;
-  $("staff-email").textContent="Signed in: "+(session.user.email||"approved staff");
-  show("roster-panel",true);message("");
-  render();
- }catch(e){message("The roster could not load securely. Check staff authorization, the database setup, and your connection. "+(e.message||""));show("auth-panel",false);}
-}
-async function start(){
- const valid=cfg.supabaseUrl?.startsWith("https://")&&cfg.supabasePublishableKey?.length>15&&window.supabase?.createClient;
- if(!valid){show("setup-panel",true);return;}
- db=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
- const {data,error}=await db.auth.getSession();
- if(error)message("Could not verify your staff session. Please sign in again.");
- session=data?.session||null;
- if(session)await load();else show("auth-panel",true);
- db.auth.onAuthStateChange((event,next)=>{
-  if(event==="SIGNED_OUT"){session=null;rows=[];unmatched=[];loaded=false;show("roster-panel",false);show("auth-panel",true);}
-  if(event==="SIGNED_IN"&&next){session=next;setTimeout(load,0);}
- });
-}
-$("login-form").addEventListener("submit",async e=>{
- e.preventDefault();if(!db)return;
- const email=$("admin-email").value.trim().toLowerCase();const button=$("login-form").querySelector("button");button.disabled=true;message("Sending secure sign-in email…");
- const {error}=await db.auth.signInWithOtp({email,options:{emailRedirectTo:"https://floridaspeedacademy.com/admin-roster.html",shouldCreateUser:false}});
- button.disabled=false;message(error?"Sign-in could not be sent. Ask the admin to authorize this staff account.":"Check your staff email for a one-time sign-in link.");
-});
-$("logout").addEventListener("click",async()=>{if(db)await db.auth.signOut();message("Signed out.");});
-$("refresh").addEventListener("click",load);
-$("search").addEventListener("input",render);$("filter").addEventListener("change",render);
-$("export").addEventListener("click",exportCsv);
-start().catch(()=>{show("setup-panel",true);message("Roster initialization failed. Please contact the site administrator.");});
+(() => {
+  "use strict";
+  const el = id => document.getElementById(id);
+  const cfg = window.FSA_ROSTER_CONFIG || {};
+  const currency = cents => new Intl.NumberFormat("en-US", { style:"currency", currency:"USD" }).format((Number(cents)||0)/100);
+  const day = value => value ? new Date(value).toLocaleDateString("en-US", {month:"short",day:"numeric",year:"numeric"}) : "—";
+  const statusLabels = Object.freeze({paid:"PAID",partial:"PARTIAL",unpaid:"UNPAID",unassigned:"PLAN NEEDED",review:"REVIEW"});
+  const planOptions = Object.freeze({indoor:"Indoor · $150",outdoor:"Outdoor · $275",combined:"Indoor + outdoor · $300"});
+  const show = (id, visible) => { el(id).hidden = !visible; };
+  let api = null, user = null, roster = [], review = [], loaded = false, locked = false;
+
+  function notify(text) {
+    el("message").textContent = text || "";
+    show("message", Boolean(text));
+  }
+  function cell(tr, text, klass) {
+    const td = document.createElement("td");
+    td.textContent = text == null ? "" : String(text);
+    if (klass) td.className = klass;
+    tr.append(td);
+    return td;
+  }
+  function safeValue(x) { return String(x ?? "").toLowerCase(); }
+  function status(r) {
+    if (r.flaggedAmount > 0) return "review";
+    if (!r.plan) return "unassigned";
+    if (r.paid >= r.total && r.total > 0) return "paid";
+    if (r.paid > 0) return "partial";
+    return "unpaid";
+  }
+  function formatPlan(plan) { return plan && planOptions[plan] ? planOptions[plan] : "Not assigned"; }
+  function visibleRows() {
+    const query = safeValue(el("search").value.trim()), filter = el("filter").value;
+    return roster.filter(r => {
+      const match = filter === "all" || status(r) === filter;
+      return match && (!query ||
+        [r.first_name,r.last_name,r.guardian_name,r.email,r.phone].some(value => safeValue(value).includes(query)));
+    });
+  }
+  function render() {
+    if (!loaded) return;
+    const tbody = el("roster-body");
+    tbody.replaceChildren();
+    const filtered = visibleRows();
+    for (const athlete of filtered) {
+      const row = document.createElement("tr");
+      const name = cell(row, (athlete.first_name||"") + " " + (athlete.last_name||""));
+      name.style.fontWeight = "850";
+      const guardian = cell(row, athlete.guardian_name||"—");
+      const contact = document.createElement("div");
+      contact.className = "muted";
+      contact.textContent = [athlete.email,athlete.phone].filter(Boolean).join(" · ");
+      guardian.append(contact);
+
+      const planCell = cell(row,"");
+      const container = document.createElement("div"); container.className = "plan-control";
+      const select = document.createElement("select");
+      select.setAttribute("aria-label","Season package for "+athlete.first_name+" "+athlete.last_name);
+      const none = document.createElement("option");none.value="";none.textContent="Select season";select.append(none);
+      for (const [value,label] of Object.entries(planOptions)) {
+        const option = document.createElement("option");option.value=value;option.textContent=label;select.append(option);
+      }
+      select.value = athlete.plan || "";
+      const save = document.createElement("button");
+      save.type = "button"; save.className = "button dark"; save.textContent = "Save"; save.disabled = true;
+      select.addEventListener("change", () => {save.disabled = !select.value || select.value === (athlete.plan||"");});
+      save.addEventListener("click", async () => {
+        const chosen = select.value;
+        if (!planOptions[chosen] || locked || chosen === athlete.plan) return;
+        locked = true; save.disabled = true;select.disabled = true;
+        notify("Saving "+athlete.first_name+"'s season package…");
+        try {
+          const result = await api.from("roster_dues")
+            .upsert({registration_id:athlete.id,plan:chosen},{onConflict:"registration_id"})
+            .select("registration_id,plan,total_due_cents").single();
+          if (result.error) throw result.error;
+          athlete.plan = result.data.plan;
+          athlete.total = result.data.total_due_cents;
+          notify("Season package saved. The balance has been recalculated from verified payments.");
+        } catch {
+          notify("Could not save the plan. It has not been changed. Check staff access and try again.");
+        } finally {
+          locked = false; render();
+        }
+      });
+      container.append(select,save);planCell.append(container);
+      if (athlete.flaggedAmount > 0) {
+        const hint = document.createElement("small");hint.className="tiny";
+        hint.textContent = "Payment flagged for review";
+        planCell.append(hint);
+      }
+      cell(row,currency(athlete.paid),"money");
+      cell(row,athlete.plan?currency(Math.max(0,athlete.total-athlete.paid)):"Not set","money");
+      const payment = cell(row,"");
+      const label = document.createElement("span");label.className="status "+status(athlete);
+      label.textContent = statusLabels[status(athlete)];payment.append(label);
+      const clearance = cell(row,athlete.staff_clearance || "pending");
+      const registered = document.createElement("div");
+      registered.className = "tiny";registered.textContent = day(athlete.created_at);clearance.append(registered);
+      tbody.append(row);
+    }
+    show("roster-empty", filtered.length===0);
+    const verified = roster.reduce((total,r)=>total+r.paid,0);
+    const assigned = roster.filter(r=>r.plan);
+    const balance = assigned.reduce((total,r)=>total+Math.max(0,r.total-r.paid),0);
+    const unassigned = roster.length-assigned.length;
+    el("athlete-count").textContent=String(roster.length);
+    el("paid-count").textContent=String(roster.filter(r=>status(r)==="paid").length);
+    el("collected-total").textContent=currency(verified);
+    el("balance-total").textContent=currency(balance);
+    el("roster-note").textContent = unassigned + " athlete(s) do not yet have an assigned package. Outstanding balances exclude those athletes; payments are counted only if verified by Stripe and not flagged for review. Payments do not establish enrollment approval.";
+
+    const issueBody=el("unmatched-body");issueBody.replaceChildren();
+    for (const item of review) {
+      const tr = document.createElement("tr");
+      cell(tr,item.identifier);cell(tr,item.reason);cell(tr,day(item.when));cell(tr,"Contact staff for verification.");
+      issueBody.append(tr);
+    }
+    show("unmatched-empty",review.length===0);
+  }
+  function calculate(registrations,payments,plans,flags,issues) {
+    const flagged = new Set(flags.map(x=>x.payment_intent_id).filter(Boolean));
+    const byId = new Map(registrations.map(r=>[r.id,{...r,paid:0,flaggedAmount:0,plan:null,total:null}]));
+    const due = new Map(plans.map(x=>[x.registration_id,x]));
+    const warnings=[];
+    for (const pay of payments) {
+      const reg = byId.get(pay.registration_id);
+      if (!reg) {
+        warnings.push({identifier:pay.session_id,reason:"Payment not linked to an active registration",when:pay.verified_at});
+        continue;
+      }
+      if (flagged.has(pay.payment_intent_id)) {reg.flaggedAmount+=Number(pay.amount_cents)||0;continue;}
+      reg.paid += Number(pay.amount_cents)||0;
+    }
+    for (const r of byId.values()) {
+      const selected=due.get(r.id);
+      if (selected && planOptions[selected.plan]) {
+        r.plan=selected.plan;
+        r.total=Number(selected.total_due_cents)||0;
+      }
+    }
+    for (const x of flags) {
+      warnings.push({identifier:x.payment_intent_id||"Flagged payment",reason:x.reason||"Refund or dispute flagged",when:x.updated_at});
+    }
+    for (const x of issues) {
+      warnings.push({identifier:x.event_id||"Webhook issue",reason:x.reason||"Requires review",when:x.created_at});
+    }
+    return {roster:Array.from(byId.values()),review:warnings};
+  }
+  async function fetchAll(table,columns,filter) {
+    let request=api.from(table).select(columns).limit(1000);
+    if (filter) request=filter(request);
+    const {data,error}=await request;
+    if (error) throw error;
+    if ((data||[]).length>=1000) throw Error("Roster exceeds the safe 1,000-record view limit. Contact the administrator for pagination.");
+    return data||[];
+  }
+  async function load() {
+    if (!api || locked) return;
+    loaded=false;show("roster-panel",false);show("auth-panel",false);
+    notify("Verifying your staff account and loading the private roster…");
+    try {
+      const check=await api.auth.getUser();
+      if (check.error || !check.data?.user) throw Error("Sign in again to continue.");
+      user=check.data.user;
+      const auth=await api.rpc("roster_staff_authorized");
+      if (auth.error) throw auth.error;
+      if (auth.data!==true) {
+        notify("This account is not approved to view the private athlete roster.");
+        await api.auth.signOut();show("auth-panel",true);return;
+      }
+      const [registrations,payments,plans,flags,issues]=await Promise.all([
+        fetchAll("roster_registrations","id,first_name,last_name,guardian_name,email,phone,program,season,staff_clearance,created_at", q=>q.eq("season","2027")),
+        fetchAll("roster_payments","session_id,registration_id,payment_intent_id,payment_link_id,kind,amount_cents,verified_at"),
+        fetchAll("roster_dues","registration_id,plan,total_due_cents"),
+        fetchAll("roster_payment_flags","payment_intent_id,reason,updated_at"),
+        fetchAll("roster_issues","event_id,reason,created_at,resolved_at", q=>q.is("resolved_at",null))
+      ]);
+      const computed=calculate(registrations,payments,plans,flags,issues);
+      roster=computed.roster;review=computed.review;
+      user = check.data.user;loaded=true;
+      el("staff-email").textContent="Signed in as "+user.email;
+      show("roster-panel",true);notify("");
+      render();
+    } catch(err) {
+      notify("The secure roster could not load. " + (err?.message||"Please contact the site administrator."));
+      show("auth-panel",true);
+    }
+  }
+  function csvEscape(value) {
+    let s=String(value??"");
+    if (/^[=+\-@\t\r]/.test(s)) s="'"+s;
+    return '"'+s.replace(/"/g,'""')+'"';
+  }
+  function exportCsv() {
+    if (!loaded)return;
+    const headers=["Athlete first name","Athlete last name","Guardian","Guardian email","Guardian phone","Season","Plan","Verified paid USD","Unresolved flagged USD","Outstanding USD","Payment status","Enrollment clearance","Registered"];
+    const data=visibleRows().map(r=>[
+      r.first_name,r.last_name,r.guardian_name,r.email,r.phone,r.season,formatPlan(r.plan),
+      (r.paid/100).toFixed(2),(r.flaggedAmount/100).toFixed(2),
+      r.plan?(Math.max(0,r.total-r.paid)/100).toFixed(2):"",
+      status(r),r.staff_clearance,r.created_at
+    ]);
+    const text=[headers,...data].map(row=>row.map(csvEscape).join(",")).join("\r\n");
+    const url=URL.createObjectURL(new Blob([text],{type:"text/csv;charset=utf-8"}));
+    const link=document.createElement("a");link.href=url;link.download="Florida-Speed-Academy-Private-Roster-2027.csv";
+    document.body.append(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    notify("Exported "+data.length+" visible roster records. Keep this CSV private.");
+  }
+  async function init() {
+    if (!cfg.supabaseUrl?.startsWith("https://") || !cfg.supabasePublishableKey?.startsWith("sb_publishable_") || !window.supabase?.createClient) {
+      show("setup-panel",true);return;
+    }
+    api=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey,{
+      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+    });
+    api.auth.onAuthStateChange((event,session)=>{
+      if (event==="SIGNED_OUT") {
+        user=null;roster=[];review=[];loaded=false;
+        show("roster-panel",false);show("auth-panel",true);
+      }
+      if (event==="SIGNED_IN" && session?.user) setTimeout(load,0);
+    });
+    const session=await api.auth.getSession();
+    if (session.data?.session) await load();
+    else show("auth-panel",true);
+  }
+  el("login-form").addEventListener("submit",async e=>{
+    e.preventDefault();if (!api)return;
+    const email=el("admin-email").value.trim().toLowerCase();
+    if (!email)return;
+    const button=el("login-form").querySelector("button");button.disabled=true;
+    notify("Sending your secure staff sign-in email…");
+    try {
+      const result=await api.auth.signInWithOtp({email,options:{
+        shouldCreateUser:true,
+        emailRedirectTo:window.location.origin+"/admin-roster.html"
+      }});
+      if (result.error) throw result.error;
+      notify("Check your staff inbox for a one-time sign-in link. Only approved addresses can access roster records.");
+    } catch {
+      notify("Could not send the sign-in link. Check your email and the site's authorized redirect setting.");
+    } finally {button.disabled=false;}
+  });
+  el("logout").addEventListener("click",async()=>{
+    if(api)await api.auth.signOut();notify("Signed out of the private roster.");
+  });
+  el("refresh").addEventListener("click",load);
+  el("filter").addEventListener("change",render);
+  el("search").addEventListener("input",render);
+  el("export").addEventListener("click",exportCsv);
+  init().catch(()=>{show("setup-panel",true);notify("The secure roster could not initialize.");});
 })();
