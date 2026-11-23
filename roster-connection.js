@@ -2,7 +2,7 @@
 'use strict';
 const TRACK='Track & Field — $225 registration';
 const SITE='https://floridaspeedacademy.com';
-const ENDPOINT='https://rxhkfyfjdzmurqgzbxad.supabase.co/functions/v1/fsa-roster-register';
+const ENDPOINT='https://rxhkfyfjdzmurqgzbxad.supabase.co/functions/v1/fs-register';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const FEES={hold:{label:'$50 spot hold',url:'https://buy.stripe.com/fZu7sNgISfWRdUb8HNcAo0b'},registration:{label:'$225 registration',url:'https://buy.stripe.com/8x200l2S2cKFbM3bTZcAo0a'}};
 function validFee(kind){return kind==='hold'||kind==='registration';}
