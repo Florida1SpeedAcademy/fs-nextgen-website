@@ -273,13 +273,23 @@
     notify("Sending your secure staff sign-in email…");
     try {
       const result=await api.auth.signInWithOtp({email,options:{
-        shouldCreateUser:true,
+        shouldCreateUser:false,
         emailRedirectTo:window.location.origin+"/admin-roster.html"
       }});
       if (result.error) throw result.error;
       notify("Check your staff inbox for a one-time sign-in link. Only approved addresses can access roster records.");
-    } catch {
-      notify("Could not send the sign-in link. Check your email and the site's authorized redirect setting.");
+    } catch (error) {
+      const code=String(error?.code||"").toLowerCase(), status=Number(error?.status||0);
+      const message=String(error?.message||"").toLowerCase();
+      if (status===429 || code.includes("rate_limit") || message.includes("rate limit")) {
+        notify("Supabase has reached its email-sending limit (429). No new email was sent. Please stop retrying until the email limit resets, then request one fresh link. If your account is already signed in to this roster in another browser tab, reopen that tab.");
+      } else if (code==="email_address_not_authorized" || message.includes("email address not authorized")) {
+        notify("Supabase is not authorized to send to this email address. The project owner must approve the address or configure a verified SMTP provider in Supabase Auth settings.");
+      } else if (status===400 && message.includes("redirect")) {
+        notify("Supabase rejected the sign-in redirect. Add https://floridaspeedacademy.com/admin-roster.html under Authentication → URL Configuration.");
+      } else {
+        notify("Could not send the sign-in email. Supabase returned " + (code || (status ? "HTTP "+status : "a connection error")) + ". Check the project's Authentication logs or email configuration.");
+      }
     } finally {button.disabled=false;}
   });
   el("logout").addEventListener("click",async()=>{
