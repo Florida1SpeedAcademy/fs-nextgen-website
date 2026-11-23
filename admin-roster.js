@@ -298,7 +298,7 @@
   el("forgot-password").addEventListener("click",async()=>{
     if(!api)return;
     const email=el("admin-email").value.trim().toLowerCase();
-    if(!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
       notify("Enter your account email first, then choose password recovery.");
       return;
     }
