@@ -23,7 +23,7 @@
   function safeValue(x) { return String(x ?? "").toLowerCase(); }
   function status(r) {
     if (r.flaggedAmount > 0) return "review";
-    if (!r.plan) return "unassigned";
+    if (!r.plan) return r.paid > 0 ? "partial" : "unassigned";
     if (r.paid >= r.total && r.total > 0) return "paid";
     if (r.paid > 0) return "partial";
     return "unpaid";
