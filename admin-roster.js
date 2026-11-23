@@ -31,9 +31,11 @@
   function formatPlan(plan) { return plan && planOptions[plan] ? planOptions[plan] : "Not assigned"; }
   function visibleRows() {
     const query = safeValue(el("search").value.trim()), filter = el("filter").value;
+    const view = el("archive-view").value;
     return roster.filter(r => {
+      const archiveMatch = view === "all" || (view === "active" ? !r.archived : r.archived);
       const match = filter === "all" || status(r) === filter;
-      return match && (!query ||
+      return archiveMatch && match && (!query ||
         [r.first_name,r.last_name,r.guardian_name,r.email,r.phone].some(value => safeValue(value).includes(query)));
     });
   }
@@ -46,6 +48,39 @@
       const row = document.createElement("tr");
       const name = cell(row, (athlete.first_name||"") + " " + (athlete.last_name||""));
       name.style.fontWeight = "850";
+      const archiveButton = document.createElement("button");
+      archiveButton.type = "button";
+      archiveButton.className = "archive-action";
+      archiveButton.textContent = athlete.archived ? "Restore entry" : "Archive entry";
+      archiveButton.setAttribute("aria-label", archiveButton.textContent + " for " + athlete.first_name + " " + athlete.last_name);
+      if (!athlete.archived && (athlete.paid > 0 || athlete.flaggedAmount > 0)) {
+        archiveButton.disabled = true;
+        archiveButton.title = "This registration has a verified or flagged payment. Do not archive it without payment review.";
+      }
+      archiveButton.addEventListener("click", async () => {
+        if (locked) return;
+        const originalState = Boolean(athlete.archived);
+        if (!originalState && !window.confirm("Archive " + athlete.first_name + " " + athlete.last_name + "? This removes the entry from the active roster but keeps the registration for restoration.")) return;
+        locked = true;
+        archiveButton.disabled = true;
+        notify(originalState ? "Restoring roster entry…" : "Archiving roster entry…");
+        try {
+          const operation = originalState
+            ? api.from("roster_archives").delete().eq("registration_id", athlete.id).select("registration_id").single()
+            : api.from("roster_archives").insert({registration_id: athlete.id}).select("registration_id").single();
+          const response = await operation;
+          if (response.error || response.data?.registration_id !== athlete.id) throw response.error || Error("No matching record was changed");
+          athlete.archived = !originalState;
+          render();
+          notify(originalState ? "Entry restored to the active roster." : "Entry archived. Use Archived entries to restore it.");
+        } catch {
+          notify("Unable to change this entry. Your roster was not updated; refresh and check staff access.");
+        } finally {
+          locked = false;
+          render();
+        }
+      });
+      name.append(archiveButton);
       const guardian = cell(row, athlete.guardian_name||"—");
       const contact = document.createElement("div");
       contact.className = "muted";
@@ -83,6 +118,7 @@
           locked = false; render();
         }
       });
+      if (athlete.archived) { select.disabled = true; save.disabled = true; }
       container.append(select,save);planCell.append(container);
       if (athlete.flaggedAmount > 0) {
         const hint = document.createElement("small");hint.className="tiny";
@@ -100,15 +136,16 @@
       tbody.append(row);
     }
     show("roster-empty", filtered.length===0);
-    const verified = roster.reduce((total,r)=>total+r.paid,0);
-    const assigned = roster.filter(r=>r.plan);
+    const active = roster.filter(r=>!r.archived);
+    const verified = active.reduce((total,r)=>total+r.paid,0);
+    const assigned = active.filter(r=>r.plan);
     const balance = assigned.reduce((total,r)=>total+Math.max(0,r.total-r.paid),0);
-    const unassigned = roster.length-assigned.length;
-    el("athlete-count").textContent=String(roster.length);
-    el("paid-count").textContent=String(roster.filter(r=>status(r)==="paid").length);
+    const unassigned = active.length-assigned.length;
+    el("athlete-count").textContent=String(active.length);
+    el("paid-count").textContent=String(active.filter(r=>status(r)==="paid").length);
     el("collected-total").textContent=currency(verified);
     el("balance-total").textContent=currency(balance);
-    el("roster-note").textContent = unassigned + " athlete(s) do not yet have an assigned package. Outstanding balances exclude those athletes; payments are counted only if verified by Stripe and not flagged for review. Payments do not establish enrollment approval.";
+    el("roster-note").textContent = active.length + " active entry/entries; " + (roster.length - active.length) + " archived. " + unassigned + " active athlete(s) do not yet have an assigned package. Balances exclude unassigned packages; payments must be Stripe-verified. Use Archived entries to restore a removed row.";
 
     const issueBody=el("unmatched-body");issueBody.replaceChildren();
     for (const item of review) {
@@ -118,9 +155,10 @@
     }
     show("unmatched-empty",review.length===0);
   }
-  function calculate(registrations,payments,plans,flags,issues) {
+  function calculate(registrations,payments,plans,flags,issues,archives) {
     const flagged = new Set(flags.map(x=>x.payment_intent_id).filter(Boolean));
-    const byId = new Map(registrations.map(r=>[r.id,{...r,paid:0,flaggedAmount:0,plan:null,total:null}]));
+    const archiveIds = new Set(archives.map(x=>x.registration_id));
+    const byId = new Map(registrations.map(r=>[r.id,{...r,paid:0,flaggedAmount:0,plan:null,total:null,archived:archiveIds.has(r.id)}]));
     const due = new Map(plans.map(x=>[x.registration_id,x]));
     const warnings=[];
     for (const pay of payments) {
@@ -169,14 +207,15 @@
         notify("This account is not approved to view the private athlete roster.");
         await api.auth.signOut();show("auth-panel",true);return;
       }
-      const [registrations,payments,plans,flags,issues]=await Promise.all([
+      const [registrations,payments,plans,flags,issues,archives]=await Promise.all([
         fetchAll("roster_registrations","id,first_name,last_name,guardian_name,email,phone,program,season,staff_clearance,created_at", q=>q.eq("season","2027")),
         fetchAll("roster_payments","session_id,registration_id,payment_intent_id,payment_link_id,kind,amount_cents,verified_at"),
         fetchAll("roster_dues","registration_id,plan,total_due_cents"),
         fetchAll("roster_payment_flags","payment_intent_id,reason,updated_at"),
-        fetchAll("roster_issues","event_id,reason,created_at,resolved_at", q=>q.is("resolved_at",null))
+        fetchAll("roster_issues","event_id,reason,created_at,resolved_at", q=>q.is("resolved_at",null)),
+        fetchAll("roster_archives","registration_id,archived_at")
       ]);
-      const computed=calculate(registrations,payments,plans,flags,issues);
+      const computed=calculate(registrations,payments,plans,flags,issues,archives);
       roster=computed.roster;review=computed.review;
       user = check.data.user;loaded=true;
       el("staff-email").textContent="Signed in as "+user.email;
@@ -194,12 +233,12 @@
   }
   function exportCsv() {
     if (!loaded)return;
-    const headers=["Athlete first name","Athlete last name","Guardian","Guardian email","Guardian phone","Season","Plan","Verified paid USD","Unresolved flagged USD","Outstanding USD","Payment status","Enrollment clearance","Registered"];
+    const headers=["Athlete first name","Athlete last name","Guardian","Guardian email","Guardian phone","Season","Plan","Verified paid USD","Unresolved flagged USD","Outstanding USD","Payment status","Enrollment clearance","Registered","Roster state"];
     const data=visibleRows().map(r=>[
       r.first_name,r.last_name,r.guardian_name,r.email,r.phone,r.season,formatPlan(r.plan),
       (r.paid/100).toFixed(2),(r.flaggedAmount/100).toFixed(2),
       r.plan?(Math.max(0,r.total-r.paid)/100).toFixed(2):"",
-      status(r),r.staff_clearance,r.created_at
+      status(r),r.staff_clearance,r.created_at,r.archived ? "Archived" : "Active"
     ]);
     const text=[headers,...data].map(row=>row.map(csvEscape).join(",")).join("\r\n");
     const url=URL.createObjectURL(new Blob([text],{type:"text/csv;charset=utf-8"}));
@@ -248,6 +287,7 @@
   });
   el("refresh").addEventListener("click",load);
   el("filter").addEventListener("change",render);
+  el("archive-view").addEventListener("change",render);
   el("search").addEventListener("input",render);
   el("export").addEventListener("click",exportCsv);
   init().catch(()=>{show("setup-panel",true);notify("The secure roster could not initialize.");});
