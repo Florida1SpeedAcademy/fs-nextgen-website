@@ -18,7 +18,7 @@ header .link{font-size:13px}main{max-width:1220px;margin:0 auto;padding:32px cla
 h1{font-size:clamp(30px,5.5vw,56px);line-height:1.06;margin:7px 0 14px;letter-spacing:-.04em;text-transform:uppercase}
 h2{font-size:20px;margin:0}.subtitle{color:var(--muted);margin:0 0 28px;max-width:690px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,30px);box-shadow:0 12px 38px #0003}
-#auth-panel{max-width:520px}label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}input,select{color:#fff;background:#151a23;border:1px solid #586273;border-radius:9px;min-height:45px;padding:11px 12px;width:100%}
+#auth-panel{max-width:520px}.login-note{font-size:12px;color:var(--muted);margin-top:16px}.login-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}.text-action{color:var(--gold);background:transparent;border:0;text-decoration:underline;padding:9px 0;font-size:13px;font-weight:700}.password-card{margin:0 0 22px;border:1px solid #657489;border-radius:15px;padding:17px;background:#202b3a}.password-card summary{font-weight:800;cursor:pointer;min-height:32px}.password-card form{max-width:460px;margin:15px 0 0}.password-card p{color:var(--muted);font-size:13px}.password-card .button{margin-top:3px}label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}input,select{color:#fff;background:#151a23;border:1px solid #586273;border-radius:9px;min-height:45px;padding:11px 12px;width:100%}
 input::placeholder{color:#a2adbd}.button{border:0;border-radius:9px;background:var(--blue);color:white;padding:12px 18px;font-weight:800;min-height:46px}
 .button.gold{background:var(--gold);color:#0b1524}.button.dark{background:#353e4d;color:#fff}
 .field{display:grid;gap:5px;margin-bottom:18px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}.toolbar input{width:min(100%,320px)}.toolbar select{width:auto;min-width:170px}.toolbar .button{min-height:45px}
@@ -42,12 +42,26 @@ input::placeholder{color:#a2adbd}.button{border:0;border-radius:9px;background:v
 <p class="subtitle">Private 2027 athlete registrations, verified Stripe payments, package assignments, and balances. Access is enforced by staff-only database security rules.</p>
 <div id="setup-panel" class="panel" hidden><h2>Secure connection required</h2><p>The private roster could not initialize. Contact the website administrator to check the Supabase public connection.</p><p class="hint">No athlete information is published on this page. Ask the site administrator to complete the private roster setup.</p></div>
 <section id="auth-panel" class="panel" hidden aria-labelledby="login-title">
-<h2 id="login-title">Staff sign-in</h2><p class="muted">Use your authorized Florida Speed Academy email to receive a one-time secure sign-in link.</p>
-<form id="login-form"><div class="field"><label for="admin-email">Staff email</label><input id="admin-email" type="email" autocomplete="email" placeholder="name@example.com" required></div><button class="button gold" type="submit">EMAIL MY SIGN-IN LINK</button></form>
-<p class="hint">Only administrator-approved accounts can view the roster, even if someone receives a sign-in link.</p>
+<h2 id="login-title">Private coach sign-in</h2>
+<p class="muted">Sign in to your personal Florida Speed Academy admin account. You do not need a new email link for routine visits.</p>
+<form id="login-form">
+<div class="field"><label for="admin-email">Account email</label><input id="admin-email" type="email" autocomplete="username email" value="floridaspeedacademy@gmail.com" required></div>
+<div class="field"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" placeholder="Your private password" minlength="8" required></div>
+<div class="login-actions"><button class="button gold" type="submit">SIGN IN TO MY ROSTER</button><button class="text-action" id="forgot-password" type="button">Forgot or need to set password?</button></div>
+</form>
+<p class="login-note">Access remains restricted to the approved coach account. Your password is handled by Supabase Auth and is never saved in the website's code.</p>
 </section>
 <section id="roster-panel" hidden aria-labelledby="roster-title">
 <div class="topline"><div><h2 id="roster-title">2027 Track &amp; Field</h2><span id="staff-email" class="hint"></span></div><div class="toolbar" style="margin:0"><button id="refresh" class="button dark">Refresh</button><button id="logout" class="button dark">Sign out</button></div></div>
+<details class="password-card" id="security-details"><summary>Personal login settings · Set or change my password</summary>
+<p>If you are already signed in, choose a strong personal password here. Once saved, use your email and password on your next visit.</p>
+<form id="password-form">
+<div class="field"><label for="new-password">New password (12+ characters)</label><input id="new-password" type="password" minlength="12" autocomplete="new-password" placeholder="Create a strong private password" required></div>
+<div class="field"><label for="confirm-password">Confirm new password</label><input id="confirm-password" type="password" minlength="12" autocomplete="new-password" placeholder="Repeat your private password" required></div>
+<button class="button gold" type="submit">SAVE MY PERSONAL PASSWORD</button>
+</form>
+<p class="hint">Use a password you haven't used elsewhere. Do not share it in email, texts, or chat.</p>
+</details>
 <div class="metrics" aria-label="Roster totals">
 <div class="metric"><b id="athlete-count">—</b><small>Registration requests</small></div>
 <div class="metric"><b id="paid-count">—</b><small>Paid in full</small></div>
