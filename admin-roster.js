@@ -7,7 +7,7 @@
   const statusLabels = Object.freeze({paid:"PAID",partial:"PARTIAL",unpaid:"UNPAID",unassigned:"PLAN NEEDED",review:"REVIEW"});
   const planOptions = Object.freeze({indoor:"Indoor · $150",outdoor:"Outdoor · $275",combined:"Indoor + outdoor · $300"});
   const show = (id, visible) => { el(id).hidden = !visible; };
-  let api = null, user = null, roster = [], review = [], loaded = false, locked = false;
+  let api = null, user = null, roster = [], review = [], loaded = false, locked = false, isPasswordRecovery = false;
 
   function notify(text) {
     el("message").textContent = text || "";
@@ -221,6 +221,10 @@
       el("staff-email").textContent="Signed in as "+user.email;
       show("roster-panel",true);notify("");
       render();
+      if (isPasswordRecovery) {
+        el("security-details").open = true;
+        notify("You're signed in through account recovery. Set a new personal password below.");
+      }
     } catch(err) {
       notify("The secure roster could not load. " + (err?.message||"Please contact the site administrator."));
       show("auth-panel",true);
@@ -259,6 +263,10 @@
         user=null;roster=[];review=[];loaded=false;
         show("roster-panel",false);show("auth-panel",true);
       }
+      if (event==="PASSWORD_RECOVERY") {
+        isPasswordRecovery = true;
+        if (session?.user) setTimeout(load,0);
+      }
       if (event==="SIGNED_IN" && session?.user) setTimeout(load,0);
     });
     const session=await api.auth.getSession();
@@ -266,31 +274,74 @@
     else show("auth-panel",true);
   }
   el("login-form").addEventListener("submit",async e=>{
-    e.preventDefault();if (!api)return;
+    e.preventDefault(); if (!api)return;
     const email=el("admin-email").value.trim().toLowerCase();
-    if (!email)return;
-    const button=el("login-form").querySelector("button");button.disabled=true;
-    notify("Sending your secure staff sign-in email…");
+    const password=el("admin-password").value;
+    if (!email || !password)return;
+    const button=el("login-form").querySelector("button[type=submit]");
+    button.disabled=true;notify("Checking your private login…");
     try {
-      const result=await api.auth.signInWithOtp({email,options:{
-        shouldCreateUser:false,
-        emailRedirectTo:window.location.origin+"/admin-roster.html"
-      }});
-      if (result.error) throw result.error;
-      notify("Check your staff inbox for a one-time sign-in link. Only approved addresses can access roster records.");
-    } catch (error) {
-      const code=String(error?.code||"").toLowerCase(), status=Number(error?.status||0);
-      const message=String(error?.message||"").toLowerCase();
-      if (status===429 || code.includes("rate_limit") || message.includes("rate limit")) {
-        notify("Supabase has reached its email-sending limit (429). No new email was sent. Please stop retrying until the email limit resets, then request one fresh link. If your account is already signed in to this roster in another browser tab, reopen that tab.");
-      } else if (code==="email_address_not_authorized" || message.includes("email address not authorized")) {
-        notify("Supabase is not authorized to send to this email address. The project owner must approve the address or configure a verified SMTP provider in Supabase Auth settings.");
-      } else if (status===400 && message.includes("redirect")) {
-        notify("Supabase rejected the sign-in redirect. Add https://floridaspeedacademy.com/admin-roster.html under Authentication → URL Configuration.");
-      } else {
-        notify("Could not send the sign-in email. Supabase returned " + (code || (status ? "HTTP "+status : "a connection error")) + ". Check the project's Authentication logs or email configuration.");
-      }
+      const {error}=await api.auth.signInWithPassword({email,password});
+      if (error)throw error;
+      el("admin-password").value="";
+      notify("Login verified. Loading your private roster…");
+      await load();
+    } catch(error) {
+      const code=String(error?.code||"").toLowerCase(),status=Number(error?.status||0);
+      const msg=String(error?.message||"").toLowerCase();
+      if (status===429 || code.includes("rate_limit")) notify("Too many login attempts. Please allow the security limit to reset before trying again.");
+      else if (code==="invalid_credentials" || msg.includes("invalid login credentials")) notify("Email or password not recognized. If you haven't created your personal password yet, use 'Forgot or need to set password?' below.");
+      else if (msg.includes("email not confirmed")) notify("Your account email must be confirmed before you can sign in.");
+      else notify("Could not sign in. Check your internet connection and the admin account information.");
+    } finally {button.disabled=false;el("admin-password").value="";}
+  });
+  el("forgot-password").addEventListener("click",async()=>{
+    if(!api)return;
+    const email=el("admin-email").value.trim().toLowerCase();
+    if(!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){
+      notify("Enter your account email first, then choose password recovery.");
+      return;
+    }
+    const button=el("forgot-password");button.disabled=true;
+    notify("Requesting a secure password-setup email…");
+    try {
+      const {error}=await api.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/admin-roster.html"});
+      if(error)throw error;
+      notify("If this email belongs to an authorized account, check your inbox for a password-recovery link. When you return, open 'Personal login settings' to set your password.");
+    } catch(error){
+      const code=String(error?.code||"").toLowerCase(),status=Number(error?.status||0),msg=String(error?.message||"").toLowerCase();
+      if(status===429||code.includes("rate_limit")||msg.includes("rate limit")){
+        notify("Supabase has temporarily reached its email limit. No new reset email was sent. If you're already signed in on another tab, you can set your password under Personal login settings without email.");
+      } else notify("Password setup email could not be sent. Check your Supabase Auth email settings or try using an existing signed-in session.");
     } finally {button.disabled=false;}
+  });
+  el("password-form").addEventListener("submit",async e=>{
+    e.preventDefault();if(!api || !loaded || !user)return;
+    const password=el("new-password").value;
+    const confirmed=el("confirm-password").value;
+    if(password.length<12){notify("Choose a password with at least 12 characters.");return;}
+    if(password!==confirmed){notify("Your passwords do not match.");return;}
+    const button=el("password-form").querySelector("button[type=submit]");button.disabled=true;
+    notify("Saving your personal login password securely…");
+    try {
+      const check=await api.rpc("roster_staff_authorized");
+      if(check.error || check.data!==true) throw Error("not authorized");
+      const {error}=await api.auth.updateUser({password});
+      if(error)throw error;
+      isPasswordRecovery=false;
+      el("new-password").value="";el("confirm-password").value="";
+      el("security-details").open=false;
+      notify("Personal password saved. You can now sign into your roster using your email and password without requesting a login link.");
+    }catch(error){
+      const msg=String(error?.message||"").toLowerCase();
+      if(msg.includes("reauthentication")||msg.includes("reauthenticate")||msg.includes("nonce")){
+        notify("Supabase requires a fresh verification before changing your password. Use 'Forgot or need to set password?' on the login page when email sending is available.");
+      } else if(msg.includes("weak") || msg.includes("password")){
+        notify("Supabase rejected that password. Try a stronger, unique password of 12 or more characters.");
+      } else {
+        notify("Password was not updated. Please check your staff session or retry from the signed-in roster.");
+      }
+    }finally{button.disabled=false;el("new-password").value="";el("confirm-password").value="";}
   });
   el("logout").addEventListener("click",async()=>{
     if(api)await api.auth.signOut();notify("Signed out of the private roster.");
