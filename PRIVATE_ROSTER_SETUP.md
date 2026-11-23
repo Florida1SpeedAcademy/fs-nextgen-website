@@ -1,66 +1,84 @@
-# FS NextGen — Private Paid Athlete Roster (staged, NOT activated)
+# Florida Speed Academy — Private Paid Athlete Roster
 
-## Purpose
-Give authorized Florida Speed Academy staff a private 2027 track roster with:
-- Athlete name, guardian name/email, season, and program
-- $50 track deposit and $225 track balance payments from **the two VERIFIED existing Stripe payment links**
-- Counts, paid/partial/unpaid filters, outstanding balances, CSV export, unmatched Stripe sessions
-- Stripe webhook signature verification, payment-link allowlist, refund adjustment
-- Supabase Auth email links + database Row Level Security (RLS)
+## Status (November 22, 2026)
+The Supabase project `rxhkfyfjdzmurqgzbxad` is connected and the existing
+`roster_registrations` and `roster_payments` tables are used directly.
 
-No athlete, guardian, or payment data is embedded into any static HTML, JavaScript, or GitHub commit. The public website's other pages, media, Stripe payment links, and site branding are not changed.
+The existing public registration function (`fs-register`) and live signature-
+verified Stripe webhook (`fs-stripe-webhook`) remain in place and are not
+replaced. Existing records remain untouched.
 
-## Deployment gate — do not merge until ALL are complete
-1. Connect the owner-controlled Supabase project that currently serves
-   https://rxhkfyfjdzmurqgzbxad.supabase.co. Confirm its existing tables and
-   the existing fs-register function BEFORE modifying it.
-2. Review/apply supabase/migrations/20261122_private_paid_roster.sql.
-3. In Supabase Auth, create/invite the approved staff user, then INSERT their
-   exact auth.users.id into fsa_roster_admins using SQL editor (see migration).
-   Do not automatically grant access to every signed-in account.
-4. Put the Supabase PUBLIC publishable or anon key in admin-roster-config.js.
-   Never add a secret/service_role key or Stripe secret to GitHub.
-5. Configure server-side Supabase function secrets STRIPE_SECRET_KEY,
-   STRIPE_WEBHOOK_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
-6. Deploy BOTH Supabase Edge Functions. Set verify_jwt=false for those endpoints;
-   the Stripe function verifies the STRIPE-SIGNATURE, the registration function
-   validates required consent and input and restricts browser CORS origins.
-   Add rate-limiting / bot protection before heavy public traffic.
-7. In the STRIPE LIVE account "Florida Speed Academy, NonProfit", create a webhook
-   endpoint https://rxhkfyfjdzmurqgzbxad.supabase.co/functions/v1/fsa-stripe-webhook
-   for checkout.session.completed, checkout.session.async_payment_succeeded,
-   charge.refunded. Copy the resulting webhook signing secret ONLY into Supabase.
-8. Existing current payment link IDs:
-   $50 hold: plink_1UcQoFRtTXb4mzw1dhLgmqG2
-   $225 track registration balance: plink_1UcQlJRtTXb4mzw17ObxPkXc
-   Do not include donations, Florida Grand Prix parking, or uniform payment
-   links in roster paid totals. Other historical links require manual review.
-9. Reconcile historical athlete registrations from the PRE-EXISTING fs-register
-   storage into the new roster table. Reprocess legitimate historical paid
-   Stripe sessions (e.g. by Stripe webhook event resend) AFTER those roster
-   references are available. Otherwise older valid payments appear unmatched.
-   Never join Stripe charges to minors by name or email without verification.
-10. Test a staff login, nonstaff denied access, unauthenticated denied access,
-    paid and unpaid registrations, expired checkout, duplicate sessions,
-    refunds, and a real-mode webhook signature TEST (not a real charge).
-    Only then merge this branch and deploy the static site.
-11. Ensure the signing-in admin email has the domain's Supabase Auth redirect URL
-    https://floridaspeedacademy.com/admin-roster.html permitted in Auth config.
+The following Supabase migrations were applied:
+- `allow_staff_paid_roster_existing_tables_and_season_dues`
+- `expose_authenticated_roster_staff_check`
 
-## What is staged in this branch
-- admin-roster.html, admin-roster.js, admin-roster-config.js
-- supabase migration + Edge Functions + config.toml
-- roster-connection.js changed ONLY on this branch to POST to fsa-roster-register
-- NO live database changes; NO Stripe webhook registered; NO live website deploy.
+They added: staff email allowlist restricted to
+`floridaspeedacademy@gmail.com`; read-only RLS policies on the existing
+roster, payment, and review tables; private staff-check function; season-package
+assignments; and a plan change audit log.
 
-## Important constraints
-- A static GitHub Pages page cannot securely store private rosters or Stripe keys.
-  All records must remain in Supabase with RLS; webhook secrets stay server-side.
-- Auth email link login does not grant admin status. The fsa_roster_admins table
-  controls access. No admin self-registration.
-- The site currently represents 2027 track as a $275 total: a $50 creditable hold
-  followed by $225. Validate commercial terms before changing these numbers.
-- The private roster is NOT a signed parental consent form or enrollment approval.
-- The roster uses 1,000-record safety limits; add secure pagination if exceeded.
-- Avoid public linking of the admin page for privacy; however secrecy of URL is
-  NOT used as an access control.
+Anonymous roster reads are denied. A signed-in but unapproved session sees
+zero registrations. Administrative email confirmation and an allowlist match are
+required to access records.
+
+## Frontend files
+- `admin-roster.html` — mobile-responsive secure staff dashboard
+- `admin-roster.js` — staff Auth check, roster and payments from existing tables,
+  searchable list, package assignments, balances, CSV export, review queue
+- `admin-roster-config.js` — **public** Supabase project URL and publishable key
+
+No Stripe keys, service-role secrets, passwords, or minor data are stored in
+GitHub Pages. Public URL obscurity is never used as access control.
+
+## Initial staff login (user action)
+There are not yet any Supabase Auth users. Once the site page is published,
+staff should enter the approved email address to request a one-time login link.
+The code uses `shouldCreateUser: true` to allow first-time activation.
+Newly created accounts NOT on the private staff allowlist remain unable to read
+the roster. No automatic staff status is conferred by signing up.
+
+In the Supabase dashboard, visit:
+https://supabase.com/dashboard/project/rxhkfyfjdzmurqgzbxad/auth/url-configuration
+
+Add `https://floridaspeedacademy.com/admin-roster.html` as an authorized
+redirect URL (and verify the Site URL is set appropriately). If the email
+service reports a sending limitation, configure SMTP in Auth settings.
+
+## Price model and calculations
+- Indoor package: $150
+- Outdoor package: $275
+- Combined indoor + outdoor: $300
+
+Do not infer an athlete package from the old generic $225 registration
+description. Staff explicitly selects a package on each athlete row.
+Until then, the athlete has no calculated outstanding balance.
+
+The paid amount is the sum of existing signature-verified payment rows.
+When a Stripe refund or dispute has been flagged, that payment is withheld
+from credited totals and shown in the review queue. Payments and enrollment
+approval are separate; `staff_clearance` remains unchanged.
+
+Staff may export the visible filtered rows to CSV; the spreadsheet contains
+guardian contacts and must be handled as private information. Plan changes
+are logged by user in `roster_due_audit`.
+
+## Test before routine use
+1. Publish `admin-roster.html`, `admin-roster.js`, and
+   `admin-roster-config.js` to GitHub Pages.
+2. Set the allowed Auth redirect in Supabase.
+3. Log in using the approved email, then confirm all existing registrations
+   and the one existing $50 matched Stripe hold are visible.
+4. Try an unapproved account: it must NOT see athletes or guardian contacts.
+5. Assign a plan to an athlete and verify the balances update. Only assign
+   the plan actually chosen by the parent; do not use a random athlete as
+   a test. Check the audit log.
+6. Check mobile layout, CSV export privacy, sign-out, and refresh.
+
+## Existing data verified during setup
+- 6 2027 registration requests
+- 1 matched verified $50 hold payment
+- 0 program plans assigned
+- 0 currently unresolved webhook issues or payment flags
+
+The admin dashboard does not alter old payment records, payment links,
+Stripe secrets, registration form, other programs, or site branding.
