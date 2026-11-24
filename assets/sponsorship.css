@@ -1,0 +1,15 @@
+/* Sponsorship CTA shared across Florida Speed Academy pages */
+a.sponsor-cta { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:48px; padding:12px 20px; border:2px solid #ffe200; background:#ffe200; color:#091321; font:800 14px/1.25 Arial,sans-serif; letter-spacing:.035em; text-decoration:none; text-align:center; border-radius:3px; transition:background .18s,color .18s,transform .18s; }
+a.sponsor-cta:hover, a.sponsor-cta:focus-visible { background:#fff; border-color:#fff; color:#071326; }
+a.sponsor-cta:focus-visible {outline:3px solid #2861e8;outline-offset:3px}
+.sponsor-inquiry-section { background:linear-gradient(130deg,#081526,#103364); color:#fff; padding:clamp(42px,6vw,80px) 0; }
+.sponsor-inquiry-section .sponsor-inquiry-wrap { width:min(1100px,calc(100% - 40px)); margin:0 auto; display:grid; grid-template-columns:1.4fr .6fr; align-items:center; gap:28px; }
+.sponsor-inquiry-section .sponsor-eyebrow { font:800 12px/1.4 Arial,sans-serif; letter-spacing:.12em; color:#ffe200; margin:0 0 12px; }
+.sponsor-inquiry-section h2 {font:900 clamp(28px,4vw,48px)/1.1 Arial,sans-serif; color:#fff; margin:0 0 14px;}
+.sponsor-inquiry-section p {font:400 16px/1.6 Arial,sans-serif; color:#dde6f5; margin:0 0 16px; max-width:62ch}
+.sponsor-inquiry-section .sponsor-email {font:600 13px/1.5 Arial,sans-serif;color:#e4eeff; overflow-wrap:anywhere}
+.sponsor-inquiry-section .sponsor-email a { color:#ffe200; text-decoration:underline; text-underline-offset:3px; }
+@media(max-width:650px) {
+ .sponsor-inquiry-section .sponsor-inquiry-wrap {grid-template-columns:1fr;gap:18px}
+ .sponsor-inquiry-section .sponsor-cta { width:100%; box-sizing:border-box; }
+}
