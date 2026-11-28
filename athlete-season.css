@@ -1,0 +1,71 @@
+.season-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+  gap: 1.25rem;
+}
+
+.season-card {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  color: #eef4ff;
+  background: linear-gradient(150deg, #152744, #101822 65%);
+  border: 1px solid #30476b;
+  border-top: 4px solid #ffe200;
+  border-radius: 1rem;
+}
+
+.season-card h3 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.65rem, 5vw, 2.35rem);
+  line-height: 1;
+  color: #fff;
+}
+
+.season-card dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .6rem;
+  margin: 0 0 1.3rem;
+}
+
+.season-card dl > div {
+  min-width: 0;
+  padding: .65rem .55rem;
+  background: #1c2a40;
+  border-radius: .5rem;
+}
+
+.season-card dt {
+  color: #c1cfe4;
+  font-size: .77rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.season-card dd {
+  margin: .3rem 0 0;
+  color: #ffe200;
+  font-size: clamp(1.08rem, 3vw, 1.5rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+
+.season-card dd small {
+  display: block;
+  margin-top: .4rem;
+  color: #e1ebfa;
+  font-size: .73rem;
+  font-weight: 500;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.season-card figure { margin: 0; }
+.season-card figcaption { color: #eef4ff; font-size: .88rem; font-weight: 700; }
+.season-card svg { display: block; width: 100%; height: auto; margin-top: .4rem; }
+.season-gridline { stroke: #405371; }
+.season-trend { fill: none; stroke: #6ea4ff; stroke-width: 3; }
+.season-point { fill: #6ea4ff; stroke: #101822; stroke-width: 2; }
+.season-point-best { fill: #ffe200; }
+.season-chart-axis { fill: #d2dff0; font: 12px system-ui, sans-serif; }
