@@ -37,44 +37,49 @@
     list.append(block);
   }
 
-  function progression(event, races, best) {
+  function progression(event, results, best, isField) {
     const figure = node('figure');
-    figure.append(node('figcaption', 'Season progression · race order'));
+    figure.append(node('figcaption', isField ? 'Season progression · meet order' : 'Season progression · race order'));
     const chart = svgNode('svg', {
       viewBox: '0 0 440 151',
       role: 'img',
-      'aria-label': `${event} progression. ${races.map(race => `${race.date}: ${race.mark}`).join('; ')}. Season best ${best.mark}.`,
+      'aria-label': `${event} progression. ${results.map(result => `${result.date}: ${result.mark}`).join('; ')}. Season best ${best.mark}.`,
     }, figure);
-    const times = races.map(race => race.time);
-    const upper = Math.ceil(Math.max(...times) / 100) * 100 + 100;
-    const lower = Math.max(0, Math.min(Math.floor(Math.min(...times) / 100) * 100 - 100, upper - 400));
+    const values = results.map(result => result.value);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const step = !isField || max - min >= 300 ? 100 : max - min >= 60 ? 25 : 10;
+    const upper = Math.ceil(max / step) * step + step;
+    const lower = Math.max(0, Math.min(Math.floor(min / step) * step - step, upper - 4 * step));
     const left = 49;
     const right = 427;
     const top = 12;
     const bottom = 121;
-    const x = index => left + index * (right - left) / (races.length - 1);
-    const y = time => bottom - (time - lower) * (bottom - top) / (upper - lower);
+    const x = index => left + index * (right - left) / (results.length - 1);
+    const y = value => bottom - (value - lower) * (bottom - top) / (upper - lower);
 
-    for (const value of [upper, Math.round((upper + lower) / 200) * 100, lower]) {
+    for (const value of [upper, Math.round((upper + lower) / (2 * step)) * step, lower]) {
       const position = y(value);
       svgNode('line', { x1: left, x2: right, y1: position, y2: position, class: 'season-gridline' }, chart);
-      svgNode('text', { x: 0, y: position + 4, class: 'season-chart-axis' }, chart).textContent = chartTime(value);
+      svgNode('text', { x: 0, y: position + 4, class: 'season-chart-axis' }, chart).textContent =
+        isField ? `${value / 100}m` : chartTime(value);
     }
     svgNode('polyline', {
-      points: races.map((race, index) => `${x(index)},${y(race.time)}`).join(' '),
+      points: results.map((result, index) => `${x(index)},${y(result.value)}`).join(' '),
       class: 'season-trend',
     }, chart);
-    races.forEach((race, index) => {
+    results.forEach((result, index) => {
+      const isBest = result.value === best.value;
       const dot = svgNode('circle', {
         cx: x(index),
-        cy: y(race.time),
-        r: race.time === best.time ? 7 : 5,
-        class: race.time === best.time ? 'season-point season-point-best' : 'season-point',
+        cy: y(result.value),
+        r: isBest ? 7 : 5,
+        class: isBest ? 'season-point season-point-best' : 'season-point',
       }, chart);
-      svgNode('title', {}, dot).textContent = `${race.date} · ${race.meet} · ${race.mark}`;
+      svgNode('title', {}, dot).textContent = `${result.date} · ${result.meet} · ${result.mark}`;
     });
-    svgNode('text', { x: left, y: 144, class: 'season-chart-axis' }, chart).textContent = races[0].date;
-    svgNode('text', { x: right, y: 144, 'text-anchor': 'end', class: 'season-chart-axis' }, chart).textContent = races.at(-1).date;
+    svgNode('text', { x: left, y: 144, class: 'season-chart-axis' }, chart).textContent = results[0].date;
+    svgNode('text', { x: right, y: 144, 'text-anchor': 'end', class: 'season-chart-axis' }, chart).textContent = results.at(-1).date;
     return figure;
   }
 
@@ -82,19 +87,21 @@
   for (const row of table.tBodies[0].rows) {
     const [event, mark, date, , place] = Array.from(row.cells, cell => cell.textContent.trim());
     const meet = row.cells[3].firstChild.textContent.trim();
-    if (!/^\d+(?::[0-5]\d)?\.\d{1,2}s?$/.test(mark)) continue;
+    const isField = /^\d+\.\d{1,2}m$/.test(mark);
+    if (!isField && !/^\d+(?::[0-5]\d)?\.\d{1,2}s?$/.test(mark)) continue;
     const dateKey = Date.parse(date);
     if (!Number.isFinite(dateKey)) continue;
-    const race = {
+    const result = {
       mark,
       date: date.replace(/, \d{4}$/, ''),
       dateKey,
       meet,
       place: /^\d+$/.test(place) && Number(place) > 0 ? Number(place) : Infinity,
-      time: toHundredths(mark.replace(/s$/, '')),
+      isField,
+      value: toHundredths(mark.replace(/[ms]$/, '')),
     };
     if (!events.has(event)) events.set(event, []);
-    events.get(event).push(race);
+    events.get(event).push(result);
   }
 
   const marks = Array.from(grid.querySelectorAll('.athlete-best'));
@@ -102,30 +109,34 @@
   cards.className = 'season-card-grid';
   for (const mark of marks) {
     const event = mark.querySelector('span').textContent.trim();
-    const races = events.get(event);
-    if (!races?.length) {
+    const results = events.get(event);
+    if (!results?.length) {
       cards.append(mark.cloneNode(true));
       continue;
     }
-    races.sort((a, b) => a.dateKey - b.dateKey);
-    const first = races[0];
-    const best = races.reduce((fastest, race) => race.time < fastest.time ? race : fastest);
-    const top = races.reduce((highest, race) => race.place < highest.place ? race : highest);
+    results.sort((a, b) => a.dateKey - b.dateKey);
+    const first = results[0];
+    const isField = first.isField;
+    const direction = isField ? 1 : -1;
+    const best = results.reduce((best, result) => direction * (result.value - best.value) > 0 ? result : best);
+    const top = results.reduce((top, result) => result.place < top.place ? result : top);
     const card = node('article');
     card.className = 'season-card';
     const metrics = node('dl');
     addMetric(metrics, 'Season best', best.mark, `${best.meet} · ${best.date}`);
-    if (first.time > best.time) {
-      addMetric(metrics, 'First race to best', `${((first.time - best.time) / 100).toFixed(2)}s faster`,
+    const improvement = direction * (best.value - first.value);
+    if (improvement > 0) {
+      addMetric(metrics, isField ? 'First meet to best' : 'First race to best',
+        `${(improvement / 100).toFixed(2)}${isField ? 'm farther' : 's faster'}`,
         `${first.mark} → ${best.mark}`);
     } else {
-      addMetric(metrics, 'Races', String(races.length));
+      addMetric(metrics, isField ? 'Marks' : 'Races', String(results.length));
     }
     if (Number.isFinite(top.place)) {
       addMetric(metrics, 'Top finish', `#${top.place}`, top.meet);
     }
     card.append(node('h3', event), metrics);
-    if (races.length > 1) card.append(progression(event, races, best));
+    if (results.length > 1) card.append(progression(event, results, best, isField));
     cards.append(card);
   }
   if (!cards.querySelector('.season-card')) return;
@@ -134,5 +145,5 @@
   const heading = document.querySelector('.athlete-detail .section-head');
   heading.querySelector('h2').textContent = 'Season cards';
   heading.querySelector('.section-intro').textContent =
-    'Compare your athlete’s best times, top finishes, and race-by-race progress. Meet results and sources are listed below.';
+    'See season bests, top finishes, and meet-by-meet progress. The meet log below links to the published results.';
 })();
